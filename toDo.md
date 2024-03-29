@@ -21,3 +21,6 @@
 ## Conditions à respecter
 
 - [ ] Dans la page d'accueil, afficher seulement les cadeaux avec un nombre de point $\le$ nombre de points de la cliente.
+
+> [!WARNING]  
+> Faire attention à ce que, dans la page html, l'id de l'objet html représentant le cadeau soit le même que l'id du cadeau, pour pouvoir le supprimer de la BD
