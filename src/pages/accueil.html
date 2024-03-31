@@ -3,16 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Accueil</title>
+    <title>Page de Connexion</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <!-- TODO: remplir avec les bonnes valeurs -->
-    <a href="https://localhost:8080/client/connexion">
-      <img src="public/...img_client..." />
-    </a>
-    <a href="https://localhost:8080/gerante/connexion">
-      <img src="public/...img_gerante..." />
-    </a>
-    <!--  -->
+    <div class="container">
+      <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title text-center">Se connecter en tant que :</h5>
+              <div class="mt-4 d-flex justify-content-around">
+                <a
+                  href="http://localhost:8080/client/connexion"
+                  class="btn btn-primary btn-lg"
+                >
+                  Client
+                </a>
+                <a
+                  href="http://localhost:8080/gerante/connexion"
+                  class="btn btn-secondary btn-lg"
+                >
+                  Gérante
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   </body>
 </html>
