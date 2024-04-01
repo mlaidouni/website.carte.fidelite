@@ -2,12 +2,20 @@
 const express = require("express");
 const path = require("path");
 
-// Création et configuration du serveur
-const server = new express();
-server.use(express.json());
-server.use(express.urlencoded({ extended: true }));
+/* ********** Création et configuration du serveur ********** */
 
-/* Gestion des Routes */
+// Création du serveur
+const server = new express();
+// Configuration du dossier contenant les vues (fichiers .ejs)
+server.set("views", path.join(__dirname, "../pages"));
+// Configuration du dossier contenant les fichiers statiques
+server.use(express.static("public"));
+// Comprendre les données et les convertir en JavaScript
+server.use(express.urlencoded({ extended: true }));
+// Comprendre les données reçues au format JSON
+server.use(express.json());
+
+/* ******************** Gestion des routes ******************** */
 
 // Notification sur le terminal pour toutes les requêtes
 server.use((req, res, next) => {
@@ -15,38 +23,68 @@ server.use((req, res, next) => {
   next();
 });
 
-// GET /
-// TODO: render accueil.html
+// GET / : affiche la page d'accueil
 server.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../pages", "accueil.html"));
 });
 
-// GET client/connexion
-// TODO: redirect client/compte
+// GET /client/connexion: affiche la page de connexion
 server.get("/client/connexion", (req, res) => {
-  res.send("Ceci est la page de connexion CLIENT !");
+  res.render("connexion.ejs");
 });
 
-// GET client/compte
-// TODO: render compte_client.ejs
+// POST /client/connexion
+server.post("/client/connexion", (req, res) => {
+  // TODO: Récupérer les données du formulaire
+  // ...
 
-// GET client/achat
+  // TODO: Vérifier que les données concordent avec la base de donnée
+  // ...
+
+  // TODO: Redirect vers /client/compte
+  res.redirect("/client/compte");
+});
+
+// GET /client/compte: affiche la page de compte du client
+server.get("/client/compte", (req, res) => {
+  res.render("compte_client.ejs");
+});
+
+// NOTE: Requêtes en POST sur /client/compte ??
+
+// GET /client/achat
 // TODO: render achat_cadeaux.ejs
+// NOTE: Est-ce nécessaire ? Ou est-ce que les pages compte et achat sont identiques ?
 
-// GET gerante/connexion
-// TODO: redirect gerante/compte
+// GET /gerante/connexion: affiche la page de connexion
 server.get("/gerante/connexion", (req, res) => {
-  res.send("Ceci est la page de connexion GERANTE !");
+  res.render("connexion.ejs");
 });
 
-// GET gerante/compte
-// TODO: render compte_gerante.ejs
+// POST /gerante/connexion
+server.post("/gerante/connexion", (req, res) => {
+  // TODO: Récupérer les données du formulaire
+  // ...
 
-// TODO: ajouter les requêtes en POST
+  // TODO: Vérifier que les données concordent avec la base de donnée
+  // ...
 
-// Lancer le serveur...
-// Start the server
+  // TODO: Redirect vers /gerante/compte
+  res.redirect("/gerante/compte");
+});
+
+// GET /gerante/compte: affiche la page de compte de la gérante
+server.get("/gerante/compte", (req, res) => {
+  // TODO: render compte_gerante.ejs
+  res.render("compte_gerante.ejs");
+});
+
+// TODO: ajouter les autres requêtes en POST
+
+// Lancer le serveur
 const port = 8080;
 server.listen(port, () => {
-  console.log(`Server started on http://localhost:${port}/`);
+  console.log(
+    `Application lancée. Veuillez vous connecter à l'adresse http://localhost:${port}/ pour commencer !`
+  );
 });
