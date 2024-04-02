@@ -19,10 +19,11 @@ CREATE TABLE CADEAUX (
 
 -- Création de la table clients
 CREATE TABLE PERSONNE (
+    USER_ID VARCHAR(255) PRIMARY KEY, -- Identifiant de connexion de la personne
+    PASSWORD VARCHAR(255) NOT NULL, -- Mot de passe de la personne
     NOM VARCHAR(255) NOT NULL, -- Nom de la personne
     PRENOM VARCHAR(255) NOT NULL, -- Prénom de la personne
-    EMAIL VARCHAR(255) PRIMARY KEY, -- Adresse email de la personne
-    PASSWORD VARCHAR(255) NOT NULL, -- Mot de passe de la personne
+    EMAIL VARCHAR(255) , -- Adresse email de la personne
     TELEPHONE VARCHAR(10) NOT NULL, -- Numéro de téléphone de la personne
     DATE_NAISSANCE DATE NOT NULL, -- Date de naissance de la personne
     POINTS INTEGER NOT NULL -- Nombre de points de la personne
