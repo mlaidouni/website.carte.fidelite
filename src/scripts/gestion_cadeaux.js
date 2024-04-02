@@ -11,7 +11,7 @@ function Cadeau() {
     user: "mohaldn",
     port: 5432,
     host: "localhost",
-    database: "website_carte_fidelite",
+    database: "websitecartefidelite",
     password: "kmzx",
   });
 
@@ -40,21 +40,19 @@ function Cadeau() {
     // Connexion à la BD
     client = await pool.connect();
 
-    if (!this.search(word)) {
-      // Query
-      let query = {
-        // Requête à exécuter
-        Text: "INSERT INTO words VALUE ( '$1', $2, '$3', '$4', '$5')",
-        // Les valeurs à remplacer dans la requête
-        Values: [nom, prix, taille, couleur, description],
-      };
+    // Query
+    let query = {
+      // Requête à exécuter
+      Text: "INSERT INTO words VALUE ( '$1', $2, '$3', '$4', '$5')",
+      // Les valeurs à remplacer dans la requête
+      Values: [nom, prix, taille, couleur, description],
+    };
 
-      // On attent l'exécution de la requête
-      await client.query(query);
+    // On attent l'exécution de la requête
+    await client.query(query);
 
-      // On libère le client.
-      client.release();
-    }
+    // On libère le client.
+    client.release();
   };
 
   /**
@@ -75,6 +73,35 @@ function Cadeau() {
     };
     // On attent l'exécution de la requête
     await client.query(query);
+  };
+
+  /**
+   * Renvoie la liste des cadeaux.
+   * @async
+   */
+  this.getAll = async function () {
+    // Connexion à la BD
+    client = await pool.connect();
+
+    // On attent l'exécution de la requête
+    let data = await client.query("SELECT * FROM cadeaux");
+
+    // On libère le client.
+    client.release();
+
+    // TODO: Trouver la bonne méthode d'envoie (cf. bookmark)
+    // Convertir les données en tableau
+    let result = data.rows.map((row) => ({
+      id: row.cadeaux_id,
+      nom: row.nom,
+      prix: row.prix,
+      taille: row.taille,
+      couleur: row.couleur,
+      description: row.description,
+      image: row.image,
+    }));
+
+    return result;
   };
 }
 

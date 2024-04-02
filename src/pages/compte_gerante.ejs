@@ -3,16 +3,121 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- TODO: Changer titre -->
-    <title>...</title>
+
+    <!-- Import Libraries -->
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- CSS -->
+    <link
+      href="../styles/compte_gerante.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- Script -->
+    <script src="../scripts/compte_gerante.js"></script>
+
+    <title>Gérante: Compte</title>
   </head>
   <body>
+    <!-- Navigation Bar -->
+    <!-- Navigation Bar
+      @sticky-top: fixe la navbar en haut de la page
+      @navbar-expand-lg: collapse la navbar sur les écrants small, 
+      (i.e étend la navbar pour les écrans >= large) et ajoute un bouton
+    -->
+    <nav
+      id="navNavBar"
+      class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark"
+    >
+      <!-- La navbar possède une icône qui renvoie vers le haut de la page. -->
+      <a id="aNavbar" class="navbar-brand" href="#">
+        <!-- FIXME: Remplacer le lien par l'image ../public/images/admin.png -->
+        <img
+          src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
+          width="30"
+          height="30"
+          class="d-inline-block align-top"
+          alt="admin icon"
+        />
+        Menu Gérante
+      </a>
+
+      <!-- Bouton en cas de collapse de la navbar -->
+      <button
+        id="buttonNavbarToggler"
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#divNabarContent"
+        aria-controls="divNabarContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <!-- Button icon -->
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Contenu de la Navbar 
+      @collapse: Indique que le contenu de la navbar peut être collapsé
+      -->
+      <div id="divNabarContent" class="collapse navbar-collapse">
+        <!-- List non ordonnée contenant les éléments à afficher (soit les clients, soit les cadeaux)
+        @navbar-nav: Applique le style navbar à la liste
+        @mr-auto: margin right auto, "pousse" la liste vers la gauche
+        @nav-item: Applique le style nav-item à chaque élément de la liste
+       -->
+        <ul id="ulNavbarContent" class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/gerante/compte?data=clients">
+              Gestion des clients
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/gerante/compte?data=cadeaux">
+              Gestion des cadeaux
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
     <!-- TODO: Remplir avec les bonnes valeurs
-    - menu de navigation, pour gérer soit les clients, soit les cadeaux
     - voir la liste des clients
     - boutons sur chaque client pour modifier / supprimer
     - bouton pour ajouter client -> redirection vers un formulaire ???
     - boutons pour ajouter (par caracteristiques) / supprimer (par cadeaux_id) un cadeau
     -->
+
+    <!-- Contenu principal -->
+    <div class="container">
+      <% if (data === "clients") { %>
+      <!-- Afficher la liste des clients -->
+      <h2>Liste des clients</h2>
+      <ul>
+        <% clients.forEach(client => { %>
+        <li><%= client.nom %></li>
+        <% }); %>
+      </ul>
+      <% } else if (data === "cadeaux") { %>
+      <!-- Afficher la liste des cadeaux -->
+      <h2>Liste des cadeaux</h2>
+      <ul>
+        <!-- FIXME: Trouver comment afficher les données (voir bookmark) -->
+        <% for (let i = 0; i < kado.length; i++) { %>
+          <li><%= kado[i].nom %> - <%= kado[i].prix %>€</li>
+        <% } %>
+      </ul>
+      <% } else { %>
+      <p>Aucune demande sélectionnée.</p>
+      <% } %>
+    </div>
   </body>
 </html>
