@@ -1,14 +1,15 @@
-DROP CASCADE DATABASE WEBSITE_CARTE_FIDELITE;
+-- Si la base de données existe, la supprimer
+DROP DATABASE IF EXISTS WEBSITECARTEFIDELITE;
 
 -- Création de la base de données website_carte_fidelite
-CREATE DATABASE WEBSITE_CARTE_FIDELITE;
+CREATE DATABASE WEBSITECARTEFIDELITE;
 
 -- Connection à la base de données website_carte_fidelite
-\c WEBSITE_CARTE_FIDELITE;
+\C WEBSITECARTEFIDELITE;
 
 -- Création de la table cadeaux
 CREATE TABLE CADEAUX (
-    CADEAUX_ID INTEGER SERIAL PRIMARY KEY, -- Identifiant du cadeau
+    CADEAUX_ID SERIAL PRIMARY KEY, -- Identifiant du cadeau
     NOM VARCHAR(255) NOT NULL, -- Nom du cadeau
     PRIX INTEGER NOT NULL, -- Prix du cadeau en points
     TAILLE VARCHAR(255), -- Taille du cadeau (not required)
@@ -23,7 +24,7 @@ CREATE TABLE PERSONNE (
     PASSWORD VARCHAR(255) NOT NULL, -- Mot de passe de la personne
     NOM VARCHAR(255) NOT NULL, -- Nom de la personne
     PRENOM VARCHAR(255) NOT NULL, -- Prénom de la personne
-    EMAIL VARCHAR(255) , -- Adresse email de la personne
+    EMAIL VARCHAR(255), -- Adresse email de la personne
     TELEPHONE VARCHAR(10) NOT NULL, -- Numéro de téléphone de la personne
     DATE_NAISSANCE DATE NOT NULL, -- Date de naissance de la personne
     POINTS INTEGER NOT NULL -- Nombre de points de la personne
@@ -46,5 +47,25 @@ INSERT INTO CADEAUX (
     'https://www.example.com/tshirt.jpg'
 );
 
+INSERT INTO PERSONNE (
+    USER_ID,
+    PASSWORD,
+    NOM,
+    PRENOM,
+    EMAIL,
+    TELEPHONE,
+    DATE_NAISSANCE,
+    POINTS
+) VALUES (
+    'john.doe',
+    'password',
+    'Doe',
+    'John',
+    'john@gmail.com',
+    '0123456789',
+    '1990-01-01',
+    100
+);
+
 -- Quitter PostgreSQL
-\q
+\Q
