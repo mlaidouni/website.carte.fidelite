@@ -1,0 +1,14 @@
+div {
+  /* Je veux une boxe colorée et agréable */
+  background-color: #a239df;
+  border: 1px solid #440480;
+  border-radius: 5px;
+  /* padding: 20px;
+  margin: 20px; */
+  /* text-align: center; */
+}
+
+body {
+  /* Je veux une couleur de fond */
+  background-color: #000;
+}
