@@ -36,16 +36,23 @@ function Cadeau() {
    * @param {string} description - La description du cadeau.
    * @async
    */
-  this.insert = async function (nom, prix, taille, couleur, description) {
+  this.insert = async function (
+    nom,
+    prix,
+    taille,
+    couleur,
+    description,
+    image
+  ) {
     // Connexion à la BD
     client = await pool.connect();
 
     // Query
     let query = {
       // Requête à exécuter
-      Text: "INSERT INTO words VALUE ( '$1', $2, '$3', '$4', '$5')",
+      text: "INSERT INTO cadeaux (NOM, PRIX, TAILLE, COULEUR, DESCRIPTION, IMAGE) VALUES ($1, $2, $3, $4, $5, $6)",
       // Les valeurs à remplacer dans la requête
-      Values: [nom, prix, taille, couleur, description],
+      values: [nom, prix, taille, couleur, description, image],
     };
 
     // On attent l'exécution de la requête
@@ -67,9 +74,9 @@ function Cadeau() {
     // Query
     let query = {
       // Requête à exécuter
-      Text: "DELETE FROM words WHERE CADEAUX_ID = $1",
+      text: "DELETE FROM cadeaux WHERE CADEAUX_ID = $1",
       // Les valeurs à remplacer dans la requête
-      Values: [id],
+      values: [id],
     };
     // On attent l'exécution de la requête
     await client.query(query);
@@ -89,17 +96,9 @@ function Cadeau() {
     // On libère le client.
     client.release();
 
-    // TODO: Trouver la bonne méthode d'envoie (cf. bookmark)
-    // Convertir les données en tableau
-    let result = data.rows.map((row) => ({
-      id: row.cadeaux_id,
-      nom: row.nom,
-      prix: row.prix,
-      taille: row.taille,
-      couleur: row.couleur,
-      description: row.description,
-      image: row.image,
-    }));
+    // On stocke les données dans un tableau
+    let result = [];
+    for (row of data.rows) result.push(row);
 
     return result;
   };

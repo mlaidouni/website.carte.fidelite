@@ -16,13 +16,12 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <!-- CSS -->
-    <link
-      href="../styles/compte_gerante.css"
+    <!-- <link
+      href="../public/styles/compte_gerante.css"
       rel="stylesheet"
       type="text/css"
-    />
+    /> -->
     <!-- Script -->
-    <script src="../scripts/compte_gerante.js"></script>
 
     <title>Gérante: Compte</title>
   </head>
@@ -98,7 +97,7 @@
 
     <!-- Contenu principal -->
     <div class="container">
-      <% if (data === "clients") { %>
+      <% if (datatype === "clients") { %>
       <!-- Afficher la liste des clients -->
       <h2>Liste des clients</h2>
       <ul>
@@ -106,18 +105,29 @@
         <li><%= client.nom %></li>
         <% }); %>
       </ul>
-      <% } else if (data === "cadeaux") { %>
+      <% } else if (datatype === "cadeaux") { %>
       <!-- Afficher la liste des cadeaux -->
       <h2>Liste des cadeaux</h2>
       <ul>
-        <!-- FIXME: Trouver comment afficher les données (voir bookmark) -->
-        <% for (let i = 0; i < kado.length; i++) { %>
-          <li><%= kado[i].nom %> - <%= kado[i].prix %>€</li>
+        <!-- Pour chaque cadeau dans le tableau des cadeaux, on affiche les données. -->
+        <% for (let i = 0; i < data.length; i++) { let cadeau = data[i];%>
+        <li>
+          <!-- L'identifiant du div contenant un cadeau et l'id du cadeau. -->
+          <div id="<%= cadeau.cadeaux_id %>">
+            <p>
+              <%= cadeau.nom %>・<%= cadeau.prix%>€・<%= cadeau.taille %>・<%=
+              cadeau.couleur %>・<%= cadeau.description %>・<%= cadeau.image %>
+            </p>
+            <!-- IDEA: onclick="deleteCadeau(<%= cadeau.cadeaux_id %>)" -->
+            <input type="button" class="btn-delete" value="Supprimer" />
+          </div>
+        </li>
         <% } %>
       </ul>
       <% } else { %>
       <p>Aucune demande sélectionnée.</p>
       <% } %>
     </div>
+    <script src="../scripts/compte_gerante.js"></script>
   </body>
 </html>

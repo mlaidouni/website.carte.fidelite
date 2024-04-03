@@ -1,7 +1,7 @@
 // Import des modules express et path
 const express = require("express");
 const path = require("path");
-const gestionCadeaux = require("./gestion_cadeaux");
+const gestion_cadeaux = require("./gestion_cadeaux");
 
 /* ********** Création et configuration du serveur ********** */
 
@@ -56,6 +56,7 @@ server.get("/client/compte", (req, res) => {
 // GET /client/achat
 // TODO: render achat_cadeaux.ejs
 // NOTE: Est-ce nécessaire ? Ou est-ce que les pages compte et achat sont identiques ?
+// (Penser à l'utilisation des paramètres dans les routes, comme pour /gerante/compte)
 
 // GET /gerante/connexion: affiche la page de connexion
 server.get("/gerante/connexion", (req, res) => {
@@ -74,53 +75,34 @@ server.post("/gerante/connexion", (req, res) => {
   res.redirect("/gerante/compte");
 });
 
-server.get("/gerante/compte", (req, res, next) => {
-  // TODO: render compte_gerante.ejs
-  //   res.render("compte_gerante.ejs");
-  next();
-});
-
-// Liste des clients (simulée pour cet exemple)
-
 // GET /gerante/compte: affiche la page de compte de la gérante
-server.get("/gerante/compte", (req, res) => {
-  // On récupère le type de données demandées. Liste des clients par défaut
+server.get("/gerante/compte", async (req, res) => {
+  // On récupère le type de données demandées. (Liste des clients par défaut)
   const dataType = req.query.data === undefined ? "clients" : req.query.data;
+  // Fichier de vue
+  const renderFile = "compte_gerante.ejs";
 
-  let data = gestionCadeaux
-    .getAll()
-    .then((result) => {
-      // Afficher les données
-      console.log("result: " + result);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  // On récupère la liste des cadeaux avec l'ensemble de leurs données (await pour attendre la fin de la requête)
+  let cadeaux = await gestion_cadeaux.getAll();
+  // On récupère la liste des clients avec l'ensemble de leurs données (await pour attendre la fin de la requête)
+  let clients = [
+    { nom: "alo 1", age: 30 },
+    { nom: "laure 2", age: 25 },
+    { nom: "nav 3", age: 40 },
+  ];
+  /* FIXME: Remplacer les données fictives par les données de la base de données, 
+   (en attente de la fonction getAll() de gestion_client.js):
+   let clients = await gestion_clients.getAll(); */
 
-  // FIXME: Trouver le moyen d'afficher la liste des kados
-  let kado = data;
-  console.log("len : " + kado.length);
-  for (let i = 0; i < kado.length; i++) {
-    console.log(kado[i].nom + "-" + kado[i].prix + " €");
-  }
+  let reponse = {
+    datatype: dataType,
+    data: dataType === "cadeaux" ? cadeaux : clients,
+  };
 
-  // Récupérer les données de ma table cadeaux:
-  // cadeaux_id, nom, prix, taille, couleur, description, image
+  /* CACA: Test de l'affichage des données : voir fichier toDo.md */
 
-  if (dataType === "clients")
-    res.render("compte_gerante.ejs", {
-      data: dataType,
-      clients: [
-        { nom: "alo 1", age: 30 },
-        { nom: "laure 2", age: 25 },
-        { nom: "nav 3", age: 40 },
-      ],
-    });
-  else
-    res.render("compte_gerante.ejs", {
-      data: dataType,
-      kado: data,
-    });
+  // Rendu de la page avec les bonnes données
+  res.render(renderFile, reponse);
 });
 
 // TODO: ajouter les autres requêtes en POST

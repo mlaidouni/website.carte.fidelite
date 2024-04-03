@@ -45,6 +45,22 @@ INSERT INTO CADEAUX (
     'Blanc',
     'T-shirt blanc en coton',
     'https://www.example.com/tshirt.jpg'
+),
+(
+    'Mug',
+    50,
+    NULL,
+    NULL,
+    'Mug en céramique',
+    'https://www.example.com/mug.jpg'
+),
+(
+    'Sac à dos',
+    200,
+    NULL,
+    NULL,
+    'Sac à dos en toile',
+    'https://www.example.com/sac.jpg'
 );
 
 INSERT INTO PERSONNE (

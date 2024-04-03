@@ -46,9 +46,9 @@
 ## Page d'accueil
 
 - [ ] Affichage d'une image pour la connection de la gérante
-  - [ ] cliquer sur l'image $\to$ redirection vers la page de connection de la gérante
+  - [x] cliquer sur l'image $\to$ redirection vers la page de connection de la gérante
 - [ ] Affichage d'une image pour la connection du client
-  - [ ] cliquer sur l'image $\to$ redirection vers la page de connection du client
+  - [x] cliquer sur l'image $\to$ redirection vers la page de connection du client
 
 ## Côté client
 
@@ -106,8 +106,29 @@
 - [ ] ajouter / supprimer un client
 - [ ] modifier un client (points, ...)
 - [ ] ajouter / supprimer cadeau
+- [x] voir la liste des cadeaux
 
 ---
 
 > [!WARNING]  
 > Faire attention à ce que, dans la page html, l'id de l'objet html représentant le cadeau soit le même que l'id du cadeau, pour pouvoir le supprimer de la BD
+
+---
+
+```javascript
+  for (let i = 0; i < cadeaux.length; i++) {
+    console.log(
+      cadeaux[i].nom +
+        "・" +
+        cadeaux[i].prix +
+        "€・" +
+        cadeaux[i].taille +
+        "・" +
+        cadeaux[i].couleur +
+        "・" +
+        cadeaux[i].description +
+        "・" +
+        cadeaux[i].image
+    );
+  }
+```
