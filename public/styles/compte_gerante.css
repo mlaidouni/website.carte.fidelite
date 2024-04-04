@@ -1,4 +1,4 @@
-div {
+p {
   /* Je veux une boxe colorée et agréable */
   background-color: #a239df;
   border: 1px solid #440480;
@@ -8,7 +8,3 @@ div {
   /* text-align: center; */
 }
 
-body {
-  /* Je veux une couleur de fond */
-  background-color: #000;
-}

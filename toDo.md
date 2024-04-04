@@ -14,7 +14,7 @@
 ```
 
 - 1 page `connexion.ejs` (même page pour connexion client et gerante)  
-  un formulaire avec `utilisateur` et `motdepasse`. Le nom d'utilisateur des clients est utilisé comme id dans la base de données `personne`.
+  un formulaire avec `utilisateur` et `motdepasse`. Le nom d'utilisateur des clients est utilisé comme id dans la table `personnes`.
 - 1 page `compte_client.ejs`:
   - affichage du nombre de points
   - affichage des cadeaux actuellements dans le panier (comment est stocké le panier ??)
@@ -33,7 +33,7 @@
   - boutons sur chaque client pour modifier / supprimer
   - bouton pour ajouter client -> redirection vers un formulaire ???
   - boutons pour ajouter (par caracteristiques) / supprimer (par cadeaux_id) un cadeau
-- module `gestion_clients`:  
+- module `gestion_personnes`:  
   voir liste / ajouter / supprimer / modifier client. Utilisé pour trouver les personnes (clients / gérante) lors de la connexion.
 - module `gestion_cadeaux`: ajouter / supprimer cadeaux
 - script `serveur.js`:

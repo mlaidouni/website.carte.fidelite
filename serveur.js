@@ -1,20 +1,29 @@
 // Import des modules express et path
 const express = require("express");
 const path = require("path");
-const gestion_cadeaux = require("./gestion_cadeaux");
+const gestion_cadeaux = require("./public/scripts/gestion_cadeaux");
+const gestion_personnes = require("./public/scripts/gestion_personnes");
 
 /* ********** Création et configuration du serveur ********** */
 
 // Création du serveur
 const server = new express();
+// Configuration du moteur de rendu sur EJS
+server.set("view engine", "ejs");
 // Configuration du dossier contenant les vues (fichiers .ejs)
-server.set("views", path.join(__dirname, "../pages"));
+server.set("views", path.join(__dirname, "views"));
 // Configuration du dossier contenant les fichiers statiques
-server.use(express.static("public"));
+server.use(express.static(path.join(__dirname, "public")));
+// server.use(express.static("public/styles"));
 // Comprendre les données et les convertir en JavaScript
 server.use(express.urlencoded({ extended: true }));
 // Comprendre les données reçues au format JSON
 server.use(express.json());
+
+/* ********** Fichiers de vue ********** */
+const connexion = "connexion.ejs";
+const compte_client = "compte_client.ejs";
+const compte_gerante = "compte_gerante.ejs";
 
 /* ******************** Gestion des routes ******************** */
 
@@ -26,21 +35,22 @@ server.use((req, res, next) => {
 
 // GET / : affiche la page d'accueil
 server.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../pages", "accueil.html"));
+  // Afficher le fichier accueil.html
+  res.sendFile(path.join(__dirname, "public/pages/accueil.html"));
 });
 
 // GET /client/connexion: affiche la page de connexion
 server.get("/client/connexion", (req, res) => {
-  res.render("connexion.ejs");
+  res.render(connexion);
 });
 
 // POST /client/connexion
-server.post("/client/connexion", (req, res) => {
+server.post("/client/connexion", async (req, res) => {
   // TODO: Récupérer les données du formulaire
   // ...
-
-  // TODO: Vérifier que les données concordent avec la base de donnée
-  // ...
+  // TODO: Vérifier que les données concordent avec la BD
+  // NOTE: Pour l'instant, on simule une recherche dans BD avec des données en dur
+  let data = await gestion_personnes.search("janad", "password");
 
   // TODO: Redirect vers /client/compte
   res.redirect("/client/compte");
@@ -48,19 +58,19 @@ server.post("/client/connexion", (req, res) => {
 
 // GET /client/compte: affiche la page de compte du client
 server.get("/client/compte", (req, res) => {
-  res.render("compte_client.ejs");
+  res.render(compte_client);
 });
 
 // NOTE: Requêtes en POST sur /client/compte ??
 
 // GET /client/achat
-// TODO: render achat_cadeaux.ejs
+// TODO: render achat_cadeaux
 // NOTE: Est-ce nécessaire ? Ou est-ce que les pages compte et achat sont identiques ?
 // (Penser à l'utilisation des paramètres dans les routes, comme pour /gerante/compte)
 
 // GET /gerante/connexion: affiche la page de connexion
 server.get("/gerante/connexion", (req, res) => {
-  res.render("connexion.ejs");
+  res.render(connexion);
 });
 
 // POST /gerante/connexion
@@ -68,7 +78,7 @@ server.post("/gerante/connexion", (req, res) => {
   // TODO: Récupérer les données du formulaire
   // ...
 
-  // TODO: Vérifier que les données concordent avec la base de donnée
+  // TODO: Vérifier que les données concordent avec la BD
   // ...
 
   // TODO: Redirect vers /gerante/compte
@@ -79,30 +89,20 @@ server.post("/gerante/connexion", (req, res) => {
 server.get("/gerante/compte", async (req, res) => {
   // On récupère le type de données demandées. (Liste des clients par défaut)
   const dataType = req.query.data === undefined ? "clients" : req.query.data;
-  // Fichier de vue
-  const renderFile = "compte_gerante.ejs";
 
   // On récupère la liste des cadeaux avec l'ensemble de leurs données (await pour attendre la fin de la requête)
   let cadeaux = await gestion_cadeaux.getAll();
   // On récupère la liste des clients avec l'ensemble de leurs données (await pour attendre la fin de la requête)
-  let clients = [
-    { nom: "alo 1", age: 30 },
-    { nom: "laure 2", age: 25 },
-    { nom: "nav 3", age: 40 },
-  ];
-  /* FIXME: Remplacer les données fictives par les données de la base de données, 
-   (en attente de la fonction getAll() de gestion_client.js):
-   let clients = await gestion_clients.getAll(); */
+  let clients = await gestion_personnes.getAll();
 
+  // On renvoie le type de la donnée demandée et les données correspondantes
   let reponse = {
     datatype: dataType,
     data: dataType === "cadeaux" ? cadeaux : clients,
   };
 
-  /* CACA: Test de l'affichage des données : voir fichier toDo.md */
-
   // Rendu de la page avec les bonnes données
-  res.render(renderFile, reponse);
+  res.render(compte_gerante, reponse);
 });
 
 // TODO: ajouter les autres requêtes en POST

@@ -16,13 +16,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <!-- CSS -->
-    <!-- <link
-      href="../public/styles/compte_gerante.css"
-      rel="stylesheet"
-      type="text/css"
-    /> -->
-    <!-- Script -->
-
+    <link href="/styles/compte_gerante.css" rel="stylesheet" />
+    <!-- Script pour gérer les interractions avec l'utilisateur (boutons, ...) -->
+    <script src="/scripts/compte_gerante.js"></script>
     <title>Gérante: Compte</title>
   </head>
   <body>
@@ -38,9 +34,8 @@
     >
       <!-- La navbar possède une icône qui renvoie vers le haut de la page. -->
       <a id="aNavbar" class="navbar-brand" href="#">
-        <!-- FIXME: Remplacer le lien par l'image ../public/images/admin.png -->
         <img
-          src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
+          src="/images/admin.png"
           width="30"
           height="30"
           class="d-inline-block align-top"
@@ -89,11 +84,12 @@
     </nav>
 
     <!-- TODO: Remplir avec les bonnes valeurs
-    - voir la liste des clients
     - boutons sur chaque client pour modifier / supprimer
-    - bouton pour ajouter client -> redirection vers un formulaire ???
+    - bouton pour ajouter client -> redirection vers un formulaire ??? (ajout d'une barre navigation pour ajouter)
+    - ajouter une barre de recherche pour filtrer les clients
     - boutons pour ajouter (par caracteristiques) / supprimer (par cadeaux_id) un cadeau
     -->
+    <!-- REVIEW: améliorer l'affichage de la liste des clients -->
 
     <!-- Contenu principal -->
     <div class="container">
@@ -101,9 +97,23 @@
       <!-- Afficher la liste des clients -->
       <h2>Liste des clients</h2>
       <ul>
-        <% clients.forEach(client => { %>
-        <li><%= client.nom %></li>
-        <% }); %>
+        <!-- Pour chaque client dans le tableau des clients, on affiche les données. -->
+        <% for (let i = 0; i < data.length; i++) { let client = data[i];%>
+        <li>
+          <!-- L'identifiant du div contenant un client et l'id du client. -->
+          <div id="<%= client.user_id %>">
+            <p>
+              Client: <%= client.nom %> <%= client.prenom %> (identifiant: <%=
+              client.user_id %>), né le <%= client.date_naissance %> <br />
+              Contact: <%= client.email %> - <%= client.telephone %> <br />
+              Points: <%= client.points %> <br />
+            </p>
+            <!-- IDEA: onclick="...(< client.user_id >)" -->
+            <input type="button" class="btn-delete" value="Supprimer" />
+            <input type="button" class="btn-modif" value="Modifier" />
+          </div>
+        </li>
+        <% } %>
       </ul>
       <% } else if (datatype === "cadeaux") { %>
       <!-- Afficher la liste des cadeaux -->
@@ -128,6 +138,5 @@
       <p>Aucune demande sélectionnée.</p>
       <% } %>
     </div>
-    <script src="../scripts/compte_gerante.js"></script>
   </body>
 </html>

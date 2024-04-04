@@ -1,5 +1,5 @@
 /**
- * Représente la gestion d'un cadeau.
+ * Représente la gestion des cadeaux.
  * @constructor
  */
 function Cadeau() {
@@ -7,8 +7,7 @@ function Cadeau() {
   const pg = require("pg");
   // Création d'un pool de connection à la BD
   const pool = new pg.Pool({
-    // Nom d'utilisateur, port, hôte, nom de la BD et mot de passe
-    user: "mohaldn",
+    // port, hôte, nom de la BD et mot de passe (obligatoire)
     port: 5432,
     host: "localhost",
     database: "websitecartefidelite",

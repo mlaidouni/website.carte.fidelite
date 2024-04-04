@@ -1,4 +1,6 @@
+// FIXME: faire fonctionner ce truc
 $(document).ready(function () {
+  // Affiche un message dans la console pour vérifier que le script est bien chargé
   console.log("aloooooooooooooooooooo");
   // Importation du module gestion_cadeaux.js
   const gestion_cadeaux = require("./gestion_cadeaux");
