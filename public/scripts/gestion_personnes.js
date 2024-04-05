@@ -11,7 +11,7 @@ function Personne() {
     port: 5432,
     host: "localhost",
     database: "websitecartefidelite",
-    password: "kmzx",
+    password: "alo",
   });
 
   // Client global, initialisé par connect()

@@ -80,12 +80,13 @@ server.get("/gerante/connexion", (req, res) => {
 });
 
 // POST /gerante/connexion
-server.post("/gerante/connexion", (req, res) => {
+server.post("/gerante/connexion", async (req, res) => {
   const mdp = req.body.mdp;
   // TODO: Vérifier que les données concordent avec la BD
   // FIXME: Test hardcoded
   console.log(mdp);
-  if (mdp === "password") {
+  let mdp_gerante= await gestion_personnes.search('elyogagnshit', mdp)
+  if (mdp_gerante.length>0) {
     res.redirect("/gerante/compte");
   }
   else {
