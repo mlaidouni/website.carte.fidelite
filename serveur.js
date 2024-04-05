@@ -41,7 +41,7 @@ server.get("/", (req, res) => {
 
 // GET /client/connexion: affiche la page de connexion
 server.get("/client/connexion", (req, res) => {
-  res.render(connexion);
+  res.render(connexion, { uti: "client" });
 });
 
 // POST /client/connexion
@@ -70,7 +70,7 @@ server.get("/client/compte", (req, res) => {
 
 // GET /gerante/connexion: affiche la page de connexion
 server.get("/gerante/connexion", (req, res) => {
-  res.render(connexion);
+  res.render(connexion, { uti: "gerante" });
 });
 
 // POST /gerante/connexion
