@@ -41,16 +41,22 @@ server.get("/", (req, res) => {
 
 // GET /client/connexion: affiche la page de connexion
 server.get("/client/connexion", (req, res) => {
-  res.render(connexion, { uti: "client" });
+  res.render(connexion, { uti: "client", incomplet: false });
 });
 
 // POST /client/connexion
 server.post("/client/connexion", async (req, res) => {
   // TODO: Récupérer les données du formulaire
-  // ...
+  // Récupération des données de formulaire
+  const id = req.body.id; // L'identifiant ('id') du formulaire EJS
+  const mdp = req.body.mdp; // Le mot de passe ('mdp') du formulaire EJS
+
+  // Utilisez idClient et motDePasse comme nécessaire, par exemple pour la validation d'authentification
+  console.log(id, mdp);
   // TODO: Vérifier que les données concordent avec la BD
   // NOTE: Pour l'instant, on simule une recherche dans BD avec des données en dur
-  let data = await gestion_personnes.search("janad", "password");
+
+  // let data = await gestion_personnes.search("janad", "password");
 
   // TODO: Redirect vers /client/compte
   res.redirect("/client/compte");
@@ -70,19 +76,24 @@ server.get("/client/compte", (req, res) => {
 
 // GET /gerante/connexion: affiche la page de connexion
 server.get("/gerante/connexion", (req, res) => {
-  res.render(connexion, { uti: "gerante" });
+  res.render(connexion, { uti: "gerante", incomplet: false });
 });
 
 // POST /gerante/connexion
 server.post("/gerante/connexion", (req, res) => {
-  // TODO: Récupérer les données du formulaire
-  // ...
-
+  const mdp = req.body.mdp;
   // TODO: Vérifier que les données concordent avec la BD
-  // ...
+  // Test hardcoded
+  if (mdp === "password") {
+    res.redirect("/gerante/compte");
+  }
+  else {
+    console.log("prout");
+    res.render(connexion, { uti: "gerante", incomplet: true })
+  }
 
   // TODO: Redirect vers /gerante/compte
-  res.redirect("/gerante/compte");
+
 });
 
 // GET /gerante/compte: affiche la page de compte de la gérante

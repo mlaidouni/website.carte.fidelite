@@ -15,39 +15,48 @@
         <!-- Centrer le formulaire de connexion -->
         <div class="col-md-8 offset-md-2">
           <div class="login-form bg-light mt-4 p-5">
-            <form action method class="row g-3">
-              <h4>Connexion</h4>
-              <!-- Si c'est un client qui se connecte, un identifiant est attendu -->
-              <% if (uti === "client") { %>
+            <h4>Connexion</h4>
+            <% if (incomplet) { %>
+            <div>
+              <p>Mots de passe éronné ou invalide </p>
+            </div>
+            <% } %>
+
+            <!-- Si c'est un client qui se connecte, un identifiant est attendu -->
+            <% if (uti === "client") { %>
+            <form action="/client/connexion" method="post" class="row g-3">
               <div class="col-12">
                 <label>Identifiant</label>
-                <input type="id" name="id"
+                <input type="text" name="id"
                   class="form-control"
                   placeholder="Identifiant">
               </div>
               <% } %>
-              <!-- Toute connexion requiert un mot de passe -->
-              <div class="col-12">
-                <label>Mot de passe</label>
-                <input type="mdp" name="mdp"
-                  class="form-control"
-                  placeholder="Mot de passe">
-              </div>
-              <div
-                class="col-12 mt-2 d-flex justify-content-center">
-                <button type="submit"
-                  class="btn btn-primary">Connexion</button>
-              </div>
+              <% if (uti === "gerante") { %>
+              <form action="/gerante/connexion" method="post" class="row g-3">
+                <% } %>
+                <!-- Toute connexion requiert un mot de passe -->
+                <div class="col-12">
+                  <label>Mot de passe</label>
+                  <input type="password" name="mdp"
+                    class="form-control"
+                    placeholder="Mot de passe">
+                </div>
+                <div
+                  class="col-12 mt-2 d-flex justify-content-center">
+                  <button type="submit"
+                    class="btn btn-primary">Connexion</button>
+                </div>
 
-            </form>
-            <hr class="mt-4">
+              </form>
+              <hr class="mt-4">
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Lien vers le JS de Bootstrap -->
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  </body>
-</html>
+      <!-- Lien vers le JS de Bootstrap -->
+      <script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
+  </html>
