@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
       rel="stylesheet">
   </head>
+
   <body>
     <div class="container">
       <div class="row">
@@ -18,45 +20,41 @@
             <h4>Connexion</h4>
             <% if (incomplet) { %>
             <div>
-              <p>Mots de passe éronné ou invalide </p>
+              <p class="text-danger">Mots de passe éronné ou invalide </p>
             </div>
             <% } %>
 
             <!-- Si c'est un client qui se connecte, un identifiant est attendu -->
-            <% if (uti === "client") { %>
+            <% if (uti==="client" ) { %>
             <form action="/client/connexion" method="post" class="row g-3">
               <div class="col-12">
                 <label>Identifiant</label>
-                <input type="text" name="id"
-                  class="form-control"
+                <input type="text" name="id" class="form-control"
                   placeholder="Identifiant">
               </div>
               <% } %>
-              <% if (uti === "gerante") { %>
+              <% if (uti==="gerante" ) { %>
               <form action="/gerante/connexion" method="post" class="row g-3">
                 <% } %>
                 <!-- Toute connexion requiert un mot de passe -->
                 <div class="col-12">
                   <label>Mot de passe</label>
-                  <input type="password" name="mdp"
-                    class="form-control"
+                  <input type="password" name="mdp" class="form-control"
                     placeholder="Mot de passe">
                 </div>
-                <div
-                  class="col-12 mt-2 d-flex justify-content-center">
+                <div class="col-12 mt-2 d-flex justify-content-center">
                   <button type="submit"
                     class="btn btn-primary">Connexion</button>
                 </div>
-
               </form>
               <hr class="mt-4">
             </div>
           </div>
         </div>
       </div>
-
       <!-- Lien vers le JS de Bootstrap -->
       <script
         src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>
+
   </html>

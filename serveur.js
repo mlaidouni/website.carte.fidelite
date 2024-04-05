@@ -83,7 +83,8 @@ server.get("/gerante/connexion", (req, res) => {
 server.post("/gerante/connexion", (req, res) => {
   const mdp = req.body.mdp;
   // TODO: Vérifier que les données concordent avec la BD
-  // Test hardcoded
+  // FIXME: Test hardcoded
+  console.log(mdp);
   if (mdp === "password") {
     res.redirect("/gerante/compte");
   }
@@ -98,6 +99,7 @@ server.post("/gerante/connexion", (req, res) => {
 
 // GET /gerante/compte: affiche la page de compte de la gérante
 server.get("/gerante/compte", async (req, res) => {
+  console.log(" loooooooooo");
   // On récupère le type de données demandées. (Liste des clients par défaut)
   const dataType = req.query.data === undefined ? "clients" : req.query.data;
 
