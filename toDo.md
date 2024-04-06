@@ -45,9 +45,9 @@
 
 ## Page d'accueil
 
-- [ ] Affichage d'une image pour la connection de la gérante
+- [x] Affichage d'une image pour la connection de la gérante
   - [x] cliquer sur l'image $\to$ redirection vers la page de connection de la gérante
-- [ ] Affichage d'une image pour la connection du client
+- [x] Affichage d'une image pour la connection du client
   - [x] cliquer sur l'image $\to$ redirection vers la page de connection du client
 
 ## Côté client
@@ -57,8 +57,8 @@
 
 ### Page de connection
 
-- [ ] formulaire: un **identifiant unique** avec un **mot de passe**
-- [ ] si l'identifiant existe et que le mot de passe est correct, on **redirige vers la page de compte**
+- [x] formulaire: un **identifiant unique** avec un **mot de passe**
+- [x] si l'identifiant existe et que le mot de passe est correct, on **redirige vers la page de compte**
 
 <!-- Alignement -->
 
@@ -97,8 +97,8 @@
 
 ### Page de connection
 
-- [ ] formulaire: un **identifiant unique** avec un **mot de passe**
-- [ ] si l'identifiant existe et que le mot de passe est correct, on **redirige vers la page de compte**
+- [x] formulaire: un **identifiant unique** avec un **mot de passe**
+- [x] si l'identifiant existe et que le mot de passe est correct, on **redirige vers la page de compte**
 
 ### Page de compte
 

@@ -41,19 +41,26 @@ server.get("/", (req, res) => {
 
 // GET /client/connexion: affiche la page de connexion
 server.get("/client/connexion", (req, res) => {
-  res.render(connexion);
+  res.render(connexion, { uti: "client", incomplet: false });
 });
 
 // POST /client/connexion
 server.post("/client/connexion", async (req, res) => {
   // TODO: Récupérer les données du formulaire
-  // ...
+  // Récupération des données de formulaire
+  const id = req.body.id; // L'identifiant ('id') du formulaire EJS
+  const mdp = req.body.mdp; // Le mot de passe ('mdp') du formulaire EJS
+  // Utilisez idClient et motDePasse comme nécessaire, par exemple pour la validation d'authentification
+
   // TODO: Vérifier que les données concordent avec la BD
   // NOTE: Pour l'instant, on simule une recherche dans BD avec des données en dur
-  let data = await gestion_personnes.search("janad", "password");
-
-  // TODO: Redirect vers /client/compte
-  res.redirect("/client/compte");
+  let client_existant = await gestion_personnes.search(id, mdp)
+  if (client_existant.length > 0) {
+    res.redirect("/client/compte");
+  }
+  else {
+    res.render(connexion, { uti: "client", incomplet: true })
+  }
 });
 
 // GET /client/compte: affiche la page de compte du client
@@ -70,23 +77,29 @@ server.get("/client/compte", (req, res) => {
 
 // GET /gerante/connexion: affiche la page de connexion
 server.get("/gerante/connexion", (req, res) => {
-  res.render(connexion);
+  res.render(connexion, { uti: "gerante", incomplet: false });
 });
 
 // POST /gerante/connexion
-server.post("/gerante/connexion", (req, res) => {
-  // TODO: Récupérer les données du formulaire
-  // ...
-
+server.post("/gerante/connexion", async (req, res) => {
+  const mdp = req.body.mdp;
   // TODO: Vérifier que les données concordent avec la BD
-  // ...
+  // FIXME: Test hardcoded
+  let mdp_gerante = await gestion_personnes.search('elyogagnshit', mdp)
+  if (mdp_gerante.length > 0) {
+    res.redirect("/gerante/compte");
+  }
+  else {
+    res.render(connexion, { uti: "gerante", incomplet: true })
+  }
 
   // TODO: Redirect vers /gerante/compte
-  res.redirect("/gerante/compte");
+
 });
 
 // GET /gerante/compte: affiche la page de compte de la gérante
 server.get("/gerante/compte", async (req, res) => {
+  console.log(" loooooooooo");
   // On récupère le type de données demandées. (Liste des clients par défaut)
   const dataType = req.query.data === undefined ? "clients" : req.query.data;
 
