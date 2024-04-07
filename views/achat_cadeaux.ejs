@@ -1,19 +1,89 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- TODO: Changer titre -->
-        <title>...</title>
-    </head>
-    <body>
-        <!-- TODO: Remplir avec les bonnes valeurs
-    - bouton pour switcher entre la page de compte et la page d'achat des cadeaux
-    - affichage de la liste des cadeaux disponibles pour elle
-    - bouton pour ajouter un cadeau dans le panier
-    - pseudo mise à jour des points à chaque ajout dans le panier
-    - chaque cadeau est représenté par une image, un nom, un prix en points
-    - menu déroulant pour spécifier les caractéristiques du cadeau
-    -->
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Import Libraries -->
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- CSS -->
+    <!-- <link href="/styles/compte_gerante.css" rel="stylesheet" /> -->
+    <!-- Script pour gérer les interractions avec l'utilisateur (boutons, ...) -->
+    <script src="/scripts/compte_gerante.js"></script>
+    <title>Achat de cadeaux</title>
+    <style>
+      /* Ici, vous mettez vos styles CSS personnalisés */
+      .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      /* Ajoutez d'autres styles personnalisés ci-dessous */
+      .container-fluid {
+        margin-top: 20px;
+      }
+
+      .card {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <% let client = data_client[0] %>
+    <nav class="navbar navbar-light bg-dark">
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle text-white"
+          data-toggle="dropdown"
+          href="#"
+          role="button"
+          aria-haspopup="true"
+          aria-expanded="true"
+          ><%=client.nom%></a
+        >
+        <div class="dropdown-menu">
+          <p>Prenom : <%=client.prenom%></p>
+          <p>Email : <%=client.email%></p>
+          <p>Téléphone : <%=client.telephone%></p>
+          <p>Date de naissance : <%=client.date_naissance%></p>
+          <div class="dropdown-divider"></div>
+        </div>
+      </li>
+      <a class="navbar-brand mr-auto text-white">
+        Points de fidélité : <%=client.points%>
+      </a>
+      <a class="navbar-brand ml-auto text-white">Panier</a>
+      <span class="badge badge-danger badge-pill text-white">0</span>
+    </nav>
+
+    <div class="container-fluid mt-5">
+      <% for (let i = 0; i < liste_cadeau.length; i++) { let cadeau =
+      liste_cadeau[i]%> <%if (i%4===0){%>
+      <div class="row">
+        <% } %>
+        <div class="col-md-3 mb-4">
+          <div class="card">
+            <img class="card-img-top" src="shrek_swamp.png" alt="Cadeau 1" />
+            <div class="card-body">
+              <h5 class="card-title"><%=cadeau.nom%></h5>
+              <p class="card-text"><%=cadeau.prix%> €</p>
+              <a href="#" class="btn btn-success">Ajouter au panier</a>
+            </div>
+          </div>
+        </div>
+        <%if (i%4===3){%>
+      </div>
+      <% } %> <% } %>
+    </div>
+  </body>
 </html>
