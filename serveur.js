@@ -116,6 +116,11 @@ server.get("/gerante/compte", async (req, res) => {
 });
 
 // TODO: ajouter les autres requêtes en POST
+server.get("/gerante/compte/cadeaux/delete", async (req, res) => {
+  let id = req.query.id;
+  await gestion_cadeaux.delete(id);
+  res.redirect("/gerante/compte?data=cadeaux");
+});
 
 // Lancer le serveur
 const port = 8080;

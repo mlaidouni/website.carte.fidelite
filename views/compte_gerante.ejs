@@ -17,7 +17,7 @@
 
     <!-- CSS -->
     <link href="/styles/compte_gerante.css" rel="stylesheet" />
-    <link href="/styles/cadeau.css" rel="stylesheet" />
+    <link href="/styles/achat_cadeaux.css" rel="stylesheet" />
     <!-- Script pour gérer les interractions avec l'utilisateur (boutons, ...) -->
     <script src="/scripts/compte_gerante.js"></script>
     <title>Gérante: Compte</title>
@@ -148,7 +148,7 @@
             <div class="card-body">
               <h5 class="card-title"><%=cadeau.nom%></h5>
               <p class="card-text"><%=cadeau.prix%> €</p>
-              <a href="#" class="btn btn-danger">Supprimer</a>
+              <button id="<%= cadeau.cadeaux_id %>" class="btn btn-danger" type="button">Supprimer</button>
             </div>
           </div>
         </div>
