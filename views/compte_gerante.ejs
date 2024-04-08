@@ -11,7 +11,7 @@
       rel="stylesheet"
     />
     <!-- Bootstrap JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
@@ -148,7 +148,13 @@
             <div class="card-body">
               <h5 class="card-title"><%=cadeau.nom%></h5>
               <p class="card-text"><%=cadeau.prix%> €</p>
-              <button id="<%= cadeau.cadeaux_id %>" class="btn btn-danger" type="button">Supprimer</button>
+              <button
+                id="<%= cadeau.cadeaux_id %>"
+                class="btn btn-danger"
+                type="button"
+              >
+                Supprimer
+              </button>
             </div>
           </div>
         </div>
