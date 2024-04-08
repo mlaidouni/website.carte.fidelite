@@ -64,8 +64,7 @@
 
 ### Page de compte
 
-- [ ] **bouton** pour switcher entre la **page de compte** et la **page d'achat des cadeaux** (redirection)
-- [ ] affichage du **nombre de points**
+- [x] affichage du **nombre de points**
 - [ ] affichage des cadeaux actuellements dans le panier
   - [ ] **bouton** pour **supprimer** un cadeau du panier
   - [ ] **bouton** pour **vider** le panier
@@ -75,17 +74,16 @@
 
 ### Page d'achat des cadeaux
 
-- [ ] **bouton** pour switcher entre la **page de compte** et la **page d'achat des cadeaux** (redirection)
 - [ ] au début de la connection, vérifier si la date = DATE_NAISSANCE du client
   - [ ] si oui, on **ajoute** des cadeaux spéciaux au client
     - _FIXME: Comment ajouter des cadeaux, alors que l'on affiche toujours tous les cadeaux dont les points est $\le$ points du client et que ces cadeaux spéciaux ne sont pas dans la BD, ou du moins, pas partagés._
-- [ ] affichage de la **liste des cadeaux disponibles** pour elle
-  - [ ] CADEAUX.prix $\le$ CLIENT.points
-- [ ] **bouton** pour **ajouter** un cadeau dans le panier
+- [x] affichage de la **liste des cadeaux disponibles** pour elle
+  - [x] CADEAUX.prix $\le$ CLIENT.points
+- [x] **bouton** pour **ajouter** un cadeau dans le panier
 - [ ] **pseudo mise à jour** des points à chaque ajout dans le panier: c'est à dire qu'on affiche le nombre de points, et le nombre de points hypothétique à côté, à chaque ajout dans le panier.
   - [ ] **affichage** du nombre de points dans le panier
 - [ ] chaque cadeau est représenté par une **image, un nom, un prix en points**
-  - [ ] **menu déroulant** pour spécifier les caractéristiques du cadeau
+  - [x] **menu déroulant** pour spécifier les caractéristiques du cadeau
 
 > [!IMPORTANT]  
 > La page d'achat des cadeaux et la page de compte ne sont peut être pas séparées (cf. section 1.1)
