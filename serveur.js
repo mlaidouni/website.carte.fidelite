@@ -97,7 +97,6 @@ server.post("/gerante/connexion", async (req, res) => {
 
 // GET /gerante/compte: affiche la page de compte de la gérante
 server.get("/gerante/compte", async (req, res) => {
-  console.log(" loooooooooo");
   // On récupère le type de données demandées. (Liste des clients par défaut)
   const dataType = req.query.data === undefined ? "clients" : req.query.data;
 
