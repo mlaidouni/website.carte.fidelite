@@ -8,16 +8,16 @@
     <!-- Bootstrap CSS -->
     <link
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      rel="stylesheet" />
+      rel="stylesheet"
+    />
     <!-- Bootstrap JavaScript -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <!-- CSS -->
     <link href="/styles/compte_gerante.css" rel="stylesheet" />
+    <link href="/styles/cadeau.css" rel="stylesheet" />
     <!-- Script pour gérer les interractions avec l'utilisateur (boutons, ...) -->
     <script src="/scripts/compte_gerante.js"></script>
     <title>Gérante: Compte</title>
@@ -31,7 +31,8 @@
     -->
     <nav
       id="navNavBar"
-      class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+      class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark"
+    >
       <!-- La navbar possède une icône qui renvoie vers le haut de la page. -->
       <a id="aNavbar" class="navbar-brand" href="#">
         <img
@@ -39,7 +40,8 @@
           width="30"
           height="30"
           class="d-inline-block align-top"
-          alt="admin icon" />
+          alt="admin icon"
+        />
         Menu Gérante
       </a>
 
@@ -52,7 +54,8 @@
         data-target="#divNabarContent"
         aria-controls="divNabarContent"
         aria-expanded="false"
-        aria-label="Toggle navigation">
+        aria-label="Toggle navigation"
+      >
         <!-- Button icon -->
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -90,51 +93,71 @@
     <!-- REVIEW: améliorer l'affichage de la liste des clients -->
 
     <!-- Contenu principal -->
-    <div class="container">
-      <% if (datatype === "clients") { %>
-      <!-- Afficher la liste des clients -->
-      <h2>Liste des clients</h2>
-      <ul>
-        <!-- Pour chaque client dans le tableau des clients, on affiche les données. -->
-        <% for (let i = 0; i < data.length; i++) { let client = data[i];%>
-        <li>
-          <!-- L'identifiant du div contenant un client et l'id du client. -->
-          <div id="<%= client.user_id %>">
-            <p>
-              Client: <%= client.nom %> <%= client.prenom %> (identifiant: <%=
-              client.user_id %>), né le <%= client.date_naissance %> <br />
-              Contact: <%= client.email %> - <%= client.telephone %> <br />
-              Points: <%= client.points %> <br />
-            </p>
-            <!-- IDEA: onclick="...(< client.user_id >)" -->
-            <input type="button" class="btn-delete" value="Supprimer" />
-            <input type="button" class="btn-modif" value="Modifier" />
-          </div>
-        </li>
+    <% if (datatype === "clients") { %>
+    <!-- Afficher la liste des clients -->
+    <h2>Liste des clients</h2>
+    <div class="container-fluid mt-5">
+      <% for (let i = 0; i < data.length; i++) { let client = data[i]; if (i%4
+      === 0) { %>
+      <div class="row">
         <% } %>
-      </ul>
-      <% } else if (datatype === "cadeaux") { %>
-      <!-- Afficher la liste des cadeaux -->
-      <h2>Liste des cadeaux</h2>
-      <ul>
-        <!-- Pour chaque cadeau dans le tableau des cadeaux, on affiche les données. -->
-        <% for (let i = 0; i < data.length; i++) { let cadeau = data[i];%>
-        <li>
-          <!-- L'identifiant du div contenant un cadeau et l'id du cadeau. -->
-          <div id="<%= cadeau.cadeaux_id %>">
-            <p>
-              <%= cadeau.nom %>・<%= cadeau.prix%>€・<%= cadeau.taille %>・<%=
-              cadeau.couleur %>・<%= cadeau.description %>・<%= cadeau.image %>
-            </p>
-            <!-- IDEA: onclick="deleteCadeau(<%= cadeau.cadeaux_id %>)" -->
-            <input type="button" class="btn-delete" value="Supprimer" />
+        <div class="col-sm mb-4">
+          <div class="card">
+            <img
+              class="card-img-top"
+              src="/images/shrek_swamp.png"
+              alt="Cadeau 1"
+            />
+            <div class="card-body">
+              <h5 class="card-title"><%=client.nom%> <%=client.prenom%></h5>
+              <h6 class="card-subtitle mb-2 text-muted">
+                <%= client.user_id %>
+              </h6>
+              <details>
+                <summary>Plus d'informations</summary>
+                <p class="card-text">
+                  Contact: <%= client.email %> - <%= client.telephone %> <br />
+                  <%= client.date_naissance %> <br />
+                  Points: <%= client.points %> <br />
+                </p>
+              </details>
+              <a href="#" class="btn btn-primary">Modifier</a>
+              <a href="#" class="btn btn-danger">Supprimer</a>
+            </div>
           </div>
-        </li>
-        <% } %>
-      </ul>
-      <% } else { %>
-      <p>Aucune demande sélectionnée.</p>
-      <% } %>
+        </div>
+        <%if (i%4===3){%>
+      </div>
+      <% } %> <% } %>
     </div>
+    <% } else if (datatype === "cadeaux") { %>
+    <!-- Afficher la liste des cadeaux -->
+    <h2>Liste des cadeaux</h2>
+    <div class="container-fluid mt-5">
+      <% for (let i = 0; i < data.length; i++) { let cadeau = data[i]%> <%if
+      (i%4 === 0){%>
+      <div class="row">
+        <% } %>
+        <div class="col-md-3 mb-4">
+          <div id="<%= cadeau.cadeaux_id %>" class="card">
+            <img
+              class="card-img-top"
+              src="/<%= cadeau.image %>"
+              alt="Cadeau 1"
+            />
+            <div class="card-body">
+              <h5 class="card-title"><%=cadeau.nom%></h5>
+              <p class="card-text"><%=cadeau.prix%> €</p>
+              <a href="#" class="btn btn-danger">Supprimer</a>
+            </div>
+          </div>
+        </div>
+        <%if (i%4===3){%>
+      </div>
+      <% } } %>
+    </div>
+    <% } else { %>
+    <p>Aucune demande sélectionnée.</p>
+    <% } %>
   </body>
 </html>
