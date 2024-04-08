@@ -9,6 +9,7 @@
 
 -- Suppression des tables si elles existent
 DROP TABLE IF EXISTS CADEAUX;
+
 DROP TABLE IF EXISTS PERSONNES;
 
 -- Création de la table cadeaux
@@ -43,11 +44,11 @@ INSERT INTO CADEAUX (
     DESCRIPTION,
     IMAGE
 ) VALUES (
-    'T-shirt',
-    100,
-    'M',
-    'Blanc',
-    'T-shirt blanc en coton',
+    'Sac à dos',
+    150,
+    NULL,
+    'Bleu',
+    'Sac à dos en nylon imperméable',
     'images/kungfupanda.png'
 ),
 (
@@ -55,16 +56,72 @@ INSERT INTO CADEAUX (
     50,
     NULL,
     NULL,
-    'Mug en céramique',
+    'Mug en céramique avec motif personnalisé',
     'images/shrek_swamp.png'
 ),
 (
-    'Sac à dos',
-    200,
+    'Clé USB',
+    30,
     NULL,
-    NULL,
-    'Sac à dos en toile',
+    'Argent',
+    'Clé USB 32 Go avec connecteur rétractable',
     'images/kenganashura.png'
+),
+(
+    'Parapluie',
+    70,
+    NULL,
+    'Rouge',
+    'Parapluie pliable avec motif floral',
+    'images/kungfupanda.png'
+),
+(
+    'Gourde',
+    40,
+    NULL,
+    'Vert',
+    'Gourde en acier inoxydable 500 ml',
+    'images/kungfupanda.png'
+),
+(
+    'Stylo',
+    20,
+    NULL,
+    NULL,
+    'Stylo à bille rétractable',
+    'images/shrek_swamp.png'
+),
+(
+    'Carnet de notes',
+    60,
+    NULL,
+    'Rose',
+    'Carnet de notes ligné avec couverture en cuir synthétique',
+    'images/kenganashura.png'
+),
+(
+    'Porte-clés',
+    25,
+    NULL,
+    'Jaune',
+    'Porte-clés en métal avec pendentif en forme de cœur',
+    'images/kungfupanda.png'
+),
+(
+    'Tapis de souris',
+    35,
+    NULL,
+    'Gris',
+    'Tapis de souris avec surface lisse',
+    'images/kungfupanda.png'
+),
+(
+    'Lampe de poche',
+    45,
+    NULL,
+    'Noir',
+    'Lampe de poche LED compacte avec dragonne',
+    'images/shrek_swamp.png'
 );
 
 -- Insertion des données dans la table personnes
