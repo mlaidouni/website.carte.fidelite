@@ -48,7 +48,7 @@ INSERT INTO CADEAUX (
     'M',
     'Blanc',
     'T-shirt blanc en coton',
-    'https://www.example.com/tshirt.jpg'
+    'images/kungfupanda.png'
 ),
 (
     'Mug',
@@ -56,7 +56,7 @@ INSERT INTO CADEAUX (
     NULL,
     NULL,
     'Mug en céramique',
-    'https://www.example.com/mug.jpg'
+    'images/shrek_swamp.png'
 ),
 (
     'Sac à dos',
@@ -64,7 +64,7 @@ INSERT INTO CADEAUX (
     NULL,
     NULL,
     'Sac à dos en toile',
-    'https://www.example.com/sac.jpg'
+    'images/kenganashura.png'
 );
 
 -- Insertion des données dans la table personnes

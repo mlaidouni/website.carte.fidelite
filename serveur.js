@@ -22,7 +22,7 @@ server.use(express.json());
 
 /* ********** Fichiers de vue ********** */
 const connexion = "connexion.ejs";
-const compte_client = "compte_client.ejs";
+const achat_cadeaux = "achat_cadeaux.ejs";
 const compte_gerante = "compte_gerante.ejs";
 
 /* ******************** Gestion des routes ******************** */
@@ -54,18 +54,18 @@ server.post("/client/connexion", async (req, res) => {
 
   // TODO: Vérifier que les données concordent avec la BD
   // NOTE: Pour l'instant, on simule une recherche dans BD avec des données en dur
-  let client_existant = await gestion_personnes.search(id, mdp)
-  if (client_existant.length > 0) {
-    res.redirect("/client/compte");
-  }
-  else {
-    res.render(connexion, { uti: "client", incomplet: true })
-  }
-});
+  let client_existant = await gestion_personnes.search(id, mdp);
+  let cadeaux = await gestion_cadeaux.getAll();
 
-// GET /client/compte: affiche la page de compte du client
-server.get("/client/compte", (req, res) => {
-  res.render(compte_client);
+  let reponse = {
+    data_client: client_existant,
+    liste_cadeau: cadeaux,
+  };
+  if (client_existant.length > 0) {
+    res.render(achat_cadeaux, reponse);
+  } else {
+    res.render(connexion, { uti: "client", incomplet: true });
+  }
 });
 
 // NOTE: Requêtes en POST sur /client/compte ??
@@ -85,21 +85,18 @@ server.post("/gerante/connexion", async (req, res) => {
   const mdp = req.body.mdp;
   // TODO: Vérifier que les données concordent avec la BD
   // FIXME: Test hardcoded
-  let mdp_gerante = await gestion_personnes.search('elyogagnshit', mdp)
+  let mdp_gerante = await gestion_personnes.search("elyogagnshit", mdp);
   if (mdp_gerante.length > 0) {
     res.redirect("/gerante/compte");
-  }
-  else {
-    res.render(connexion, { uti: "gerante", incomplet: true })
+  } else {
+    res.render(connexion, { uti: "gerante", incomplet: true });
   }
 
   // TODO: Redirect vers /gerante/compte
-
 });
 
 // GET /gerante/compte: affiche la page de compte de la gérante
 server.get("/gerante/compte", async (req, res) => {
-  console.log(" loooooooooo");
   // On récupère le type de données demandées. (Liste des clients par défaut)
   const dataType = req.query.data === undefined ? "clients" : req.query.data;
 
