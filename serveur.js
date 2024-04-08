@@ -33,76 +33,66 @@ server.use((req, res, next) => {
   next();
 });
 
-// GET / : affiche la page d'accueil
+// Affiche la page d'accueil
 server.get("/", (req, res) => {
   // Afficher le fichier accueil.html
   res.sendFile(path.join(__dirname, "public/pages/accueil.html"));
 });
 
-// GET /client/connexion: affiche la page de connexion
-server.get("/client/connexion", (req, res) => {
-  res.render(connexion, { uti: "client", incomplet: false });
+// Affiche la page de connexion (client & gérante)
+server.get("/:type/connexion", (req, res) => {
+  const type = req.params.type;
+  res.render(connexion, { uti: type, incomplet: false });
 });
 
-// POST /client/connexion
-server.post("/client/connexion", async (req, res) => {
-  // TODO: Récupérer les données du formulaire
-  // Récupération des données de formulaire
-  const id = req.body.id; // L'identifiant ('id') du formulaire EJS
-  const mdp = req.body.mdp; // Le mot de passe ('mdp') du formulaire EJS
-  // Utilisez idClient et motDePasse comme nécessaire, par exemple pour la validation d'authentification
+/* ******************** Routes pour le client ******************** */
 
-  // TODO: Vérifier que les données concordent avec la BD
-  // NOTE: Pour l'instant, on simule une recherche dans BD avec des données en dur
+// Gestion de la connexion du client
+server.post("/client/connexion", async (req, res) => {
+  // Récupération des données de formulaire
+  let id = req.body.id;
+  let mdp = req.body.mdp;
+
+  // Vérifier que les données concordent avec la BD
   let client_existant = await gestion_personnes.search(id, mdp);
+  // On récupère la liste de l'ensemble des cadeaux
   let cadeaux = await gestion_cadeaux.getAll();
 
   let reponse = {
     data_client: client_existant,
     liste_cadeau: cadeaux,
   };
-  if (client_existant.length > 0) {
-    res.render(achat_cadeaux, reponse);
-  } else {
-    res.render(connexion, { uti: "client", incomplet: true });
-  }
+
+  // On teste si le client existe
+  if (client_existant.length > 0) res.render(achat_cadeaux, reponse);
+  else res.render(connexion, { uti: "client", incomplet: true });
 });
 
-// NOTE: Requêtes en POST sur /client/compte ??
+/* ******************** Routes pour la gerante ******************** */
 
-// GET /client/achat
-// TODO: render achat_cadeaux
-// NOTE: Est-ce nécessaire ? Ou est-ce que les pages compte et achat sont identiques ?
-// (Penser à l'utilisation des paramètres dans les routes, comme pour /gerante/compte)
-
-// GET /gerante/connexion: affiche la page de connexion
-server.get("/gerante/connexion", (req, res) => {
-  res.render(connexion, { uti: "gerante", incomplet: false });
-});
-
-// POST /gerante/connexion
+// Gestion de la connexion de la gerante
 server.post("/gerante/connexion", async (req, res) => {
-  const mdp = req.body.mdp;
-  // TODO: Vérifier que les données concordent avec la BD
-  // FIXME: Test hardcoded
-  let mdp_gerante = await gestion_personnes.search("elyogagnshit", mdp);
-  if (mdp_gerante.length > 0) {
-    res.redirect("/gerante/compte");
-  } else {
-    res.render(connexion, { uti: "gerante", incomplet: true });
-  }
+  // Récupération des données de formulaire
+  let mdp = req.body.mdp;
 
-  // TODO: Redirect vers /gerante/compte
+  // Vérifier que les données concordent avec la BD
+  // On cherche une personne avec l'id admin et le mdp fourni
+  // FIXME: Données en dur dans le code
+  let admin = await gestion_personnes.search("elyogagnshit", mdp);
+
+  // On teste si le mdp est bon
+  if (admin.length > 0) res.redirect("/gerante/compte");
+  else res.render(connexion, { uti: "gerante", incomplet: true });
 });
 
-// GET /gerante/compte: affiche la page de compte de la gérante
+// Affiche la page de compte de la gérante
 server.get("/gerante/compte", async (req, res) => {
   // On récupère le type de données demandées. (Liste des clients par défaut)
   const dataType = req.query.data === undefined ? "clients" : req.query.data;
 
   // On récupère la liste des cadeaux avec l'ensemble de leurs données (await pour attendre la fin de la requête)
   let cadeaux = await gestion_cadeaux.getAll();
-  // On récupère la liste des clients avec l'ensemble de leurs données (await pour attendre la fin de la requête)
+  // On récupère la liste des clients
   let clients = await gestion_personnes.getAll();
 
   // On renvoie le type de la donnée demandée et les données correspondantes
@@ -115,12 +105,21 @@ server.get("/gerante/compte", async (req, res) => {
   res.render(compte_gerante, reponse);
 });
 
-// TODO: ajouter les autres requêtes en POST
-server.get("/gerante/compte/cadeaux/delete", async (req, res) => {
+// Suppression d'un cadeau
+server.delete("/gerante/compte/cadeaux", async (req, res) => {
   let id = req.query.id;
-  await gestion_cadeaux.delete(id);
-  res.redirect("/gerante/compte?data=cadeaux");
+  try {
+    await gestion_cadeaux.delete(id);
+    res.json({ success: true, message: "Cadeau supprimé avec succès!" });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Une erreur est survenue lors de la suppression du cadeau.",
+    });
+  }
 });
+
+/* ******************** Lancement du serveur ******************** */
 
 // Lancer le serveur
 const port = 8080;
