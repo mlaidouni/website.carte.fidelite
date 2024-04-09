@@ -103,9 +103,10 @@
 - [x] voir la liste des clients
 - [ ] ajouter un client
 - [x] supprimer un client
-- [ ] modifier un client (points, ...)
+- [] modifier un client (points, ...)
 - [ ] ajouter un cadeau
 - [x] supprimer cadeau
+- [x] modifier un cadeau
 - [x] voir la liste des cadeaux
 
 ---
