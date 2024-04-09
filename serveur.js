@@ -33,6 +33,11 @@ server.use((req, res, next) => {
   next();
 });
 
+server.use(function (err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).send("Une erreur est survenue sur le serveur.");
+});
+
 // Affiche la page d'accueil
 server.get("/", (req, res) => {
   // Afficher le fichier accueil.html
@@ -131,6 +136,14 @@ server.delete("/gerante/compte/clients", async (req, res) => {
       message: "Une erreur est survenue lors de la suppression du client.",
     });
   }
+});
+
+// Update d'un client
+server.put("/gerante/compte/clients", async (req, res) => {
+  let id = req.query.id;
+  let newValues = req.body;
+  await gestion_personnes.update(id, "nom", newValues.nom);
+  res.json({ success: true, message: "Client mis à jour avec succès!" });
 });
 
 /* ******************** Lancement du serveur ******************** */

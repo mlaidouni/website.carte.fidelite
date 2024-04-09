@@ -27,6 +27,66 @@ function Personne() {
   };
 
   /**
+   * Insère un client dans la BD
+   * @param {string} userid - L'id du client.
+   * @param {string} password Le mdp du client.
+   * @param {string} nom Le nom du client.
+   * @param {string} prenom Le prenom du client.
+   * @param {string} email L'email du client.
+   * @param {string} num Le numéro de téléphone du client.
+   * @param {string} date La date de naissance du client.
+   * @param {int} points Le nombre de points du client.
+   */
+  this.insert = async function (
+    userid,
+    password,
+    nom,
+    prenom,
+    email,
+    num,
+    date,
+    points
+  ) {
+    // Connexion à la BD
+    client = await pool.connect();
+
+    // Query
+    let query = {
+      // Requête à exécuter
+      text: "INSERT INTO personnes (USER_ID, PASSWORD, NOM, PRENOM, EMAIL, TELEPHONE, DATE_NAISSANCE,  POINTS) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+      // Les valeurs à remplacer dans la requête
+      values: [userid, password, nom, prenom, email, num, date, points],
+    };
+
+    // On attent l'exécution de la requête
+    await client.query(query);
+
+    // On libère le client.
+    client.release();
+  };
+
+  /**
+   *
+   * @param {int} id L'id du client. On part du principe que ça ne peut être l'id du
+   * @async
+   */
+  this.delete = async function (id) {
+    // Connexion à la BD
+    client = await pool.connect();
+
+    // Requête SQL
+    let query = {
+      // La requête à exécuter
+      text: "DELETE FROM personnes WHERE user_id = $1",
+      // Les valeurs à remplacer dans la requête
+      values: [id],
+    };
+
+    // On attent l'exécution de la requête
+    await client.query(query);
+  };
+
+  /**
    * Renvoie la liste des personnes.
    * @async
    */
@@ -98,27 +158,30 @@ function Personne() {
   };
 
   /**
-   *
-   * @param {int} id L'id du client. On part du principe que ça ne peut être l'id du
+   * Modifie l'un des attributs d'un client dans la BD
+   * @param {string} userid - L'id du client.
+   * @param {string} attr - L'attribut à modifier.
+   * @param {string} value - La nouvelle valeur de l'attribut.
    * @async
    */
-  this.delete = async function (id) {
+  this.update = async function (userid, attr, value) {
     // Connexion à la BD
     client = await pool.connect();
 
-    // Requête SQL
+    // Query
     let query = {
-      // La requête à exécuter
-      text: "DELETE FROM personnes WHERE user_id = $1",
+      // Requête à exécuter
+      text: "UPDATE personnes SET " + attr + " = $1 WHERE user_id = $2",
       // Les valeurs à remplacer dans la requête
-      values: [id],
+      values: [value, userid],
     };
 
     // On attent l'exécution de la requête
     await client.query(query);
-  };
 
-  // TODO: modifier client
+    // On libère le client.
+    client.release();
+  };
 }
 
 // Export du module

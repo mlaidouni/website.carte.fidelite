@@ -100,10 +100,12 @@
 
 ### Page de compte
 
-- [ ] voir la liste des clients
-- [ ] ajouter / supprimer un client
+- [x] voir la liste des clients
+- [ ] ajouter un client
+- [x] supprimer un client
 - [ ] modifier un client (points, ...)
-- [ ] ajouter / supprimer cadeau
+- [ ] ajouter un cadeau
+- [x] supprimer cadeau
 - [x] voir la liste des cadeaux
 
 ---
@@ -114,19 +116,19 @@
 ---
 
 ```javascript
-  for (let i = 0; i < cadeaux.length; i++) {
-    console.log(
-      cadeaux[i].nom +
-        "・" +
-        cadeaux[i].prix +
-        "€・" +
-        cadeaux[i].taille +
-        "・" +
-        cadeaux[i].couleur +
-        "・" +
-        cadeaux[i].description +
-        "・" +
-        cadeaux[i].image
-    );
-  }
+for (let i = 0; i < cadeaux.length; i++) {
+  console.log(
+    cadeaux[i].nom +
+      "・" +
+      cadeaux[i].prix +
+      "€・" +
+      cadeaux[i].taille +
+      "・" +
+      cadeaux[i].couleur +
+      "・" +
+      cadeaux[i].description +
+      "・" +
+      cadeaux[i].image
+  );
+}
 ```

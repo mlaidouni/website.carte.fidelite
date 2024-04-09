@@ -109,7 +109,7 @@
               alt="images/shrek_swamp.png"
             />
             <div class="card-body">
-              <h5 class="card-title"><%=client.nom%> <%=client.prenom%></h5>
+              <h5 class="card-title"><span class="client-nom"><%=client.nom%></span> <span class="client-prenom"><%=client.prenom %></span></h5>
               <h6 class="card-subtitle mb-2 text-muted">
                 <%= client.user_id %>
               </h6>
@@ -123,7 +123,7 @@
               </details>
               <button
                 id="<%= client.user_id %>"
-                class="btn btn-dark client-modify"
+                class="btn btn-dark client-update"
                 type="button"
               >
                 Modifier
@@ -155,14 +155,14 @@
             <img
               class="card-img-top"
               src="/<%= cadeau.image %>"
-              alt="Cadeau 1"
+              alt="<%= cadeau.image %>"
             />
             <div class="card-body">
               <h5 class="card-title"><%=cadeau.nom%></h5>
               <p class="card-text"><%=cadeau.prix%> €</p>
               <button
                 id="<%= cadeau.cadeaux_id %>"
-                class="btn btn-dark cadeau-modify"
+                class="btn btn-dark cadeau-update"
                 type="button"
               >
                 Modifier
