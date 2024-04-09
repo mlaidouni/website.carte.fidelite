@@ -109,32 +109,37 @@
               alt="images/shrek_swamp.png"
             />
             <div class="card-body">
-              <h5 class="card-title"><span class="client-nom"><%=client.nom%></span> <span class="client-prenom"><%=client.prenom %></span></h5>
+              <h5 class="card-title">
+                <span class="nom"><%=client.nom%></span>
+                <span class="prenom"><%=client.prenom %></span>
+              </h5>
               <h6 class="card-subtitle mb-2 text-muted">
-                <%= client.user_id %>
+                <span class="user_id"><%= client.user_id %></span>
               </h6>
               <details>
                 <summary>Plus d'informations</summary>
                 <p class="card-text">
-                  Contact: <%= client.email %> - <%= client.telephone %> <br />
-                  <%= client.date_naissance %> <br />
-                  Points: <%= client.points %> <br />
+                  Contact:
+                  <span class="email"><%= client.email %></span> -
+                  <span class="telephone"><%= client.telephone %></span>
+                  <hr>
+                  Date de naissance:
+                  <span class="date_naissance"><%= client.date_naissance %></span>
+                  <hr>
+                  Points:
+                  <span class="points"><%= client.points %></span>
                 </p>
               </details>
               <button
                 id="<%= client.user_id %>"
                 class="btn btn-dark client-update"
                 type="button"
-              >
-                Modifier
-              </button>
+              >Modifier</button>
               <button
                 id="<%= client.user_id %>"
                 class="btn btn-danger client-delete"
                 type="button"
-              >
-                Supprimer
-              </button>
+              >Supprimer</button>
             </div>
           </div>
         </div>
@@ -158,22 +163,30 @@
               alt="<%= cadeau.image %>"
             />
             <div class="card-body">
-              <h5 class="card-title"><%=cadeau.nom%></h5>
-              <p class="card-text"><%=cadeau.prix%> €</p>
+              <h5 class="card-title"><span class="nom"><%= cadeau.nom %></span> - <span class="prix"><%= cadeau.prix %></span> € </h5>
+              <details>
+                <summary>Plus d'informations</summary>
+              <p class="card-text">
+                Taille: 
+                <span class="taille"><%= cadeau.taille %></span>
+                <hr>
+                Couleur:
+                <span class="couleur"><%= cadeau.couleur %></span>
+                <hr>
+                Description:
+                <span class="description"><%= cadeau.description %></span>
+              </p>
+            </details>
               <button
                 id="<%= cadeau.cadeaux_id %>"
                 class="btn btn-dark cadeau-update"
                 type="button"
-              >
-                Modifier
-              </button>
+              >Modifier</button>
               <button
                 id="<%= cadeau.cadeaux_id %>"
                 class="btn btn-danger cadeau-delete"
                 type="button"
-              >
-                Supprimer
-              </button>
+              >Supprimer</button>
             </div>
           </div>
         </div>

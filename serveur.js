@@ -138,11 +138,29 @@ server.delete("/gerante/compte/clients", async (req, res) => {
   }
 });
 
+// Update d'un cadeau
+server.put("/gerante/compte/cadeaux", async (req, res) => {
+  let id = req.query.id;
+  let newValues = req.body;
+  // On met à jour les valeurs du cadeau (mêmes celles qui n'ont pas changées)
+  for (let attr in newValues) {
+    // FIXME: On skip la date de naissance pcq le format est chiant. À corriger
+    if (attr === "date_naissance") continue;
+    await gestion_cadeaux.update(id, attr, newValues[attr]);
+  }
+  res.json({ success: true, message: "Cadeau mis à jour avec succès!" });
+});
+
 // Update d'un client
 server.put("/gerante/compte/clients", async (req, res) => {
   let id = req.query.id;
   let newValues = req.body;
-  await gestion_personnes.update(id, "nom", newValues.nom);
+  // On met à jour les valeurs du client (mêmes celles qui n'ont pas changées)
+  for (let attr in newValues) {
+    // FIXME: On skip la date de naissance pcq le format est chiant. À corriger
+    if (attr === "date_naissance") continue;
+    await gestion_personnes.update(id, attr, newValues[attr]);
+  }
   res.json({ success: true, message: "Client mis à jour avec succès!" });
 });
 
