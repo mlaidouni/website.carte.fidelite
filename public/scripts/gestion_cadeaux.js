@@ -77,6 +77,7 @@ function Cadeau() {
       // Les valeurs à remplacer dans la requête
       values: [id],
     };
+
     // On attent l'exécution de la requête
     await client.query(query);
   };

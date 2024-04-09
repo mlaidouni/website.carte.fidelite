@@ -93,7 +93,7 @@ server.get("/gerante/compte", async (req, res) => {
   // On récupère la liste des cadeaux avec l'ensemble de leurs données (await pour attendre la fin de la requête)
   let cadeaux = await gestion_cadeaux.getAll();
   // On récupère la liste des clients
-  let clients = await gestion_personnes.getAll();
+  let clients = await gestion_personnes.getClients();
 
   // On renvoie le type de la donnée demandée et les données correspondantes
   let reponse = {
@@ -115,6 +115,20 @@ server.delete("/gerante/compte/cadeaux", async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Une erreur est survenue lors de la suppression du cadeau.",
+    });
+  }
+});
+
+// Suppression d'un client
+server.delete("/gerante/compte/clients", async (req, res) => {
+  let id = req.query.id;
+  try {
+    await gestion_personnes.delete(id);
+    res.json({ success: true, message: "Client supprimé avec succès!" });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Une erreur est survenue lors de la suppression du client.",
     });
   }
 });

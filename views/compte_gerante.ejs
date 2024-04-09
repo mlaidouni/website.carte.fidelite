@@ -102,11 +102,11 @@
       <div class="row">
         <% } %>
         <div class="col-sm mb-4">
-          <div id="<%= client.user_id %>" class="card">
+          <div id="<%= client.user_id %>" class="card client">
             <img
               class="card-img-top"
               src="/images/shrek_swamp.png"
-              alt="Cadeau 1"
+              alt="images/shrek_swamp.png"
             />
             <div class="card-body">
               <h5 class="card-title"><%=client.nom%> <%=client.prenom%></h5>
@@ -121,8 +121,20 @@
                   Points: <%= client.points %> <br />
                 </p>
               </details>
-              <a href="#" class="btn btn-primary">Modifier</a>
-              <a href="#" class="btn btn-danger">Supprimer</a>
+              <button
+                id="<%= client.user_id %>"
+                class="btn btn-dark client-modify"
+                type="button"
+              >
+                Modifier
+              </button>
+              <button
+                id="<%= client.user_id %>"
+                class="btn btn-danger client-delete"
+                type="button"
+              >
+                Supprimer
+              </button>
             </div>
           </div>
         </div>
@@ -150,7 +162,14 @@
               <p class="card-text"><%=cadeau.prix%> €</p>
               <button
                 id="<%= cadeau.cadeaux_id %>"
-                class="btn btn-danger"
+                class="btn btn-dark cadeau-modify"
+                type="button"
+              >
+                Modifier
+              </button>
+              <button
+                id="<%= cadeau.cadeaux_id %>"
+                class="btn btn-danger cadeau-delete"
                 type="button"
               >
                 Supprimer
