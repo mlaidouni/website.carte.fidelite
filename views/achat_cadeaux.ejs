@@ -50,11 +50,11 @@
     </nav>
 
     <div class="container-fluid mt-5">
-      <% for (let i = 0; i < liste_cadeau.length; i++) { let cadeau =
-      liste_cadeau[i]%> <%if (cadeau.prix <= client.points) {%> <%if
-      (i%4===0){%>
+      <% let affiche = 0; %> <% for (let i = 0; i < liste_cadeau.length; i++) {
+      let cadeau = liste_cadeau[i]%> <%if (cadeau.prix <= client.points) {%>
+      <%if (affiche%4===0){%>
       <div class="row">
-        <% } %>
+        <% } %> 
         <div class="col-md-3 mb-4">
           <div id="<%= cadeau.cadeaux_id %>" class="card">
             <img
@@ -80,9 +80,9 @@
             </div>
           </div>
         </div>
-        <%if (i%4===3){%>
+        <%if (affiche%4===3){%>
       </div>
-      <% } %> <%}%> <% } %>
+      <% } %> <% affiche++; %><% } %>  <%}%>
     </div>
   </body>
 </html>
