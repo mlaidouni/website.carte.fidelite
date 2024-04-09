@@ -102,6 +102,32 @@ function Cadeau() {
 
     return result;
   };
+
+  /**
+   * Modifie l'un des attributs d'un cadeau dans la BD
+   * @param {string} cadeauxid - L'id du cadeau.
+   * @param {string} attr - L'attribut à modifier.
+   * @param {string} value - La nouvelle valeur de l'attribut.
+   * @async
+   */
+  this.update = async function (cadeauxid, attr, value) {
+    // Connexion à la BD
+    client = await pool.connect();
+
+    // Query
+    let query = {
+      // Requête à exécuter
+      text: "UPDATE cadeaux SET " + attr + " = $1 WHERE cadeaux_id = $2",
+      // Les valeurs à remplacer dans la requête
+      values: [value, cadeauxid],
+    };
+
+    // On attent l'exécution de la requête
+    await client.query(query);
+
+    // On libère le client.
+    client.release();
+  };
 }
 
 // Export du module
