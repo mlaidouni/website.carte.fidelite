@@ -47,6 +47,26 @@ function Personne() {
     return result;
   };
 
+  this.getClients = async function () {
+    // Connexion à la BD
+    client = await pool.connect();
+
+    // On attent l'exécution de la requête
+    // FIXME:  Données en dur dans le code
+    let data = await client.query(
+      "SELECT * FROM personnes WHERE user_id <> 'elyogagnshit'"
+    );
+
+    // On libère le client.
+    client.release();
+
+    // On stocke les données dans un tableau
+    let result = [];
+    for (row of data.rows) result.push(row);
+
+    return result;
+  };
+
   /**
    *
    * @param {string} userid
@@ -77,7 +97,26 @@ function Personne() {
     return result;
   };
 
-  // TODO: supprimer client
+  /**
+   *
+   * @param {int} id L'id du client. On part du principe que ça ne peut être l'id du
+   * @async
+   */
+  this.delete = async function (id) {
+    // Connexion à la BD
+    client = await pool.connect();
+
+    // Requête SQL
+    let query = {
+      // La requête à exécuter
+      text: "DELETE FROM personnes WHERE user_id = $1",
+      // Les valeurs à remplacer dans la requête
+      values: [id],
+    };
+
+    // On attent l'exécution de la requête
+    await client.query(query);
+  };
 
   // TODO: modifier client
 }
