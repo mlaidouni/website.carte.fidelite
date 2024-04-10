@@ -14,8 +14,8 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
   <!-- CSS -->
-  <!-- <link href="/styles/compte_gerante.css" rel="stylesheet" /> -->
-  <!-- <link href="/styles/achat_cadeaux.css" rel="stylesheet" /> -->
+  <link href="/styles/theme.css" rel="stylesheet" />
+  <link href="/styles/compte_gerante.css" rel="stylesheet" />
   <!-- Script pour gérer les interractions avec l'utilisateur (boutons, ...) -->
   <script src="/scripts/compte_gerante.js"></script>
   <title>Gérante: Compte</title>
@@ -36,17 +36,23 @@
     </a>
 
     <!-- Bouton en cas de collapse de la navbar -->
-    <button id="buttonNavbarToggler" class="navbar-toggler" type="button" data-toggle="collapse"
-      data-target="#divNabarContent" aria-controls="divNabarContent" aria-expanded="false"
-      aria-label="Toggle navigation">
-      <!-- Button icon -->
-      <span class="navbar-toggler-icon"></span>
+    <button
+    id="buttonNavbarToggler"
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navBarContent"
+    aria-controls="navBarContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation">
+    <!-- Button icon -->
+    <span class="navbar-toggler-icon"></span>
     </button>
 
     <!-- Contenu de la Navbar 
       @collapse: Indique que le contenu de la navbar peut être collapsé
-      -->
-    <div id="divNabarContent" class="collapse navbar-collapse">
+    -->
+    <div id="navBarContent" class="collapse navbar-collapse">
       <!-- List non ordonnée contenant les éléments à afficher (soit les clients, soit les cadeaux)
         @navbar-nav: Applique le style navbar à la liste
         @mr-auto: margin right auto, "pousse" la liste vers la gauche
@@ -54,14 +60,10 @@
        -->
       <ul id="ulNavbarContent" class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="/gerante/compte?data=clients">
-            Gestion des clients
-          </a>
+          <a class="nav-link" href="/gerante/compte?data=clients">Gestion des clients</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/gerante/compte?data=cadeaux">
-            Gestion des cadeaux
-          </a>
+          <a class="nav-link" href="/gerante/compte?data=cadeaux">Gestion des cadeaux</a>
         </li>
       </ul>
     </div>
@@ -85,30 +87,16 @@
             <div id="<%= client.user_id %>" class="card">
               <img src="/images/backg.jpg" class="card-img-top" alt="/images/backg.jpg" />
               <div class="card-body">
-                <h5 class="card-title"><span class="nom">
-                    <%= client.nom %>
-                  </span> <span class="prenom">
-                    <%= client.prenom %>
-                  </span></h5>
-                <h6 class="card-subtitle mb-2 text-muted"><span class="user_id">
-                    <%= client.user_id %>
-                  </span></h6>
+                <h5 class="card-title"><span class="nom"><%= client.nom %></span> <span class="prenom"><%= client.prenom %></span></h5>
+                <h6 class="card-subtitle mb-2 text-muted"><span class="user_id"><%= client.user_id %></span></h6>
                 <details>
                   <summary>Plus d'informations</summary>
                   <p class="card-text">
-                    Contact: <span class="email">
-                      <%= client.email %>
-                    </span> - <span class="telephone">
-                      <%= client.telephone %>
-                    </span>
+                    Contact: <span class="email"><%= client.email %></span> - <span class="telephone"><%= client.telephone %></span>
                     <hr>
-                    Date de naissance: <span class="date_naissance">
-                      <%= client.date_naissance %>
-                    </span>
+                    Date de naissance: <span class="date_naissance"><%= client.date_naissance %></span>
                     <hr>
-                    Points: <span class="points">
-                      <%= client.points %>
-                    </span>
+                    Points: <span class="points"><%= client.points %></span>
                   </p>
                 </details>
                 <button id="<%= client.user_id %>" class="btn btn-dark client-update" type="button">Modifier</button>
@@ -132,7 +120,8 @@
                   <h5 class="card-title"><span class="nom"><%= cadeau.nom %></span></h5>
                   <h6 class="card-subtitle mb-2 text-muted">
                     <!-- TODO: Ajouter la quantité restante -->
-                    Quantite restante: <!-- <span class="quantite"><%= cadeau.quantite %></span> --></h6>
+                    Quantite restante: <!-- <span class="quantite"><%= cadeau.quantite %></span> -->
+                  </h6>
                   <details>
                     <summary>Plus d'informations</summary>
                     <p class="card-text"> Taille: <span class="taille"><%= cadeau.taille %></span>
@@ -142,12 +131,9 @@
                       Description: <span class="description"><%= cadeau.description %></span>
                     </p>
                   </details>
-                  <button id="<%= cadeau.cadeaux_id %>" class="btn btn-dark cadeau-update"
-                    type="button">Modifier</button>
-                  <button id="<%= cadeau.cadeaux_id %>" class="btn btn-warning cadeau-annule"
-                    type="button">Annuler</button>
-                  <button id="<%= cadeau.cadeaux_id %>" class="btn btn-danger cadeau-delete"
-                    type="button">Supprimer</button>
+                  <button id="<%= cadeau.cadeaux_id %>" class="btn btn-dark cadeau-update" type="button">Modifier</button>
+                  <button id="<%= cadeau.cadeaux_id %>" class="btn btn-warning cadeau-annule" type="button">Annuler</button>
+                  <button id="<%= cadeau.cadeaux_id %>" class="btn btn-danger cadeau-delete" type="button">Supprimer</button>
                 </div>
               </div>
             </div>

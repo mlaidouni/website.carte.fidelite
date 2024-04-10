@@ -3,6 +3,10 @@
  * PATCH: Mise à jour de certaines informations */
 
 $(document).ready(function () {
+  // Par défaut, les boutons "Annuler" sont cachés
+  $(".client-annule").hide();
+  $(".cadeau-annule").hide();
+
   /* ******************** Gestion des boutons des card - Cadeaux *********** */
 
   // Suppression: Sélection de tous les boutons de classe "cadeau-delete"
@@ -135,6 +139,7 @@ $(document).ready(function () {
     });
   });
 
+  // TODO: Ajouter le bouton "Annuler", pour annuler les modifications
   // Modification: Sélection de tous les boutons de classe "client-update"
   $(".client-update").click(function (e) {
     // La carte représentant l'élément
@@ -153,6 +158,8 @@ $(document).ready(function () {
         $(this).replaceWith(input);
       });
 
+      // On affiche le bouton "Annuler" de la card
+      card.find(".client-annule").show();
       // On change le bouton
       $(this).text("Valider");
       // On change le style du bouton
@@ -198,11 +205,14 @@ $(document).ready(function () {
         },
       });
 
+      // On affiche le bouton "Annuler" et on cache le bouton "Supprimer"
+      card.find(".client-annule").hide();
       // On change le bouton
       $(this).text("Modifier");
       // On change le style du bouton
       $(this).removeClass("btn-success").addClass("btn-dark");
     }
   });
+
   /* ********************  ******************** */
 });
