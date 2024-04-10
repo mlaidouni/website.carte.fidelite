@@ -31,7 +31,7 @@ CREATE TABLE PERSONNES (
     PRENOM VARCHAR(255) NOT NULL, -- Prénom de la personne
     EMAIL VARCHAR(255) NOT NULL, -- Adresse email de la personne
     TELEPHONE VARCHAR(10) NOT NULL, -- Numéro de téléphone de la personne
-    DATE_NAISSANCE DATE NOT NULL, -- Date de naissance de la personne
+    DATE_NAISSANCE VARCHAR(10) NOT NULL, -- Date de naissance de la personne
     POINTS INTEGER NOT NULL -- Nombre de points de la personne
 );
 
@@ -141,7 +141,7 @@ INSERT INTO PERSONNES (
     'Ayman',
     'ayman@grimpette.fr',
     '0600000000',
-    '2003-11-01',
+    '01/11/2003',
     25000
 ),
 (
@@ -151,7 +151,7 @@ INSERT INTO PERSONNES (
     'Jana',
     'jana@grimpette.fr',
     '0600000000',
-    '2003-10-23',
+    '23/10/2003',
     95
 ),
 (
@@ -161,7 +161,7 @@ INSERT INTO PERSONNES (
     'Elyo',
     'elyo@grimpette.fr',
     '0600000000',
-    '2003-02-11',
+    '11/02/2003',
     6
 ),
 (
@@ -171,7 +171,7 @@ INSERT INTO PERSONNES (
     'Manon',
     'man@grimpette.fr',
     '0600000000',
-    '2003-01-19',
+    '19/01/2003',
     300
 ),
 (
@@ -181,7 +181,7 @@ INSERT INTO PERSONNES (
     'Ilian',
     'iliou@grimpette.fr',
     '0600000000',
-    '2004-12-14',
+    '14/12/2004',
     10
 ),
 (
@@ -191,7 +191,7 @@ INSERT INTO PERSONNES (
     'Navdeep',
     'nav@grimpette.fr',
     '0600000000',
-    '2003-01-01',
+    '01/01/2003',
     300
 ),
 (
@@ -201,7 +201,7 @@ INSERT INTO PERSONNES (
     'Victor',
     'morel@grimpette.fr',
     '0600000000',
-    '2003-07-08',
+    '08/07/2003',
     24
 ),
 (
@@ -211,7 +211,7 @@ INSERT INTO PERSONNES (
     'Elisa',
     'elisa@grimpette.fr',
     '0600000000',
-    '2003-06-10',
+    '10/06/2003',
     500
 ),
 (
@@ -221,7 +221,7 @@ INSERT INTO PERSONNES (
     'Mohamed',
     'mohaldn@grimpette.fr',
     '0600000000',
-    '2003-06-30',
+    '30/06/2003',
     1
 ),
 (
@@ -231,7 +231,7 @@ INSERT INTO PERSONNES (
     'Laure',
     'lh@grimpette.fr',
     '0600000000',
-    '2003-01-01',
+    '01/01/2003',
     4532546
 ),
 (
@@ -241,9 +241,9 @@ INSERT INTO PERSONNES (
     'John',
     'john@gmail.com',
     '0123456789',
-    '1990-01-01',
+    '01/01/1990',
     100
 );
 
 -- Quitter PostgreSQL
-\q
+\Q

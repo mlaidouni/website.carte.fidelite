@@ -14,6 +14,8 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
   <!-- CSS -->
+  <link href="/styles/connexion.css" rel="stylesheet" />
+
   <!-- TODO: ajouter CSS après avoir arranger la page (voir FIXME plus bas)-->
   <!-- <link href="/styles/....css" rel="stylesheet" /> -->
   <title>Connexion</title>
@@ -25,7 +27,7 @@
     <div class="row">
       <!-- Centrer le formulaire de connexion -->
       <div class="col-md-8 offset-md-2">
-        <div class="login-form bg-light mt-4 p-5">
+        <div id = "form_pcp" class="login-form mt-4 p-5">
           <h4>Connexion</h4>
           <% if (incomplet) { %>
             <div>
@@ -50,10 +52,10 @@
                             <input type="password" name="mdp" class="form-control" placeholder="Mot de passe">
                           </div>
                           <div class="col-12 mt-2 d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary">Connexion</button>
+                            <button type="submit" class="btn btn-success">Connexion</button>
                           </div>
                       </form>
-                      <hr class="mt-4">
+                    <hr class="mt-4">
         </div>
       </div>
     </div>
