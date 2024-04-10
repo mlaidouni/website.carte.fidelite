@@ -22,7 +22,7 @@ server.use(express.json());
 
 /* ********** Fichiers de vue ********** */
 const connexion = "connexion.ejs";
-const achat_cadeaux = "achat_cadeaux.ejs";
+const compte_client = "compte_client.ejs";
 const compte_gerante = "compte_gerante.ejs";
 
 /* ******************** Gestion des routes ******************** */
@@ -59,18 +59,14 @@ server.post("/client/connexion", async (req, res) => {
   let mdp = req.body.mdp;
 
   // Vérifier que les données concordent avec la BD
-  let client_existant = await gestion_personnes.search(id, mdp);
-  // On récupère la liste de l'ensemble des cadeaux
-  let cadeaux = await gestion_cadeaux.getAll();
-
-  let reponse = {
-    data_client: client_existant,
-    liste_cadeau: cadeaux,
-  };
+  let clients = await gestion_personnes.search(id, mdp);
 
   // On teste si le client existe
-  if (client_existant.length > 0) res.render(achat_cadeaux, reponse);
-  else res.render(connexion, { uti: "client", incomplet: true });
+  if (clients.length > 0) {
+    // On récupère la liste de l'ensemble des cadeaux
+    let cadeaux = await gestion_cadeaux.getClient(clients[0].points);
+    res.render(compte_client, { client: clients[0], cadeaux });
+  } else res.render(connexion, { uti: "client", incomplet: true });
 });
 
 /* ******************** Routes pour la gerante ******************** */

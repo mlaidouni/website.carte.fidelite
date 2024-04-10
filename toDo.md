@@ -20,7 +20,7 @@
   - affichage des cadeaux actuellements dans le panier (comment est stocké le panier ??)
   - bouton pour switcher entre la page de compte et la page d'achat des cadeaux
   - boutons pour supprimer / vider / valider le panier (comment faire pour mettre à jour les points lorsque le bouton est cliqué ??)
-- 1 page `achat_cadeaux.ejs`:
+- 1 page `compte_client.ejs`:
   - bouton pour switcher entre la page de compte et la page d'achat des cadeaux
   - affichage de la liste des cadeaux disponibles pour elle
   - bouton pour ajouter un cadeau dans le panier
@@ -39,7 +39,7 @@
 - script `serveur.js`:
   - route `client/connexion` -> redirection vers la route `client/compte`
   - route `client/compte` -> render la page `compte_client.ejs`
-  - route `client/achat` -> render la page `achat_cadeaux.ejs`
+  - route `client/achat` -> render la page `compte_client.ejs`
   - route `gerante/connexion` -> redirection vers la route `gerante/compte`
   - route `gerante/compte` -> render la page `compte_gerante.ejs`
 

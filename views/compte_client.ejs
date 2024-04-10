@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Import Libraries -->
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- CSS -->
+    <link href="/styles/theme.css" rel="stylesheet" />
+    <link href="/styles/compte_client.css" rel="stylesheet" />
+    <!-- Script pour gérer les interractions avec l'utilisateur (boutons, ...) -->
+    <script src="/scripts/compte_gerante.js"></script>
+    <title>Compte</title>
+  </head>
+
+  <body>
+    <!-- Navigation Bar -->
+    <!-- Navigation Bar
+      @sticky-top: fixe la navbar en haut de la page
+      @navbar-expand-lg: collapse la navbar sur les écrants small, 
+      (i.e étend la navbar pour les écrans >= large) et ajoute un bouton
+    -->
+    <nav
+      id="navNavBar"
+      class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark"
+    >
+      <!-- Menu déroulant donnant les informations du client
+      @dropdown: menu déroulant vers le bas -->
+      <div class="dropdown">
+        <!-- Bouton déclencheur du menu déroulant 
+        @data-toggle: ce bouton contrôle un menu déroulant
+        @aria-haspopup: indique que le bouton a un menu contextuel associé
+        @aria-expanded: indique que ce menu est actuellement fermé
+         -->
+        <button
+          class="btn"
+          type="button"
+          id="dropdownMenu"
+          data-toggle="dropdown"
+          aria-expanded="false"
+          aria-haspopup="true"
+        >
+          <!-- Le bouton possède une icône (avatar de la personne). -->
+          <img id="client-avatar" src="/images/leskop1ne.png" />
+        </button>
+
+        <!-- Menu déroulant, lié à #dropdownMenu -->
+        <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+          <p class="dropdown-item"
+            ><%= client.nom %> <%= client.prenom %><br />
+            <span class="text-muted">@<%= client.user_id %></span></p
+          >
+          <div class="dropdown-divider"></div>
+          <h5 class="dropdown-header">Contact</h5>
+          <p class="dropdown-item"><%= client.email %></p>
+          <p class="dropdown-item"><%= client.telephone %></p>
+          <div class="dropdown-divider"></div>
+          <!-- TODO: Activier le bouton déconnexion -->
+          <button
+            id="deconnexion"
+            class="dropdown-item text-danger"
+            type="button"
+            >Se déconnecter</button
+          >
+        </div>
+
+        <!-- Titre de la page (lié au menu déroulant) -->
+        <a class="navbar-brand" href="#">Mon compte</a>
+      </div>
+
+      <!-- Bouton en cas de collapse de la navbar -->
+      <button
+        id="buttonNavbarToggler"
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navBarContent"
+        aria-controls="navBarContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <!-- Button icon -->
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Contenu de la Navbar 
+      @collapse: Indique que le contenu de la navbar peut être collapsé -->
+      <div id="navBarContent" class="collapse navbar-collapse">
+        <!-- List non ordonnée contenant le nombre de points et le panier
+        @navbar-nav: Applique le style navbar à la liste
+        @ml-auto: margin left auto, "pousse" la liste vers la droite
+        @nav-item: Applique le style nav-item à chaque élément de la liste
+       -->
+        <!-- On veut le nombre de points à gauche et le panier à droite -->
+        <ul id="navBarContentList" class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="navbar-brand"
+              >Points de fidélité
+              <span class="badge badge-success badge-pill"
+                ><%=client.points%></span
+              ></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="navbar-brand"
+              >Panier <span class="badge badge-danger badge-pill">0</span></a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <h2>Liste des cadeaux disponibles</h2>
+    <div class="container-fluid mt-5">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+        <% for (let i=0; i < cadeaux.length; i++) { let cadeau = cadeaux[i] %>
+        <div class="col mb-4">
+          <div id="<%= cadeau.cadeaux_id %>" class="card">
+            <img
+              class="card-img-top"
+              src="/<%= cadeau.image %>"
+              alt="<%= cadeau.image %>"
+            />
+            <div class="card-body">
+              <h5 class="card-title"><%=cadeau.nom%></h5>
+              <p class="card-text"><%=cadeau.prix%> €</p>
+              <details>
+                <summary>Plus d'informations</summary>
+                <p class="card-text"></p>
+                <%if (cadeau.taille){%>
+                <p class="card-text">Taille : <%=cadeau.taille%> </p>
+                <%}%> <%if (cadeau.couleur){%>
+                <p class="card-text">Couleur : <%=cadeau.couleur%> </p>
+                <%}%> <%if (cadeau.description){%>
+                <p class="card-text"> <%=cadeau.description%> </p>
+                <%}%>
+              </details>
+              <button
+                id="<%= cadeau.cadeaux_id %>"
+                class="btn btn-success cadeau-add"
+                type="button"
+                >Ajouter au panier</button
+              >
+            </div>
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </body>
+</html>

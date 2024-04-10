@@ -83,7 +83,7 @@ function Cadeau() {
   };
 
   /**
-   * Renvoie la liste des cadeaux.
+   * @returns Renvoie la liste des cadeaux.
    * @async
    */
   this.getAll = async function () {
@@ -92,6 +92,31 @@ function Cadeau() {
 
     // On attent l'exécution de la requête
     let data = await client.query("SELECT * FROM cadeaux");
+
+    // On libère le client.
+    client.release();
+
+    // On stocke les données dans un tableau
+    let result = [];
+    for (row of data.rows) result.push(row);
+
+    return result;
+  };
+
+  /**
+   * @returns Renvoie la liste des cadeaux inférieurs à un montant
+   * @async
+   */
+  this.getClient = async function (n) {
+    // Connexion à la BD
+    client = await pool.connect();
+
+    let query = {
+      text: "SELECT * FROM cadeaux WHERE prix <= $1",
+      values: [n],
+    };
+    // On attent l'exécution de la requête
+    let data = await client.query(query);
 
     // On libère le client.
     client.release();
