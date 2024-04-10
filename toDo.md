@@ -123,3 +123,8 @@
 
 > [!CAUTION]  
 > Régler le problème bootstrap lors de la suppression d'une card
+
+<!-- Fix rule MD028 -->
+
+> [!CAUTION]  
+> Régler le problème de la modification de l'id du client, qui ne modifie pas les id dans du div.
