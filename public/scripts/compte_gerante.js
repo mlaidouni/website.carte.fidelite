@@ -26,7 +26,6 @@ $(document).ready(function () {
       success: function (data) {
         // Si la suppression dans la BD a réussi, on supprime entièrement la carte,
         // i.e la carte elle-même et la colonne qui la contient
-        // FIXME: ça ne fonctionne pas bien, la carte de la ligne suivante ne remonte pas sur la ligne actuelle
         if (data.success) card.parent().remove();
         // Sinon, on affiche une erreur dans la console
         else console.log("compte_gerante.js: cadeau-delete.click(): Erreur !");
@@ -127,7 +126,6 @@ $(document).ready(function () {
       success: function (data) {
         // Si la suppression dans la BD a réussi, on supprime entièrement la carte,
         // i.e la carte elle-même et la colonne qui la contient
-        // FIXME: ça ne fonctionne pas bien, la carte de la ligne suivante ne remonte pas sur la ligne actuelle
         if (data.success) card.parent().remove();
         // Sinon, on affiche une erreur dans la console
         else console.log("compte_gerante.js: client-delete.click(): Erreur !");
@@ -214,5 +212,34 @@ $(document).ready(function () {
     }
   });
 
+  // FIXME: Retirer et ça, et effectuer plutôt un remplacement du bouton "supprimer"
+  // Annulation: Sélection de tous les boutons de classe "client-annule"
+  $(".client-annule").click(function (e) {
+    // La carte représentant le client
+    let card = $(this).closest(".card");
+
+    // L'id du client
+    let id = card.attr("id");
+
+    $.get(`/gerante/compte/clients/?id=${id}`, (data) => {
+      // La liste des input
+      let input = card.find("input");
+
+      // Pour chaque attribut à modifier
+      for (let attr in data) {
+        // On cherche dans la liste, l'input qui le représente
+        input.each(function () {
+          if ($(this).attr("class") === attr) {
+            let span = $("<span>", {
+              class: $(this).attr("class"),
+              text: data[attr],
+            });
+            // Puis on remplace l'input par le span
+            $(this).replaceWith(span);
+          }
+        });
+      }
+    });
+  });
   /* ********************  ******************** */
 });

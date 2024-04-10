@@ -160,6 +160,16 @@ server.put("/gerante/compte/clients", async (req, res) => {
   res.json({ success: true, message: "Client mis à jour avec succès!" });
 });
 
+server.get("/gerante/compte/clients", async (req, res) => {
+  let id = req.query.id;
+  console.log("aLO");
+
+  // FIXME: Données en dur dans le code => Créer une vraie fonction search par id
+  let client = gestion_personnes.search(id, "password")[0];
+
+  res.send(client);
+});
+
 /* ******************** Lancement du serveur ******************** */
 
 // Lancer le serveur
