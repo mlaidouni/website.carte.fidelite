@@ -69,6 +69,8 @@ server.post("/client/connexion", async (req, res) => {
   } else res.render(connexion, { uti: "client", incomplet: true });
 });
 
+server.post("/client/compte", async (req, res) => { });
+
 /* ******************** Routes pour la gerante ******************** */
 
 // Gestion de la connexion de la gerante
@@ -120,6 +122,10 @@ server.delete("/gerante/compte/cadeaux", async (req, res) => {
   }
 });
 
+
+// server.post ("/gerante/compte/clients", async (req, res) => {
+
+// })
 // Suppression d'un client
 server.delete("/gerante/compte/clients", async (req, res) => {
   let id = req.query.id;
