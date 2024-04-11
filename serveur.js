@@ -122,10 +122,6 @@ server.delete("/gerante/compte/cadeaux", async (req, res) => {
   }
 });
 
-
-// server.post ("/gerante/compte/clients", async (req, res) => {
-
-// })
 // Suppression d'un client
 server.delete("/gerante/compte/clients", async (req, res) => {
   let id = req.query.id;
@@ -164,6 +160,23 @@ server.put("/gerante/compte/clients", async (req, res) => {
     await gestion_personnes.update(id, attr, newValues[attr]);
   }
   res.json({ success: true, message: "Client mis à jour avec succès!" });
+});
+
+//Ajout d'un client
+server.post("/gerante/compte", async (req, res) => {
+  let newValues = req.body;
+  console.log( newValues[0]);
+  await gestion_personnes.insert(
+    newValues[0],
+    newValues[1],
+    newValues[2],
+    newValues[3],
+    newValues[4],
+    newValues[5],
+    newValues[6],
+    newValues[7],
+    newValues[8]
+  )
 });
 
 server.get("/gerante/compte/clients", async (req, res) => {
