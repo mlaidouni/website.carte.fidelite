@@ -58,22 +58,13 @@
 ### Page de connection
 
 - [x] formulaire: un **identifiant unique** avec un **mot de passe**
-- [x] si l'identifiant existe et que le mot de passe est correct, on **redirige vers la page de compte**
+- [ ] si l'identifiant existe et que le mot de passe est correct, on **redirige vers la page de compte**
 
 <!-- Alignement -->
 
 ### Page de compte
 
 - [x] affichage du **nombre de points**
-- [ ] affichage des cadeaux actuellements dans le panier
-  - [ ] **bouton** pour **supprimer** un cadeau du panier
-  - [ ] **bouton** pour **vider** le panier
-- [ ] **bouton** pour valider le panier
-  - [ ] **mise à jour** du nombre de points
-  - [ ] **vider le panier**
-
-### Page d'achat des cadeaux
-
 - [ ] au début de la connection, vérifier si la date = DATE_NAISSANCE du client
   - [ ] si oui, on **ajoute** des cadeaux spéciaux au client
     - _FIXME: Comment ajouter des cadeaux, alors que l'on affiche toujours tous les cadeaux dont les points est $\le$ points du client et que ces cadeaux spéciaux ne sont pas dans la BD, ou du moins, pas partagés._
@@ -82,11 +73,17 @@
 - [x] **bouton** pour **ajouter** un cadeau dans le panier
 - [ ] **pseudo mise à jour** des points à chaque ajout dans le panier: c'est à dire qu'on affiche le nombre de points, et le nombre de points hypothétique à côté, à chaque ajout dans le panier.
   - [ ] **affichage** du nombre de points dans le panier
-- [ ] chaque cadeau est représenté par une **image, un nom, un prix en points**
+- [x] chaque cadeau est représenté par une **image, un nom, un prix en points**
   - [x] **menu déroulant** pour spécifier les caractéristiques du cadeau
 
-> [!IMPORTANT]  
-> La page d'achat des cadeaux et la page de compte ne sont peut être pas séparées (cf. section 1.1)
+### Page du panier
+
+- [ ] affichage des cadeaux actuellements dans le panier
+  - [ ] **bouton** pour **supprimer** un cadeau du panier
+  - [ ] **bouton** pour **vider** le panier
+- [ ] **bouton** pour valider le panier
+  - [ ] **mise à jour** du nombre de points
+  - [ ] **vider le panier**
 
 ## Côté gérante
 
@@ -122,9 +119,9 @@
 <!-- Fix rule MD028 -->
 
 > [!CAUTION]  
-> Régler le problème bootstrap lors de la suppression d'une card
+> Régler le problème de la modification de l'id du client, qui ne modifie pas les id dans du div.
 
 <!-- Fix rule MD028 -->
 
 > [!CAUTION]  
-> Régler le problème de la modification de l'id du client, qui ne modifie pas les id dans du div.
+> Régler le problème de la déconnexion (message épinglé sur discord)
