@@ -125,3 +125,8 @@
 
 > [!CAUTION]  
 > Régler le problème de la déconnexion (message épinglé sur discord)
+
+<!-- Fix rule MD028 -->
+
+> [!CAUTION]  
+> Vérifier toutes les gestions d'erreurs

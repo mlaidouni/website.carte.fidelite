@@ -4,13 +4,13 @@
 
 $(document).ready(function () {
   // Par défaut, les boutons "Annuler" sont cachés
-  $(".client-annule").hide();
+  $(".client-reset").hide();
   $(".cadeau-annule").hide();
 
   /* ******************** Gestion des boutons des card - Cadeaux *********** */
 
   // Suppression: Sélection de tous les boutons de classe "cadeau-delete"
-  $(".cadeau-delete").click(function (e) {
+  $(document).on("click", ".cadeau-delete", function (e) {
     // La carte représentant l'élément
     let card = $(this).closest(".card");
 
@@ -38,7 +38,7 @@ $(document).ready(function () {
   });
 
   // Modification: Sélection de tous les boutons de classe "cadeau-update"
-  $(".cadeau-update").click(function (e) {
+  $(document).on("click", ".cadeau-update", function (e) {
     // La carte représentant l'élément
     let card = $(this).closest(".card");
 
@@ -139,7 +139,7 @@ $(document).ready(function () {
 
   // TODO: Ajouter le bouton "Annuler", pour annuler les modifications
   // Modification: Sélection de tous les boutons de classe "client-update"
-  $(".client-update").click(function (e) {
+  $(document).on("click", ".client-update", function (e) {
     // La carte représentant l'élément
     let card = $(this).closest(".card");
 
@@ -157,7 +157,7 @@ $(document).ready(function () {
       });
 
       // On affiche le bouton "Annuler" de la card
-      card.find(".client-annule").show();
+      card.find(".client-reset").show();
       // On change le bouton
       $(this).text("Valider");
       // On change le style du bouton
@@ -217,31 +217,63 @@ $(document).ready(function () {
     let card = $(this).closest(".card");
 
     // Si le bouton dit "Ajouter Client", on la transforme en formulaire
-    card.empty()
+    card.empty();
     //Le corps de la carte où on ajoute les élements du formulaire
-    let form = $('<form>', { class: 'card-body', method: 'post'})
+    let form = $("<form>", { class: "card-body", method: "post" });
     // Ajouter les champs du formulaire
-    let champs = ['userID', 'password', 'nom', 'prenom', 'email', 'telephone', 'dateNaissance', 'points'];
+    let champs = [
+      "userID",
+      "password",
+      "nom",
+      "prenom",
+      "email",
+      "telephone",
+      "dateNaissance",
+      "points",
+    ];
     champs.forEach(function (champ) {
-      form.append($('<input>', { type: 'text', class: 'form-control ' + champ, name: champ, placeholder: champ, required: true }));
+      form.append(
+        $("<input>", {
+          type: "text",
+          class: "form-control " + champ,
+          name: champ,
+          placeholder: champ,
+          required: true,
+        })
+      );
     });
 
     // Ajouter les boutons Valider et Annuler
-    form.append($('<button>', { text: 'Valider', class: 'btn btn-success client-valider-ajout', type: 'submit' }));
-    form.append($('<button>', { text: 'Annuler', class: 'btn btn-warning client-annule-ajout', type: 'button' }));
+    form.append(
+      $("<button>", {
+        text: "Valider",
+        class: "btn btn-success client-valider-ajout",
+        type: "submit",
+      })
+    );
+    form.append(
+      $("<button>", {
+        text: "Annuler",
+        class: "btn btn-warning client-annule-ajout",
+        type: "button",
+      })
+    );
 
     card.html(form);
     // Ajouter ici le gestionnaire pour le bouton Valider pour envoyer les données...
-
   });
 
   // Si l'ajout de client est annulé
   $(document).on("click", ".client-annule-ajout", function (e) {
     let card = $(this).closest(".card");
     card.empty(); // Efface le contenu actuel de form
-    let form = $('<div>', { class: 'card-body d-flex justify-content-center align-items-center' })
+    let form = $("<div>", {
+      class: "card-body d-flex justify-content-center align-items-center",
+    });
     // Restaure le bouton "Ajouter cadeau" dans form
-    form.append('<button id="add_cadeau" class="btn btn-success client-add" type="button">Ajouter Client</button>');
+    form.append(
+      '<button id="add_cadeau" class="btn btn-success client-add" type="button">Ajouter Client</button>'
+    );
     card.html(form);
   });
 
@@ -254,20 +286,20 @@ $(document).ready(function () {
     card.find("input").each(function () {
       // On récupère l'attribut (la classe) et la valeur correspondant
       newValues[$(this).attr("name")] = $(this).val();
-      console.log(newValues[$(this).attr("name")])
+      console.log(newValues[$(this).attr("name")]);
     });
 
     // Requête AJAX pour mettre à jour l'élément
     $.ajax({
       // On envoie une requête de type POST à l'URL /gerante/compte/clients
-      url: '/gerante/compte/clients',
+      url: "/gerante/compte/clients",
       // Voir le commentaire en ligne 1
       type: "POST",
       // Les nouvelles valeurs à envoyer
       data: newValues,
       success: function (data) {
         console.log("Client ajouté");
-        location.reload();
+        // Une fois le client ajouté, on recharge la page
       },
       error: function (error) {
         console.error("Erreur:", error);
@@ -277,17 +309,19 @@ $(document).ready(function () {
 
   // FIXME: Retirer et ça, et effectuer plutôt un remplacement du bouton "supprimer"
   // Annulation: Sélection de tous les boutons de classe "client-annule"
-  $(".client-annule").click(function (e) {
+  $(document).on("click", ".client-annule", function (e) {
     // La carte représentant le client
     let card = $(this).closest(".card");
 
     // L'id du client
     let id = card.attr("id");
 
-    $.get(`/gerante/compte/clients/?id=${id}`, (data) => {
-      // La liste des input
-      let input = card.find("input");
+    // La liste des input
+    let input = card.find("input");
 
+    input.each(function () {});
+
+    $.get(`/gerante/compte/clients/?id=${id}`, (data) => {
       // Pour chaque attribut à modifier
       for (let attr in data) {
         // On cherche dans la liste, l'input qui le représente

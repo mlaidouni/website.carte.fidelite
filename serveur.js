@@ -69,8 +69,6 @@ server.post("/client/connexion", async (req, res) => {
   } else res.render(connexion, { uti: "client", incomplet: true });
 });
 
-server.post("/client/compte", async (req, res) => { });
-
 /* ******************** Routes pour la gerante ******************** */
 
 // Gestion de la connexion de la gerante
@@ -164,19 +162,33 @@ server.put("/gerante/compte/clients", async (req, res) => {
 
 //Ajout d'un client
 server.post("/gerante/compte", async (req, res) => {
-  let newValues = req.body;
-  console.log( newValues[0]);
-  await gestion_personnes.insert(
-    newValues[0],
-    newValues[1],
-    newValues[2],
-    newValues[3],
-    newValues[4],
-    newValues[5],
-    newValues[6],
-    newValues[7],
-    newValues[8]
-  )
+  // let newValues = req.body;
+  // Récupérer les données du formulaire
+  let newValues = [];
+  for (let attr in req.body) {
+    newValues.push(req.body[attr]);
+  }
+  // Afficher les données récupérées
+  for (let i = 0; i < newValues.length; i++) {
+    console.log(i + " : " + newValues[i]);
+  }
+  // Ajouter le client à la base de données
+  try {
+    await gestion_personnes.insert(
+      newValues[0],
+      newValues[1],
+      newValues[2],
+      newValues[3],
+      newValues[4],
+      newValues[5],
+      newValues[6],
+      newValues[7]
+    );
+    res.status(200);
+    res.redirect("/gerante/compte");
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 server.get("/gerante/compte/clients", async (req, res) => {

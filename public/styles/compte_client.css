@@ -4,3 +4,9 @@
   border-radius: 50%;
   margin: 0 auto;
 }
+
+.dropdown-menu {
+  background-color: #4f555c;
+  /* Couleur du texte en blanc */
+  color: aliceblue;
+}

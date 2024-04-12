@@ -244,6 +244,3 @@ INSERT INTO PERSONNES (
     '01/01/1990',
     100
 );
-
--- Quitter PostgreSQL
-\Q

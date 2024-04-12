@@ -76,9 +76,9 @@
     -->
 
   <!-- Contenu principal -->
-  <% if (datatype==="clients" ) { %>
+  <% if (datatype==="clients") { %>
     <h2>Liste des clients</h2>
-    <div class="container-fluid mt-5">
+    <div class="container mt-5">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
         <% for (let i=0; i < data.length; i++) { let client=data[i]; %>
           <div class="col mb-4">
@@ -98,7 +98,7 @@
                   </p>
                 </details>
                 <button id="<%= client.user_id %>" class="btn btn-dark client-update" type="button">Modifier</button>
-                <button id="<%= client.user_id %>" class="btn btn-warning client-annule" type="button">Annuler</button>
+                <!-- <button id="<%= client.user_id %>" class="btn btn-warning client-reset" type="button">Annuler</button> -->
                 <button id="<%= client.user_id %>" class="btn btn-danger client-delete" type="button">Supprimer</button>
               </div>
             </div>
@@ -109,7 +109,7 @@
             <div id="add" class="card h-100">
               <div class="card-body d-flex justify-content-center align-items-center">
                 <!-- CHANGER ID -->
-                <button id="add_cadeau" class="btn btn-success client-add" type="button">Ajouter Client</button>
+                <button id="add_client" class="btn btn-success client-add" type="button">Ajouter Client</button>
               </div>
             </div>
           </div>
@@ -117,7 +117,7 @@
     </div>
     <% } else if (datatype==="cadeaux") { %>  
       <h2>Liste des cadeaux</h2>
-      <div class="container-fluid mt-5">
+      <div class="container mt-5">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
           <% for (let i=0; i < data.length; i++) { let cadeau=data[i]; %>
             <div class="col mb-4">
