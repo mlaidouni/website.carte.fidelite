@@ -2,7 +2,7 @@
  * Représente la gestion des personnes.
  * @constructor
  */
-function Personne() {
+function Personne(tableName) {
   // Import du module PostgreSQL
   const pg = require("pg");
   // Création d'un pool de connection à la BD
@@ -17,13 +17,40 @@ function Personne() {
   // Client global, initialisé par connect()
   let client;
 
-  // Connexion à la BD
-  this.connect = async function () {
-    // Connexion à la BD. Bloque sur cette instruction tant que la connection n'est pas établie.
-    client = await pool.connect();
+  /**
+   * Récupère les colonnes d'une table.
+   * @returns {Array} Les colonnes de la table.
+   * @async
+   * @throws {Error} Si une erreur survient lors de la récupération des colonnes
+   */
+  this.getColumns = async function () {
+    // Connexion à la BD
+    const client = await pool.connect();
+    let data;
 
-    // Déconnexion de la BD
-    client.release();
+    try {
+      // Requête à exécuter
+      let query = {
+        // On conserve l'ordre des colonnes
+        text: "SELECT column_name FROM information_schema.columns WHERE table_name = $1 ORDER BY ordinal_position",
+        // Les valeurs à remplacer dans la requête
+        values: [tableName],
+      };
+
+      // On attent l'exécution de la requête
+      data = await client.query(query);
+    } catch (err) {
+      console.error("Erreur lors de la récupération des colonnes.", err.stack);
+      throw err;
+    } finally {
+      // On libère le client, que la requête ait réussi ou non.
+      client.release();
+    }
+
+    // On stocke les noms des colonnes dans un tableau
+    let result = [];
+    for (let row of data.rows) result.push(row.column_name);
+    return result;
   };
 
   /**
@@ -50,40 +77,58 @@ function Personne() {
     // Connexion à la BD
     client = await pool.connect();
 
-    // Query
-    let query = {
+    // Récupérer les colonnes de la table
+    let columns = await this.getColumns();
+    // On transforme le tableau en une string séparée par des virgules
+    let column = columns.join(", ");
+
+    try {
       // Requête à exécuter
-      text: "INSERT INTO personnes (USER_ID, PASSWORD, NOM, PRENOM, EMAIL, TELEPHONE, DATE_NAISSANCE,  POINTS) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
-      // Les valeurs à remplacer dans la requête
-      values: [userid, password, nom, prenom, email, num, date, points],
-    };
+      let query = {
+        text: `INSERT INTO ${tableName} (${column}) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        // Les valeurs à remplacer dans la requête
+        values: [userid, password, nom, prenom, email, num, date, points],
+      };
 
-    // On attent l'exécution de la requête
-    await client.query(query);
-
-    // On libère le client.
-    client.release();
+      // On attent l'exécution de la requête
+      await client.query(query);
+    } catch (err) {
+      console.error("Erreur lors de l'insertion des clients.", err.stack);
+      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
+      throw err;
+    } finally {
+      // On libère le client, que la requête ait réussi ou non.
+      client.release();
+    }
   };
 
   /**
-   *
-   * @param {int} id L'id du client. On part du principe que ça ne peut être l'id du
+   * Supprime un client dans la BD.
+   * @param {integer} id - L'id du client.
    * @async
    */
   this.delete = async function (id) {
     // Connexion à la BD
     client = await pool.connect();
 
-    // Requête SQL
-    let query = {
-      // La requête à exécuter
-      text: "DELETE FROM personnes WHERE user_id = $1",
-      // Les valeurs à remplacer dans la requête
-      values: [id],
-    };
+    try {
+      // Requête à exécuter
+      let query = {
+        text: `DELETE FROM ${tableName} WHERE user_id = $1`,
+        // Les valeurs à remplacer dans la requête
+        values: [id],
+      };
 
-    // On attent l'exécution de la requête
-    await client.query(query);
+      // On attent l'exécution de la requête
+      await client.query(query);
+    } catch (err) {
+      console.error("Erreur lors de la suppression du client.", err.stack);
+      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
+      throw err;
+    } finally {
+      // On libère le client, que la requête ait réussi ou non.
+      client.release();
+    }
   };
 
   /**
@@ -92,43 +137,62 @@ function Personne() {
    */
   this.getAll = async function () {
     // Connexion à la BD
-    client = await pool.connect();
+    const client = await pool.connect();
+    // Les données récupérées dans la BD
+    let data;
 
-    // On attent l'exécution de la requête
-    let data = await client.query("SELECT * FROM personnes");
-
-    // On libère le client.
-    client.release();
-
-    // On stocke les données dans un tableau
-    let result = [];
-    for (row of data.rows) result.push(row);
-
-    return result;
-  };
-
-  this.getClients = async function () {
-    // Connexion à la BD
-    client = await pool.connect();
-
-    // On attent l'exécution de la requête
-    // FIXME:  Données en dur dans le code
-    let data = await client.query(
-      "SELECT * FROM personnes WHERE user_id <> 'elyogagnshit'"
-    );
-
-    // On libère le client.
-    client.release();
+    try {
+      // On attent l'exécution de la requête
+      data = await client.query(`SELECT * FROM ${tableName}`);
+    } catch (err) {
+      console.error("Erreur lors de la récupération des clients.", err.stack);
+      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
+      throw err;
+    } finally {
+      // On libère le client, que la requête ait réussi ou non.
+      client.release();
+    }
 
     // On stocke les données dans un tableau
     let result = [];
-    for (row of data.rows) result.push(row);
-
+    for (let row of data.rows) result.push(row);
     return result;
   };
 
   /**
-   *
+   * @returns Renvoie la liste des clients.
+   * @async
+   */
+  this.getClients = async function () {
+    // Connexion à la BD
+    const client = await pool.connect();
+    // Les données récupérées dans la BD
+    let data;
+
+    try {
+      // Requête à exécuter
+      let query = {
+        // FIXME:  Données en dur dans le code
+        text: `SELECT * FROM ${tableName} WHERE user_id <> 'elyogagnshit'`,
+      };
+      // On attent l'exécution de la requête
+      data = await client.query(query);
+    } catch (err) {
+      console.error("Erreur lors de la récupération des clients.", err.stack);
+      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
+      throw err;
+    } finally {
+      // On libère le client, que la requête ait réussi ou non.
+      client.release();
+    }
+
+    // On stocke les données dans un tableau
+    let result = [];
+    for (let row of data.rows) result.push(row);
+    return result;
+  };
+
+  /**
    * @param {string} userid
    * @param {string} password
    * @returns Renvoie la liste des personnes correspondant aux paramètres.
@@ -136,24 +200,31 @@ function Personne() {
    */
   this.search = async function (userid, password) {
     // Connexion à la BD
-    client = await pool.connect();
+    const client = await pool.connect();
+    // Les données récupérées dans la BD
+    let data;
 
-    // La requête SQL
-    let query = {
-      text: "SELECT * FROM personnes WHERE user_id LIKE $1 AND password LIKE $2",
-      values: [userid, password],
-    };
+    try {
+      // Requête à exécuter
+      let query = {
+        text: `SELECT * FROM ${tableName} WHERE user_id LIKE $1 AND password LIKE $2`,
+        values: [userid, password],
+      };
 
-    // On attent l'exécution de la requête
-    let data = await client.query(query);
-
-    // On libère le client.
-    client.release();
+      // On attent l'exécution de la requête
+      data = await client.query(query);
+    } catch (err) {
+      console.error("Erreur lors de la recherche des clients.", err.stack);
+      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
+      throw err;
+    } finally {
+      // On libère le client, que la requête ait réussi ou non.
+      client.release();
+    }
 
     // On stocke les données dans un tableau
     let result = [];
-    for (row of data.rows) result.push(row);
-
+    for (let row of data.rows) result.push(row);
     return result;
   };
 
@@ -168,23 +239,26 @@ function Personne() {
     // Connexion à la BD
     client = await pool.connect();
 
-    // Query
-    let query = {
+    try {
       // Requête à exécuter
-      text: "UPDATE personnes SET " + attr + " = $1 WHERE user_id = $2",
-      // Les valeurs à remplacer dans la requête
-      values: [value, userid],
-    };
+      let query = {
+        text: `UPDATE ${tableName} SET ${attr} = $1 WHERE user_id = $2`,
+        // Les valeurs à remplacer dans la requête
+        values: [value, userid],
+      };
 
-    // On attent l'exécution de la requête
-    await client.query(query);
-
-    // On libère le client.
-    client.release();
+      // On attent l'exécution de la requête
+      await client.query(query);
+    } catch (err) {
+      console.error("Erreur lors de la mise à jour du client.", err.stack);
+      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
+      throw err;
+    } finally {
+      // On libère le client, que la requête ait réussi ou non.
+      client.release();
+    }
   };
 }
 
-
-
 // Export du module
-module.exports = new Personne();
+module.exports = Personne;

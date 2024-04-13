@@ -2,6 +2,8 @@
  * PUT: mise à jour de toutes les informations d'une source
  * PATCH: Mise à jour de certaines informations */
 
+// TODO: NETTOYER CE CODE
+
 $(document).ready(function () {
   // Par défaut, les boutons "Annuler" sont cachés
   $(".client-reset").hide();

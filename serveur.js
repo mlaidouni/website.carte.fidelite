@@ -1,8 +1,13 @@
 // Import des modules express et path
 const express = require("express");
 const path = require("path");
-const gestion_cadeaux = require("./public/scripts/gestion_cadeaux");
-const gestion_personnes = require("./public/scripts/gestion_personnes");
+
+// Import des modules de gestion des cadeaux et des personnes
+const module_cadeau = require("./public/scripts/gestion_cadeaux");
+const module_personne = require("./public/scripts/gestion_personnes");
+// Nouvelle instance des fonctions de gestion des cadeaux et des personnes
+const gestion_cadeaux = new module_cadeau("cadeaux");
+const gestion_personnes = new module_personne("personnes");
 
 /* ********** Création et configuration du serveur ********** */
 
@@ -168,10 +173,7 @@ server.post("/gerante/compte", async (req, res) => {
   for (let attr in req.body) {
     newValues.push(req.body[attr]);
   }
-  // Afficher les données récupérées
-  for (let i = 0; i < newValues.length; i++) {
-    console.log(i + " : " + newValues[i]);
-  }
+
   // Ajouter le client à la base de données
   try {
     await gestion_personnes.insert(
