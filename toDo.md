@@ -153,9 +153,16 @@
 
 <!--  -->
 
-- Gestion de l'erreur de connexion: identifiant incorrect ou mot de passe incorrect
-- Ajout d'un rôle aux personnes (U pour USER, A pour ADMIN)
-- Ajout d'une fonction 'getGerantes' pour récupérer la liste des gérantes
+- Ajout d'un rôle aux personnes (U pour USER, A pour ADMIN).
+- Ajout d'une fonction 'getGerantes' pour récupérer la liste des gérantes.
+- Gestion de l'erreur de connexion: identifiant incorrect ou mot de passe incorrect.
+- Suppression de toutes les données en dur dans le code (sauf dans la dernière route incompréhensible de serveur.js).
+
+<!--  -->
+
+- Modification de l'image pour le compte gérente (`/images/gerente.png`)
+- Gestion des erreurs dans les requêtes AJAX
+- Suppression de la route `/gerante/compte/cadeaux` (inutile)
 
 ## Notes du nettoyage
 
@@ -163,3 +170,5 @@
 - Certaines colonnes sont encore écrites en dur dans le code de gestion_personnes et gestion_cadeaux.
 - La connexion gérante et cliente peut être identique, car on peut avoir plusieurs gérantes (même si c'est optionnel). Dans ce cas, on peut ajouter un champ `role` dans la table `personnes` pour distinguer les gérantes des clientes, puis une fonction isAdmin. Et tout mettre dans une seule route.
 - Gérer l'affichage graphique des erreurs, un peu comme pour la page de connexion (par ex, avec des alertes).
+- Pour la suppression, il faut vérifier que le client existe avant de le supprimer.
+- Ajouter du padding entre les boutons (notamment modifier, supprimer etc dans le compte gérante)

@@ -392,17 +392,6 @@ server.post("/gerante/compte/clients", async (req, res) => {
   }
 });
 
-// CACA: A quoi sert cette route ? (créée par moha)
-server.get("/gerante/compte/clients", async (req, res) => {
-  let id = req.query.id;
-  console.log("aLO");
-
-  // FIXME: Données en dur dans le code => Créer une vraie fonction search par id
-  let client = gestion_personnes.search(id, "password")[0];
-
-  res.send(client);
-});
-
 /* ******************** Lancement du serveur ******************** */
 
 // Lancer le serveur
