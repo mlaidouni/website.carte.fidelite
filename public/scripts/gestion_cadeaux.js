@@ -33,16 +33,16 @@ function Cadeau(tableName) {
       // Requête à exécuter
       let query = {
         // On conserve l'ordre des colonnes
-        text: "SELECT column_name FROM information_schema.columns WHERE table_name = $1 ORDERY BY ordinal_position",
+        text: "SELECT column_name FROM information_schema.columns WHERE table_name = $1 ORDER BY ordinal_position",
         // Les valeurs à remplacer dans la requête
         values: [tableName],
       };
 
       // On attent l'exécution de la requête
       data = await client.query(query);
-    } catch (err) {
-      console.error("Erreur lors de la récupération des colonnes.", err.stack);
-      throw err;
+    } catch (error) {
+      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
+      throw error;
     } finally {
       // On libère le client, que la requête ait réussi ou non.
       client.release();
@@ -89,10 +89,9 @@ function Cadeau(tableName) {
 
       // On attent l'exécution de la requête
       await client.query(query);
-    } catch (err) {
-      console.error("Erreur lors de l'insertion du cadeau.", err.stack);
+    } catch (error) {
       // On relance l'erreur pour qu'elle puisse être gérée par le serveur
-      throw err;
+      throw error;
     } finally {
       // On libère le client, que la requête ait réussi ou non.
       client.release();
@@ -118,10 +117,9 @@ function Cadeau(tableName) {
 
       // On attent l'exécution de la requête
       await client.query(query);
-    } catch (err) {
-      console.error("Erreur lors de la suppression du cadeau.", err.stack);
+    } catch (error) {
       // On relance l'erreur pour qu'elle puisse être gérée par le serveur
-      throw err;
+      throw error;
     } finally {
       // On libère le client, que la requête ait réussi ou non.
       client.release();
@@ -141,10 +139,9 @@ function Cadeau(tableName) {
     try {
       // On attent l'exécution de la requête
       data = await client.query(`SELECT * FROM ${tableName}`);
-    } catch (err) {
-      console.error("Erreur lors de la récupération des cadeaux.", err.stack);
+    } catch (error) {
       // On relance l'erreur pour qu'elle puisse être gérée par le serveur
-      throw err;
+      throw error;
     } finally {
       // On libère le client, que la requête ait réussi ou non.
       client.release();
@@ -177,10 +174,9 @@ function Cadeau(tableName) {
 
       // On attent l'exécution de la requête
       data = await client.query(query);
-    } catch (err) {
-      console.error("Erreur lors de la récupération des cadeaux.", err.stack);
+    } catch (error) {
       // On relance l'erreur pour qu'elle puisse être gérée par le serveur
-      throw err;
+      throw error;
     } finally {
       // On libère le client, que la requête ait réussi ou non.
       client.release();
@@ -218,10 +214,9 @@ function Cadeau(tableName) {
 
       // On attent l'exécution de la requête
       await client.query(query);
-    } catch (err) {
-      console.error("Erreur lors de la récupération des cadeaux.", err.stack);
+    } catch (error) {
       // On relance l'erreur pour qu'elle puisse être gérée par le serveur
-      throw err;
+      throw error;
     } finally {
       // On libère le client, que la requête ait réussi ou non.
       client.release();

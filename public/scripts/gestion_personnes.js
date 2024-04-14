@@ -39,9 +39,9 @@ function Personne(tableName) {
 
       // On attent l'exécution de la requête
       data = await client.query(query);
-    } catch (err) {
-      console.error("Erreur lors de la récupération des colonnes.", err.stack);
-      throw err;
+    } catch (error) {
+      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
+      throw error;
     } finally {
       // On libère le client, que la requête ait réussi ou non.
       client.release();
@@ -92,10 +92,9 @@ function Personne(tableName) {
 
       // On attent l'exécution de la requête
       await client.query(query);
-    } catch (err) {
-      console.error("Erreur lors de l'insertion des clients.", err.stack);
+    } catch (error) {
       // On relance l'erreur pour qu'elle puisse être gérée par le serveur
-      throw err;
+      throw error;
     } finally {
       // On libère le client, que la requête ait réussi ou non.
       client.release();
@@ -121,10 +120,9 @@ function Personne(tableName) {
 
       // On attent l'exécution de la requête
       await client.query(query);
-    } catch (err) {
-      console.error("Erreur lors de la suppression du client.", err.stack);
+    } catch (error) {
       // On relance l'erreur pour qu'elle puisse être gérée par le serveur
-      throw err;
+      throw error;
     } finally {
       // On libère le client, que la requête ait réussi ou non.
       client.release();
@@ -144,10 +142,9 @@ function Personne(tableName) {
     try {
       // On attent l'exécution de la requête
       data = await client.query(`SELECT * FROM ${tableName}`);
-    } catch (err) {
-      console.error("Erreur lors de la récupération des clients.", err.stack);
+    } catch (error) {
       // On relance l'erreur pour qu'elle puisse être gérée par le serveur
-      throw err;
+      throw error;
     } finally {
       // On libère le client, que la requête ait réussi ou non.
       client.release();
@@ -177,10 +174,9 @@ function Personne(tableName) {
       };
       // On attent l'exécution de la requête
       data = await client.query(query);
-    } catch (err) {
-      console.error("Erreur lors de la récupération des clients.", err.stack);
+    } catch (error) {
       // On relance l'erreur pour qu'elle puisse être gérée par le serveur
-      throw err;
+      throw error;
     } finally {
       // On libère le client, que la requête ait réussi ou non.
       client.release();
@@ -213,10 +209,9 @@ function Personne(tableName) {
 
       // On attent l'exécution de la requête
       data = await client.query(query);
-    } catch (err) {
-      console.error("Erreur lors de la recherche des clients.", err.stack);
+    } catch (error) {
       // On relance l'erreur pour qu'elle puisse être gérée par le serveur
-      throw err;
+      throw error;
     } finally {
       // On libère le client, que la requête ait réussi ou non.
       client.release();
@@ -249,10 +244,9 @@ function Personne(tableName) {
 
       // On attent l'exécution de la requête
       await client.query(query);
-    } catch (err) {
-      console.error("Erreur lors de la mise à jour du client.", err.stack);
+    } catch (error) {
       // On relance l'erreur pour qu'elle puisse être gérée par le serveur
-      throw err;
+      throw error;
     } finally {
       // On libère le client, que la requête ait réussi ou non.
       client.release();

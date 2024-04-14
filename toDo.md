@@ -146,6 +146,11 @@
 - Correction de bug: ajout de l'action '/gerante/compte/clients' dans le formulaire pour l'ajout d'un client.
 - Ajout d'une image pour le compte client (`/images/client.png`)
 
+<!--  -->
+
+- Pour l'affichage des erreurs, utilisation de 'console.error' plutôt que 'console.log'
+- Suppression de l'affichage des erreurs dans les fonctions de gestion de la BD. On laisse le serveur s'occuper de l'affichage des erreurs.
+
 ## Notes du nettoyage
 
 - Rendre le texte du dropdown client blanc (ou plus lisibles)

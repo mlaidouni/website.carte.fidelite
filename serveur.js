@@ -59,7 +59,7 @@ const printlog = (message, color) => {
 };
 
 const printError = (message) => {
-  printlog(`${colors.bright}${message}`, "red");
+  console.error(`${colors.bright}${colors.fg["red"]}${message}${colors.reset}`);
 };
 
 const printWarning = (message) => {
@@ -95,10 +95,10 @@ server.get("/:type/connexion", (req, res) => {
 
     // Afficher la page de connexion correspondante
     res.render(connexion, { uti: type, incomplet: false });
-  } catch (err) {
+  } catch (error) {
     printError("serveur: Erreur lors de l'affichage de la page de connexion:");
-    printError(`-> ${err}`);
-    res.status(500).send(`${err}`);
+    printError(`-> ${error}`);
+    res.status(500).send(`${error}`);
   }
 });
 
