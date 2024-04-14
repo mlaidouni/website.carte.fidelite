@@ -12,11 +12,11 @@ $(document).ready(function () {
   /* ******************** Gestion des boutons des card - Cadeaux *********** */
 
   // Suppression: Sélection de tous les boutons de classe "cadeau-delete"
-  $(document).on("click", ".cadeau-delete", function (e) {
-    // La carte représentant l'élément
+  $(document).on("click", ".cadeau-delete", function () {
+    // La card représentant l'élément
     let card = $(this).closest(".card");
 
-    // L'identifiant de la carte, i.e du cadeau
+    // L'identifiant de la card, i.e du cadeau
     let id = card.attr("id");
 
     // Requête AJAX pour supprimer le cadeau
@@ -26,8 +26,8 @@ $(document).ready(function () {
       type: "DELETE",
       // Lorsqu'on a reçu une réponse du serveur, on exécute cette fonction
       success: function (data) {
-        // Si la suppression dans la BD a réussi, on supprime entièrement la carte,
-        // i.e la carte elle-même et la colonne qui la contient
+        // Si la suppression dans la BD a réussi, on supprime entièrement la card,
+        // i.e la card elle-même et la colonne qui la contient
         if (data.success) card.parent().remove();
         // Sinon, on affiche une erreur dans la console
         else console.log("compte_gerante.js: cadeau-delete.click(): Erreur !");
@@ -41,7 +41,7 @@ $(document).ready(function () {
 
   // Modification: Sélection de tous les boutons de classe "cadeau-update"
   $(document).on("click", ".cadeau-update", function (e) {
-    // La carte représentant l'élément
+    // La card représentant l'élément
     let card = $(this).closest(".card");
 
     // Si le bouton dit "Modifier", on transforme les span en input
@@ -65,7 +65,7 @@ $(document).ready(function () {
 
     // Si le bouton dit "Valider", on envoie les modifications au serveur
     else {
-      // L'identifiant de la carte, i.e de l'élément
+      // L'identifiant de la card, i.e de l'élément
       let id = card.attr("id");
 
       // Les nouvelles valeurs pour le cadeau
@@ -113,10 +113,10 @@ $(document).ready(function () {
 
   // Suppression: Sélection de tous les boutons de classe "client-delete"
   $(".client-delete").click(function (e) {
-    // La carte représentant l'élément
+    // La card représentant l'élément
     let card = $(this).closest(".card");
 
-    // L'identifiant de la carte, i.e du client
+    // L'identifiant de la card, i.e du client
     let id = card.attr("id");
 
     // Requête AJAX pour supprimer le client
@@ -126,8 +126,8 @@ $(document).ready(function () {
       type: "DELETE",
       // Lorsqu'on a reçu une réponse du serveur, on exécute cette fonction
       success: function (data) {
-        // Si la suppression dans la BD a réussi, on supprime entièrement la carte,
-        // i.e la carte elle-même et la colonne qui la contient
+        // Si la suppression dans la BD a réussi, on supprime entièrement la card,
+        // i.e la card elle-même et la colonne qui la contient
         if (data.success) card.parent().remove();
         // Sinon, on affiche une erreur dans la console
         else console.log("compte_gerante.js: client-delete.click(): Erreur !");
@@ -142,7 +142,7 @@ $(document).ready(function () {
   // TODO: Ajouter le bouton "Annuler", pour annuler les modifications
   // Modification: Sélection de tous les boutons de classe "client-update"
   $(document).on("click", ".client-update", function (e) {
-    // La carte représentant l'élément
+    // La card représentant l'élément
     let card = $(this).closest(".card");
 
     // Si le bouton dit "Modifier", on transforme les span en input
@@ -168,7 +168,7 @@ $(document).ready(function () {
 
     // Si le bouton dit "Valider", on envoie les modifications au serveur
     else {
-      // L'identifiant de la carte, i.e de l'élément
+      // L'identifiant de la card, i.e de l'élément
       let id = card.attr("id");
 
       // Les nouvelles valeurs pour le client
@@ -215,13 +215,17 @@ $(document).ready(function () {
   });
 
   $(document).on("click", ".client-add", function (e) {
-    // La carte représentant l'élément
+    // La card représentant l'élément
     let card = $(this).closest(".card");
 
     // Si le bouton dit "Ajouter Client", on la transforme en formulaire
     card.empty();
-    //Le corps de la carte où on ajoute les élements du formulaire
-    let form = $("<form>", { class: "card-body", method: "post" });
+    //Le corps de la card où on ajoute les élements du formulaire
+    let form = $("<form>", {
+      class: "card-body",
+      method: "post",
+      action: "/gerante/compte/clients",
+    });
     // Ajouter les champs du formulaire
     let champs = [
       "userID",
@@ -312,7 +316,7 @@ $(document).ready(function () {
   // FIXME: Retirer et ça, et effectuer plutôt un remplacement du bouton "supprimer"
   // Annulation: Sélection de tous les boutons de classe "client-annule"
   $(document).on("click", ".client-annule", function (e) {
-    // La carte représentant le client
+    // La card représentant le client
     let card = $(this).closest(".card");
 
     // L'id du client

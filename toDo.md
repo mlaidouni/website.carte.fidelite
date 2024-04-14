@@ -100,7 +100,7 @@
 - [x] voir la liste des clients
 - [ ] ajouter un client
 - [x] supprimer un client
-- [] modifier un client (points, ...)
+- [ ] modifier un client (points, ...)
 - [ ] ajouter un cadeau
 - [x] supprimer cadeau
 - [x] modifier un cadeau
@@ -130,3 +130,25 @@
 
 > [!CAUTION]  
 > Vérifier toutes les gestions d'erreurs
+
+---
+
+## Etat du nettoyage
+
+- Les fonctions qui touchent à la BD ne sont plus vulnérables aux injections SQL
+- Les fonctions qui touchent à la BD sont protégées contre les erreurs
+- Les fonctions qui touchent à la BD sont protégées contre le changement du nom de la table
+
+<!--  -->
+
+- L'affichage des logs et des erreurs **dans la console** est plus clair
+- Les routes sont protégées contre les erreurs
+- Correction de bug: ajout de l'action '/gerante/compte/clients' dans le formulaire pour l'ajout d'un client.
+- Ajout d'une image pour le compte client (`/images/client.png`)
+
+## Notes du nettoyage
+
+- Rendre le texte du dropdown client blanc (ou plus lisibles)
+- Certaines colonnes sont encore écrites en dur dans le code de gestion_personnes et gestion_cadeaux.
+- La connexion gérante et cliente peut être identique, car on peut avoir plusieurs gérantes (même si c'est optionnel). Dans ce cas, on peut ajouter un champ `role` dans la table `personnes` pour distinguer les gérantes des clientes, puis une fonction isAdmin. Et tout mettre dans une seule route.
+- Gérer l'affichage graphique des erreurs, un peu comme pour la page de connexion (par ex, avec des alertes).
