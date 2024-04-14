@@ -85,16 +85,16 @@ server.get("/", (req, res) => {
 
 // Affiche la page de connexion (client & gerante)
 server.get("/:type/connexion", (req, res) => {
-  try {
-    // Récupérer le type de connexion (client ou gerante)
-    const type = req.params.type;
+  // Récupérer le type de connexion (client ou gerante)
+  const type = req.params.type;
 
+  try {
     // Vérifier que le type de connexion est valide
     if (type !== "client" && type !== "gerante")
       throw new Error(`Type de connexion "${type}" invalide.`);
 
     // Afficher la page de connexion correspondante
-    res.render(connexion, { uti: type, incomplet: false });
+    res.render(connexion, { type: type, hasError: false });
   } catch (error) {
     printError("serveur: Erreur lors de l'affichage de la page de connexion:");
     printError(`-> ${error}`);
@@ -113,19 +113,41 @@ server.post("/client/connexion", async (req, res) => {
 
     /* Vérifier que les données concordent avec la BD en cherchant les clients
     avec l'id et le mdp fournis */
-    let clients = await gestion_personnes.search(id, mdp);
+    // On récupère la liste des clients
+    let data = await gestion_personnes.getClients();
+    // On ne garde que les id des clients
+    data = data.map((client) => client.user_id);
 
-    /* NOTE: S'il existe un client avec ces données, il ne peut y en avoir qu'un 
-    seul, car l'id est la clé primaire, donc unique. */
-
-    // S'il y a un client avec ces données, on affiche son compte
-    if (clients.length > 0) {
-      // On récupère la liste des cadeaux du clients
-      let cadeaux = await gestion_cadeaux.getClient(clients[0].points);
-      res.render(compte_client, { client: clients[0], cadeaux });
-    } else {
+    // Vérifier qu'il existe un client avec cet id
+    if (!data.includes(id)) {
       // Sinon, on affiche la page de connexion avec un message d'erreur
-      res.render(connexion, { uti: "client", incomplet: true });
+      res.render(connexion, {
+        type: "client",
+        hasError: true,
+        message: "Identifiant incorrect",
+      });
+    } else {
+      // Vérifier qu'il existe un client avec cet id et ce mdp
+      let data = await gestion_personnes.search(id, mdp);
+
+      if (data.length === 0) {
+        res.render(connexion, {
+          type: "client",
+          hasError: true,
+          message: "Mot de passe incorrect",
+        });
+      } else {
+        // FIXME: Après connexion d'un client, on devrait redirect vers /client/compte (on ne doit garder que la ligne ci-dessous)
+        // res.redirect(/client/compte);
+
+        /* NOTE: S'il existe un client avec ces données, il ne peut y en avoir
+         *  qu'un seul, car l'id est la clé primaire, donc unique. */
+
+        // On récupère la liste des cadeaux du client
+        let cadeaux = await gestion_cadeaux.getClient(data[0].points);
+        // S'il y a un client avec ces données, on affiche son compte
+        res.render(compte_client, { client: data[0], cadeaux });
+      }
     }
   } catch (error) {
     printError("serveur: Erreur lors de la connexion du client:");
@@ -136,26 +158,46 @@ server.post("/client/connexion", async (req, res) => {
 
 /* ******************** Routes pour la gerante ******************** */
 
-// TODO: Fusionner les routes de connexion de la gérante et du client
 // Gestion de la connexion de la gerante
 server.post("/gerante/connexion", async (req, res) => {
   try {
     // Récupération des données de formulaire
+    let id = req.body.id;
     let mdp = req.body.mdp;
 
-    // Vérifier que les données concordent avec la BD
-    // On cherche une personne avec l'id admin et le mdp fourni
-    // FIXME: Données en dur dans le code
-    let admin = await gestion_personnes.search("elyogagnshit", mdp);
+    /* Vérifier que les données concordent avec la BD en cherchant les gerantes
+    avec l'id et le mdp fournis */
 
-    // S'il y a un admin avec ces données, on affiche le compte admin
-    if (admin.length > 0) res.redirect("/gerante/compte");
-    else {
+    // On récupère la liste des gerantes
+    let data = await gestion_personnes.getGerantes();
+    // On ne garde que les id des gerantes
+    data = data.map((gerante) => gerante.user_id);
+
+    // Vérifier qu'il existe une gerante avec cet id
+    if (!data.includes(id)) {
       // Sinon, on affiche la page de connexion avec un message d'erreur
-      res.render(connexion, { uti: "gerante", incomplet: true });
+      res.render(connexion, {
+        type: "gerante",
+        hasError: true,
+        message: "Identifiant incorrect",
+      });
+    } else {
+      // Vérifier qu'il existe une gerante avec cet id et ce mdp
+      let data = await gestion_personnes.search(id, mdp);
+
+      if (data.length === 0) {
+        res.render(connexion, {
+          type: "gerante",
+          hasError: true,
+          message: "Mot de passe incorrect",
+        });
+      } else {
+        // S'il y a une gerante avec ces données, on affiche le compte gerante
+        res.redirect("/gerante/compte");
+      }
     }
   } catch (error) {
-    printError("serveur: Erreur lors de la connexion de la gérante:");
+    printError("serveur: Erreur lors de la connexion de la gerante:");
     printError(`-> ${error}`);
     res.status(500).send(`${error}`);
   }

@@ -1,65 +1,65 @@
 <!DOCTYPE html>
 <html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Import Libraries -->
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-  <!-- Import Libraries -->
-  <!-- Bootstrap CSS -->
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
-  <!-- Bootstrap JavaScript -->
-  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- CSS -->
+    <link href="/styles/connexion.css" rel="stylesheet" />
+    <title>Connexion</title>
+  </head>
 
-  <!-- CSS -->
-  <link href="/styles/connexion.css" rel="stylesheet" />
-
-  <!-- TODO: ajouter CSS après avoir arranger la page (voir FIXME plus bas)-->
-  <!-- <link href="/styles/....css" rel="stylesheet" /> -->
-  <title>Connexion</title>
-</head>
-
-<body>
-  <!-- FIXME: Arranger tout ça -->
-  <div class="container">
-    <div class="row">
-      <!-- Centrer le formulaire de connexion -->
-      <div class="col-md-8 offset-md-2">
-        <div id = "form_pcp" class="login-form mt-4 p-5">
-          <h4>Connexion</h4>
-          <% if (incomplet) { %>
+  <body>
+    <div class="container">
+      <div class="row">
+        <!-- Centrer le formulaire de connexion -->
+        <div class="col-md-8 offset-md-2">
+          <div id="form_pcp" class="login-form mt-4 p-5">
+            <h4>Connexion</h4>
+            <% if (hasError) { %>
             <div>
-              <p class="text-danger">Mots de passe éronné ou invalide </p>
+              <p class="text-danger"><%= message %></p>
             </div>
             <% } %>
-
-              <!-- Si c'est un client qui se connecte, un identifiant est attendu -->
-              <% if (uti==="client" ) { %>
-                <form action="/client/connexion" method="post" class="row g-3">
-                  <div class="col-12">
-                    <label>Identifiant</label>
-                    <input type="text" name="id" class="form-control" placeholder="Identifiant">
-                  </div>
-                  <% } %>
-                    <% if (uti==="gerante" ) { %>
-                      <form action="/gerante/connexion" method="post" class="row g-3">
-                        <% } %>
-                          <!-- Toute connexion requiert un mot de passe -->
-                          <div class="col-12">
-                            <label>Mot de passe</label>
-                            <input type="password" name="mdp" class="form-control" placeholder="Mot de passe">
-                          </div>
-                          <div class="col-12 mt-2 d-flex justify-content-center">
-                            <button type="submit" class="btn btn-success  ">Connexion</button>
-                          </div>
-                      </form>
-                    <hr class="mt-4">
+            <form action="/<%= type %>/connexion" method="post" class="row g-3">
+              <!-- On se connecte avec un identifiant et un mot de passe -->
+              <div class="col-12">
+                <label>Identifiant</label>
+                <input
+                  type="text"
+                  name="id"
+                  class="form-control"
+                  placeholder="Identifiant"
+                />
+              </div>
+              <div class="col-12">
+                <label>Mot de passe</label>
+                <input
+                  type="password"
+                  name="mdp"
+                  class="form-control"
+                  placeholder="Mot de passe"
+                />
+              </div>
+              <div class="col-12 mt-2 d-flex justify-content-center">
+                <button type="submit" class="btn btn-success">Connexion</button>
+              </div>
+            </form>
+            <hr class="mt-4" />
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</body>
-
+  </body>
 </html>

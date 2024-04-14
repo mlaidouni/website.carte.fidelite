@@ -151,6 +151,12 @@
 - Pour l'affichage des erreurs, utilisation de 'console.error' plutôt que 'console.log'
 - Suppression de l'affichage des erreurs dans les fonctions de gestion de la BD. On laisse le serveur s'occuper de l'affichage des erreurs.
 
+<!--  -->
+
+- Gestion de l'erreur de connexion: identifiant incorrect ou mot de passe incorrect
+- Ajout d'un rôle aux personnes (U pour USER, A pour ADMIN)
+- Ajout d'une fonction 'getGerantes' pour récupérer la liste des gérantes
+
 ## Notes du nettoyage
 
 - Rendre le texte du dropdown client blanc (ou plus lisibles)

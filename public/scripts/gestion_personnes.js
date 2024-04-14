@@ -85,7 +85,7 @@ function Personne(tableName) {
     try {
       // Requête à exécuter
       let query = {
-        text: `INSERT INTO ${tableName} (${column}) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        text: `INSERT INTO ${tableName} (${column}) VALUES ($1, $2, 'U', $3, $4, $5, $6, $7, $8)`,
         // Les valeurs à remplacer dans la requête
         values: [userid, password, nom, prenom, email, num, date, points],
       };
@@ -169,8 +169,7 @@ function Personne(tableName) {
     try {
       // Requête à exécuter
       let query = {
-        // FIXME:  Données en dur dans le code
-        text: `SELECT * FROM ${tableName} WHERE user_id <> 'elyogagnshit'`,
+        text: `SELECT * FROM ${tableName} WHERE ROLE = 'U'`,
       };
       // On attent l'exécution de la requête
       data = await client.query(query);
@@ -251,6 +250,35 @@ function Personne(tableName) {
       // On libère le client, que la requête ait réussi ou non.
       client.release();
     }
+  };
+
+  this.getGerantes = async function () {
+    // Connexion à la BD
+    const client = await pool.connect();
+
+    // Les données récupérées dans la BD
+    let data;
+
+    try {
+      // Requête à exécuter
+      let query = {
+        text: `SELECT * FROM ${tableName} WHERE ROLE = 'A'`,
+      };
+
+      // On attent l'exécution de la requête
+      data = await client.query(query);
+    } catch (error) {
+      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
+      throw error;
+    } finally {
+      // On libère le client, que la requête ait réussi ou non.
+      client.release();
+    }
+
+    // On stocke les données dans un tableau
+    let result = [];
+    for (let row of data.rows) result.push(row);
+    return result;
   };
 }
 

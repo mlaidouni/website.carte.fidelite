@@ -27,6 +27,7 @@ CREATE TABLE CADEAUX (
 CREATE TABLE PERSONNES (
     USER_ID VARCHAR(255) PRIMARY KEY, -- Identifiant de connexion de la personne
     PASSWORD VARCHAR(255) NOT NULL, -- Mot de passe de la personne
+    ROLE VARCHAR(1) DEFAULT 'U', -- Role de la personne (A OU U, U par défaut)
     NOM VARCHAR(255) NOT NULL, -- Nom de la personne
     PRENOM VARCHAR(255) NOT NULL, -- Prénom de la personne
     EMAIL VARCHAR(255) NOT NULL, -- Adresse email de la personne
@@ -128,6 +129,7 @@ INSERT INTO CADEAUX (
 INSERT INTO PERSONNES (
     USER_ID,
     PASSWORD,
+    ROLE,
     NOM,
     PRENOM,
     EMAIL,
@@ -137,6 +139,7 @@ INSERT INTO PERSONNES (
 ) VALUES (
     'Akashi7',
     'password',
+    'U',
     'KHEMAKHEM',
     'Ayman',
     'ayman@grimpette.fr',
@@ -147,6 +150,7 @@ INSERT INTO PERSONNES (
 (
     'janad',
     'password',
+    'U',
     'AYADI',
     'Jana',
     'jana@grimpette.fr',
@@ -155,8 +159,9 @@ INSERT INTO PERSONNES (
     95
 ),
 (
-    'elyogagnshit',
+    'elyogangshit',
     'password',
+    'A',
     'FRIEDMANN',
     'Elyo',
     'elyo@grimpette.fr',
@@ -167,6 +172,7 @@ INSERT INTO PERSONNES (
 (
     'man',
     'password',
+    'U',
     'BAHA',
     'Manon',
     'man@grimpette.fr',
@@ -177,6 +183,7 @@ INSERT INTO PERSONNES (
 (
     'iliou',
     'password',
+    'U',
     'CRAGUE',
     'Ilian',
     'iliou@grimpette.fr',
@@ -187,6 +194,7 @@ INSERT INTO PERSONNES (
 (
     'nav',
     'password',
+    'U',
     'SINGH',
     'Navdeep',
     'nav@grimpette.fr',
@@ -197,6 +205,7 @@ INSERT INTO PERSONNES (
 (
     'villomega',
     'password',
+    'U',
     'MOREL',
     'Victor',
     'morel@grimpette.fr',
@@ -207,6 +216,7 @@ INSERT INTO PERSONNES (
 (
     'ralizz',
     'password',
+    'U',
     'RANJALAHY',
     'Elisa',
     'elisa@grimpette.fr',
@@ -217,6 +227,7 @@ INSERT INTO PERSONNES (
 (
     'kmzx',
     'password',
+    'A',
     'LAIDOUNI',
     'Mohamed',
     'mohaldn@grimpette.fr',
@@ -227,6 +238,7 @@ INSERT INTO PERSONNES (
 (
     'laure',
     'password',
+    'U',
     'HAMME',
     'Laure',
     'lh@grimpette.fr',
@@ -237,6 +249,7 @@ INSERT INTO PERSONNES (
 (
     'john.doe',
     'password',
+    'U',
     'DOE',
     'John',
     'john@gmail.com',
