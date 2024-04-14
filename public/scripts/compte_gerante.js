@@ -1,8 +1,4 @@
 $(document).ready(function () {
-  // Par défaut, les boutons "Annuler" sont cachés
-  $(".client-reset").hide();
-  $(".cadeau-annule").hide();
-
   /* ******************** Gestion des boutons des card - Cadeaux *********** */
 
   // Suppression: Sélection de tous les boutons de classe "cadeau-delete"
