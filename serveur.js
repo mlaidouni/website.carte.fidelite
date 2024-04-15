@@ -269,6 +269,9 @@ server.post("/client/compte/cadeau", async (req, res) => {
     // On ajoute le cadeau dans le panier
     client_add(cadeau);
 
+    // On récupère les cadeaux que le client peut désormais acheter
+    let cadeaux = await gestion_cadeaux.getClient(client_connected.points_h);
+
     /* Si on a pas levé d'erreur, on renvoie un message de succès, accompagné
      * des valeurs qui doivent être modifiées à l'affichage. */
     res.status(200).json({
@@ -277,6 +280,7 @@ server.post("/client/compte/cadeau", async (req, res) => {
       points: client_connected.points,
       points_h: client_connected.points_h,
       panier_counter: client_connected.panier_counter,
+      cadeaux: cadeaux,
     });
   } catch (error) {
     printError("serveur: Erreur lors de l'ajout du cadeau au panier:");

@@ -173,6 +173,12 @@
 - Ajout des fonctions `client_reset`, `client_init` et `client_add`.
 - Pour l'instant, lorsqu'on appuie sur le bouton `Ajouter au panier`, les valeurs des points et du nombre de cadeaux dans le panier sont mis à jour.
 
+<!--  -->
+
+- Lors de l'ajout d'un cadeau, le serveur renvoie la liste des cadeaux que le client peut mtn acheter, en se basant sur point_h.
+- Ajout de la classe '.list-cadeau' pour identifier le bloc (de class row) qui contient les cadeaux dans la page d'accueil.
+- Affichage dynamique des cadeaux dans la page d'accueil lors de l'ajout d'un cadeau.
+
 ## Notes du nettoyage
 
 - Rendre le texte du dropdown client blanc (ou plus lisibles)

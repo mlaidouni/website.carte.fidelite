@@ -55,6 +55,56 @@ $(document).ready(function () {
 
         // TODO: On met à jour l'affichage des cadeaux
         // ... card.parent().remove();
+        // On vide la ligne contenant la liste des cadeaux
+        $(".list-cadeaux").empty();
+        // Puis on la rempli avec les cadeaux achetables
+        let cadeaux = response.cadeaux;
+        for (let i = 0; i < cadeaux.length; i++) {
+          let cadeau = cadeaux[i];
+          // On crée une card pour chaque cadeau
+          let card = `<div class="col mb-4">
+          <div id="${cadeau.cadeaux_id}" class="card">
+            <img
+              class="card-img-top"
+              src="/${cadeau.image}"
+              alt="${cadeau.image}"
+            />
+            <div class="card-body">
+              <h5 class="card-title">${cadeau.nom}</h5>
+              <p class="card-text">${cadeau.prix} €</p>
+              <details>
+                <summary>Plus d'informations</summary>
+                <p class="card-text"></p>
+              </details>
+              <button
+                id="${cadeau.cadeaux_id}"
+                class="btn btn-success add-to-panier"
+                type="button"
+                >Ajouter au panier</button
+              >
+            </div>
+          </div>
+        </div>`;
+
+          /* On ajoute le détails du cadeau. $(card) est un objet jQuery créé à
+          partir de la card, nécessaire pour utiliser la fonction find(). */
+          let details = $(card).find("details");
+          if (cadeau.taille)
+            details.append(
+              `<p class="card-text">Taille : ${cadeau.taille}</p>`
+            );
+          if (cadeau.couleur) card;
+          details.append(
+            `<hr /><p class="card-text">Couleur : ${cadeau.couleur}</p>`
+          );
+          if (cadeau.couleur) card;
+          details.append(
+            `<hr /><p class="card-text"> ${cadeau.description}</p>`
+          );
+
+          // Une fois entièrement créée, on ajoute la card
+          $(".list-cadeaux").append(card);
+        }
       },
       error: function (error) {
         // En cas d'erreur, on affiche l'erreur dans la console
