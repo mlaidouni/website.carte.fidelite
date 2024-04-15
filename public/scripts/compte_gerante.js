@@ -275,7 +275,8 @@ $(document).ready(function () {
       type: "POST",
       data: data, // Les données à envoyer
       success: function (data) {
-        // Si l'ajout dans la BD a réussi, le serveur à rechargé la page
+        // Si l'ajout dans la BD a réussi, on redirigie la page
+        window.location.href = "/gerante/compte?data=client";
       },
       error: function (error) {
         // En cas d'erreur, on affiche l'erreur dans la console

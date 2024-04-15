@@ -63,7 +63,57 @@ const printError = (message) => {
 };
 
 const printWarning = (message) => {
-  printlog(`${colors.dim}${message}`, "yellow");
+  printlog(`${colors.blink}${message}`, "yellow");
+};
+
+/* ********** Gestion du client connecté ********** */
+
+let client_connected = {
+  // Le client actuellement connecté
+  client: undefined,
+  // Points actuels
+  points: undefined,
+  // Points hypothétiques, i.e si le panier est validé
+  points_h: undefined,
+  // Le panier du client actuellement connecté
+  panier: [],
+  // Valeur du panier
+  panier_value: 0,
+  // Nombre de cadeaux dans le panier
+  panier_counter: 0,
+};
+
+// Reset les valeurs du client.
+let client_reset = function () {
+  // On reset le client connecté
+  client_connected.client = undefined;
+  client_connected.points = undefined;
+  client_connected.points_h = undefined;
+  // On vide son panier
+  client_connected.panier = [];
+  client_connected.panier_counter = 0;
+  client_connected.panier_value = 0;
+};
+
+// Initialisation d'un client
+let client_init = function (client, points) {
+  // On reset les éventuelles données du précédent client
+  client_reset();
+
+  client_connected.client = client;
+  client_connected.points = points;
+  client_connected.points_h = points;
+};
+
+// Ajout d'un cadeau au panier
+let client_add = function (cadeau) {
+  // On ajoute le cadeau au panier
+  client_connected.panier.push(cadeau);
+
+  // On met à jour les valeurs du clients connectés
+  client_connected.panier_counter = client_connected.panier.length;
+  client_connected.panier_value += cadeau.prix;
+  client_connected.points_h -= cadeau.prix;
 };
 
 /* ******************** Gestion des routes ******************** */
@@ -137,22 +187,104 @@ server.post("/client/connexion", async (req, res) => {
           message: "Mot de passe incorrect",
         });
       } else {
-        // FIXME: Après connexion d'un client, on devrait redirect vers /client/compte (on ne doit garder que la ligne ci-dessous)
-        // res.redirect(/client/compte);
-
         /* NOTE: S'il existe un client avec ces données, il ne peut y en avoir
          *  qu'un seul, car l'id est la clé primaire, donc unique. */
 
-        // On récupère la liste des cadeaux du client
-        let cadeaux = await gestion_cadeaux.getClient(data[0].points);
-        // S'il y a un client avec ces données, on affiche son compte
-        res.render(compte_client, { client: data[0], cadeaux });
+        // On initialise le client connecté actuellement
+        client_init(data[0], data[0].points);
+
+        // On redirige vers la page du compte
+        res.redirect("/client/compte");
       }
     }
   } catch (error) {
     printError("serveur: Erreur lors de la connexion du client:");
     printError(`-> ${error}`);
     res.status(500).send(`${error}`);
+  }
+});
+
+// Affiche la page de compte du client
+server.get("/client/compte", async (req, res) => {
+  try {
+    // On récupère le type de données demandées. (accueil ou panier)
+    const dataType = req.query.data === undefined ? "accueil" : req.query.data;
+
+    // On renvoie le type de la donnée demandée
+    let reponse = {
+      client: client_connected.client,
+      points: client_connected.points,
+      points_h: client_connected.points_h,
+      panier_counter: client_connected.panier_counter,
+      datatype: dataType,
+    };
+
+    if (dataType === "accueil") {
+      // On récupère la liste des cadeaux du client
+      let cadeaux = await gestion_cadeaux.getClient(client_connected.points_h);
+      // On renvoie les données correspondantes
+      reponse["data"] = cadeaux;
+    } else if (dataType === "panier") {
+      // On renvoie les données correspondantes
+      reponse["data"] = client_connected.panier;
+    }
+
+    // Rendu de la page avec les bonnes données
+    res.render(compte_client, reponse);
+  } catch (error) {
+    printError("serveur: Erreur lors de la connexion de la gerante:");
+    printError(`-> ${error}`);
+    res.status(500).send(`${error}`);
+  }
+});
+
+// Gestion de la deconnexion du client
+server.post("/client/deconnexion", (req, res) => {
+  try {
+    // On reset le client
+    client_reset();
+
+    // Si on a pas levé d'erreur, on renvoie un statut de succès
+    res.status(200);
+    // On redirige l'utilisateur vers la page de connexion client
+    res.redirect("/client/connexion");
+  } catch (error) {
+    printError("serveur: Erreur lors de la déconnexion du client:");
+    printError(`-> ${error}`);
+    res.status(500).json({
+      success: false,
+      message: "Une erreur est survenue lors de la déconnexion du client.",
+    });
+  }
+});
+
+// Ajout d'un cadeau au panier
+server.post("/client/compte/cadeau", async (req, res) => {
+  try {
+    // Récupérer l'identifiant du cadeau à ajouté
+    let cadeau_id = req.body.id;
+
+    // On cherche le cadeau dans la BD
+    let cadeau = await gestion_cadeaux.getCadeau(cadeau_id);
+    // On ajoute le cadeau dans le panier
+    client_add(cadeau);
+
+    /* Si on a pas levé d'erreur, on renvoie un message de succès, accompagné
+     * des valeurs qui doivent être modifiées à l'affichage. */
+    res.status(200).json({
+      success: true,
+      message: "Cadeau ajouté au panier avec succès!",
+      points: client_connected.points,
+      points_h: client_connected.points_h,
+      panier_counter: client_connected.panier_counter,
+    });
+  } catch (error) {
+    printError("serveur: Erreur lors de l'ajout du cadeau au panier:");
+    printError(`-> ${error}`);
+    res.status(500).json({
+      success: false,
+      message: "Une erreur est survenue lors de l'ajout du cadeau au panier.",
+    });
   }
 });
 
@@ -243,7 +375,9 @@ server.delete("/gerante/compte/cadeaux", async (req, res) => {
     // Supprimer le cadeau de la base de données
     await gestion_cadeaux.delete(id);
     // Si on a pas levé d'erreur, on renvoie un message de succès
-    res.json({ success: true, message: "Cadeau supprimé avec succès!" });
+    res
+      .status(200)
+      .json({ success: true, message: "Cadeau supprimé avec succès!" });
   } catch (error) {
     printError("serveur: Erreur lors de la suppression du cadeau:");
     printError(`-> ${error}`);
@@ -263,7 +397,9 @@ server.delete("/gerante/compte/clients", async (req, res) => {
     // Supprimer le client de la base de données
     await gestion_personnes.delete(id);
     // Si on a pas levé d'erreur, on renvoie un message de succès
-    res.json({ success: true, message: "Client supprimé avec succès!" });
+    res
+      .status(200)
+      .json({ success: true, message: "Client supprimé avec succès!" });
   } catch (error) {
     printError("serveur: Erreur lors de la suppression du client:");
     printError(`-> ${error}`);
@@ -289,7 +425,9 @@ server.put("/gerante/compte/cadeaux", async (req, res) => {
       await gestion_cadeaux.update(id, attr, newValues[attr]);
 
     // Si on a pas levé d'erreur, on renvoie un message de succès
-    res.json({ success: true, message: "Cadeau mis à jour avec succès!" });
+    res
+      .status(200)
+      .json({ success: true, message: "Cadeau mis à jour avec succès!" });
   } catch (error) {
     printError("serveur: Erreur lors de la mise à jour du cadeau:");
     printError(`-> ${error}`);
@@ -315,7 +453,9 @@ server.put("/gerante/compte/clients", async (req, res) => {
       await gestion_personnes.update(id, attr, newValues[attr]);
 
     // Si on a pas levé d'erreur, on renvoie un message de succès
-    res.json({ success: true, message: "Client mis à jour avec succès!" });
+    res
+      .status(200)
+      .json({ success: true, message: "Client mis à jour avec succès!" });
   } catch (error) {
     printError("serveur: Erreur lors de la mise à jour du client:");
     printError(`-> ${error}`);
@@ -343,17 +483,16 @@ server.post("/gerante/compte/cadeaux", async (req, res) => {
       data[5]
     );
 
-    // Si on a pas levé d'erreur, on renvoie un statut de succès
-    res.status(200);
-
-    // On recharge la page (on envoie pas de message de succès car on redirige)
-    res.redirect("/gerante/compte?data=cadeaux");
+    // Si on a pas levé d'erreur, on renvoie un message de succès
+    res
+      .status(200)
+      .json({ success: true, message: "Cadeau ajouté avec succès!" });
   } catch (error) {
-    printError("serveur: Erreur lors de l'ajout du client:");
+    printError("serveur: Erreur lors de l'ajout du cadeau:");
     printError(`-> ${error}`);
     res.status(500).json({
       success: false,
-      message: "Une erreur est survenue lors de l'ajout du client.",
+      message: "Une erreur est survenue lors de l'ajout du cadeau.",
     });
   }
 });
@@ -377,11 +516,10 @@ server.post("/gerante/compte/clients", async (req, res) => {
       data[7]
     );
 
-    // Si on a pas levé d'erreur, on renvoie un statut de succès
-    res.status(200);
-
-    // On recharge la page (on envoie pas de message de succès car on redirige)
-    res.redirect("/gerante/compte?data=clients");
+    // Si on a pas levé d'erreur, on renvoie un message de succès
+    res
+      .status(200)
+      .json({ success: true, message: "Client ajouté avec succès!" });
   } catch (error) {
     printError("serveur: Erreur lors de l'ajout du client:");
     printError(`-> ${error}`);

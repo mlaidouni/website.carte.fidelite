@@ -98,9 +98,9 @@
 ### Page de compte
 
 - [x] voir la liste des clients
-- [ ] ajouter un client
+- [x] ajouter un client
 - [x] supprimer un client
-- [ ] modifier un client (points, ...)
+- [x] modifier un client (points, ...)
 - [ ] ajouter un cadeau
 - [x] supprimer cadeau
 - [x] modifier un cadeau
@@ -128,8 +128,8 @@
 
 <!-- Fix rule MD028 -->
 
-> [!CAUTION]  
-> Vérifier toutes les gestions d'erreurs
+> [!IMPORTANT]  
+> Utiliser un module pour gérer le client (les `let client_connected`, `let client_points`, `let client_panier` ...)
 
 ---
 
@@ -164,11 +164,22 @@
 - Gestion des erreurs dans les requêtes AJAX
 - Suppression de la route `/gerante/compte/cadeaux` (inutile)
 
+<!--  -->
+
+- Problème avec le lien de connexion (/client/compte) résolue
+- Correction d'erreur: La redirection de la page (lors de l'ajout d'un client/cadeau) a été ajoutée côté client.
+- Ajout d'une fonction pour récupérer les cadeaux d'un certains id.
+- Ajout d'un objet `client_connected` pour gérer les informations du client connecté.
+- Ajout des fonctions `client_reset`, `client_init` et `client_add`.
+- Pour l'instant, lorsqu'on appuie sur le bouton `Ajouter au panier`, les valeurs des points et du nombre de cadeaux dans le panier sont mis à jour.
+
 ## Notes du nettoyage
 
 - Rendre le texte du dropdown client blanc (ou plus lisibles)
 - Certaines colonnes sont encore écrites en dur dans le code de gestion_personnes et gestion_cadeaux.
-- La connexion gérante et cliente peut être identique, car on peut avoir plusieurs gérantes (même si c'est optionnel). Dans ce cas, on peut ajouter un champ `role` dans la table `personnes` pour distinguer les gérantes des clientes, puis une fonction isAdmin. Et tout mettre dans une seule route.
 - Gérer l'affichage graphique des erreurs, un peu comme pour la page de connexion (par ex, avec des alertes).
 - Pour la suppression, il faut vérifier que le client existe avant de le supprimer.
 - Ajouter du padding entre les boutons (notamment modifier, supprimer etc dans le compte gérante)
+- Les inputs dépassent de la card lorsqu'on tente une modification.
+- Ajouter un affichage propre d'erreur dans le cas où le client ne s'est pas connecté. Pour reproduire: se déconnecter -> revenir à la page précédente -> recharger la page.
+- N'afficher les boutons que lorsque la card est survolée (voir exemple fnac)
