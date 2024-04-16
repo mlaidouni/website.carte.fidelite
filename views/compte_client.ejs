@@ -19,7 +19,7 @@
     <link href="/styles/theme.css" rel="stylesheet" />
     <link href="/styles/compte_client.css" rel="stylesheet" />
     <!-- Script pour gérer les interractions avec l'utilisateur (boutons, ...) -->
-    <script src="/scripts/compte_gerante.js"></script>
+    <script src="/scripts/compte_client.js"></script>
     <title>Compte</title>
   </head>
 
@@ -51,7 +51,11 @@
           aria-haspopup="true"
         >
           <!-- Le bouton possède une icône (avatar de la personne). -->
-          <img id="client-avatar" src="/images/client.png" alt="/images/client.png"/>
+          <img
+            id="client-avatar"
+            src="/images/client.png"
+            alt="/images/client.png"
+          />
         </button>
 
         <!-- Menu déroulant, lié à #dropdownMenu -->
@@ -66,13 +70,11 @@
           <p class="dropdown-item"><%= client.telephone %></p>
           <div class="dropdown-divider"></div>
           <!-- TODO: Activier le bouton déconnexion -->
-          <a
-            id="deconnexion"
-            class="dropdown-item text-danger"
+          <button
+            class="dropdown-item text-danger client-deconnexion"
             type="button"
-            href="/"
             >Se déconnecter</button
-          ></a>
+          >
         </div>
 
         <!-- Titre de la page (lié au menu déroulant) -->
@@ -105,26 +107,37 @@
         <!-- On veut le nombre de points à gauche et le panier à droite -->
         <ul id="navBarContentList" class="navbar-nav ml-auto">
           <li class="nav-item">
+            <!-- Concernant l'affichage des points. S'il y a des cadeaux
+              dans le panier, i.e si le nombre de points hypothétique est 
+              différent du nombre de points, alors on barre le nombre de points
+              et on affiche le nombre de points hypothétiques. -->
             <a class="navbar-brand"
               >Points de fidélité
-              <span class="badge badge-success badge-pill"
-                ><%=client.points%></span
+              <span class="badge badge-primary badge-pill nav-points-counter"
+                ><% if(points_h !== points) { %><del><%= points %></del> <%=
+                points_h %><% } else { %><%= points %><% } %></span
               ></a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="navbar-brand"
-              >Panier <span class="badge badge-danger badge-pill">0</span></a
-            >
-          </li>
-        </ul>
+            > </li
+          ><li class="nav-item">
+            <a class="navbar-brand" href="/client/compte?data=panier"
+              >Panier
+              <span class="badge badge-danger badge-pill nav-panier-counter"
+                ><%= panier_counter %></span
+              >
+            </a>
+          </li></ul
+        >
       </div>
     </nav>
 
+    <!-- Contenu principal -->
+    <% if (datatype==="accueil") { %>
     <h2>Liste des cadeaux disponibles</h2>
     <div class="container mt-5">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
-        <% for (let i=0; i < cadeaux.length; i++) { let cadeau = cadeaux[i] %>
+      <div
+        class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 list-cadeaux"
+      >
+        <% for (let i=0; i < data.length; i++) { let cadeau = data[i] %>
         <div class="col mb-4">
           <div id="<%= cadeau.cadeaux_id %>" class="card">
             <img
@@ -138,17 +151,18 @@
               <details>
                 <summary>Plus d'informations</summary>
                 <p class="card-text"></p>
+                <!-- On affiche que les informations existantes -->
                 <%if (cadeau.taille){%>
                 <p class="card-text">Taille : <%=cadeau.taille%> </p>
                 <%}%> <%if (cadeau.couleur){%>
-                <p class="card-text">Couleur : <%=cadeau.couleur%> </p>
+                  <hr /><p class="card-text">Couleur : <%=cadeau.couleur%> </p>
                 <%}%> <%if (cadeau.description){%>
-                <p class="card-text"> <%=cadeau.description%> </p>
+                  <hr /><p class="card-text"> <%=cadeau.description%> </p>
                 <%}%>
               </details>
               <button
                 id="<%= cadeau.cadeaux_id %>"
-                class="btn btn-success cadeau-add"
+                class="btn btn-success add-to-panier"
                 type="button"
                 >Ajouter au panier</button
               >
@@ -158,5 +172,13 @@
         <% } %>
       </div>
     </div>
+    <% } else if (datatype==="panier") { %>
+    <h2>Cadeaux actuellement dans le panier</h2>
+    <div class="container mt-5">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+        Aucun cadeau dans le panier pour l'utilisateur <%= client.user_id %> !
+      </div>
+    </div>
+    <% } %>
   </body>
 </html>

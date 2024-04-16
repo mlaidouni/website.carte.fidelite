@@ -222,6 +222,40 @@ function Cadeau(tableName) {
       client.release();
     }
   };
+
+  /**
+   * @returns Le détails du cadeau dont l'id est précisé.
+   * @param {int} id - L'id du cadeau.
+   * @async
+   */
+  this.getCadeau = async function (id) {
+    // Connexion à la BD
+    client = await pool.connect();
+    // Les données récupérées dans la BD
+    let data;
+
+    try {
+      // Requête à exécuter
+      let query = {
+        text: `SELECT * FROM ${tableName} WHERE CADEAUX_ID = $1`,
+        // Les valeurs à remplacer dans la requête
+        values: [id],
+      };
+
+      // On attent l'exécution de la requête
+      data = await client.query(query);
+    } catch (error) {
+      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
+      throw error;
+    } finally {
+      // On libère le client, que la requête ait réussi ou non.
+      client.release();
+    }
+
+    /* NOTE: S'il existe un cadeau avec cette id, il ne peut y en avoir
+     *  qu'un seul, car l'id est la clé primaire, donc unique. */
+    return data.rows[0];
+  };
 }
 
 // Export du module
