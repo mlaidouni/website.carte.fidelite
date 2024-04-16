@@ -131,11 +131,16 @@
                   </h6>
                   <details>
                     <summary>Plus d'informations</summary>
-                    <p class="card-text"> Taille: <span class="taille"><%= cadeau.taille %></span>
-                      <hr>
-                      Couleur: <span class="couleur"><%= cadeau.couleur %></span>
-                      <hr>
-                      Description: <span class="description"><%= cadeau.description %></span>
+
+                      <p class="card-text">
+                      <!-- On affiche que les informations existantes -->
+                      <%if (cadeau.taille){%>
+                      <p class="card-text taille">Taille : <%=cadeau.taille%> </p>
+                      <%}%> <%if (cadeau.couleur){%>
+                        <hr /><p class="card-text couleur">Couleur : <%=cadeau.couleur%> </p>
+                      <%}%> <%if (cadeau.description){%>
+                        <hr /><p class="card-text description"> <%=cadeau.description%> </p>
+                      <%}%>
                     </p>
                   </details>
                   <button id="<%= cadeau.cadeaux_id %>" class="btn btn-dark cadeau-update" type="button">Modifier</button>

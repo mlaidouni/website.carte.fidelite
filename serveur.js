@@ -521,9 +521,8 @@ server.post("/gerante/compte/clients", async (req, res) => {
     );
 
     // Si on a pas levé d'erreur, on renvoie un message de succès
-    res
-      .status(200)
-      .json({ success: true, message: "Client ajouté avec succès!" });
+    res.status(200);
+    res.redirect("/gerante/compte?data=clients");
   } catch (error) {
     printError("serveur: Erreur lors de l'ajout du client:");
     printError(`-> ${error}`);

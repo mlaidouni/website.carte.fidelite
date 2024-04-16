@@ -361,15 +361,28 @@ $(document).ready(function () {
 
     // Pour chaque champ, on ajoute un input au formulaire
     champs.forEach(function (champ) {
-      form.append(
-        $("<input>", {
-          type: "text",
-          class: "form-control " + champ,
-          name: champ,
-          placeholder: champ,
-          required: true,
-        })
-      );
+      if (champ === "points") {
+        form.append(
+          $("<input>", {
+            type: "number",
+            class: "form-control " + champ,
+            name: champ,
+            placeholder: champ,
+            required: true,
+          })
+        );
+      }
+      else {
+        form.append(
+          $("<input>", {
+            type: "text",
+            class: "form-control " + champ,
+            name: champ,
+            placeholder: champ,
+            required: true,
+          })
+        );
+      }
     });
 
     // Ajouter les boutons Valider et Annuler
