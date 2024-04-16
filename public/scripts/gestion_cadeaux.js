@@ -73,11 +73,11 @@ function Cadeau(tableName) {
   ) {
     // Connexion à la BD
     client = await pool.connect();
-
-    // Récupérer les colonnes de la table
+    //Récupérer les colonnes de la tables
     let columns = await this.getColumns();
+    let filterColumns = columns.filter(col => col.toLowerCase() !== 'cadeaux_id'); // Filtrer 'CADEAUX_ID'
     // On transforme le tableau en une string séparée par des virgules
-    let column = columns.join(", ");
+    let column = filterColumns.join(", ");
 
     try {
       // Requête à exécuter

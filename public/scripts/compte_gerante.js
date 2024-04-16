@@ -94,6 +94,143 @@ $(document).ready(function () {
       $(this).removeClass("btn-success").addClass("btn-dark");
     }
   });
+  /* Ajout: Sélection de tous les boutons de classe "cadeau-add"
+* Crée le formulaire pour l'ajout d'un cadeau. */
+  $(document).on("click", ".cadeau-add", function (e) {
+    // La card représentant l'élément
+    let card = $(this).closest(".card");
+
+    // On vide la card et on la transforme en formulaire
+    card.empty();
+    let form = $("<form>", {
+      // Le formulaire est le corps de la card
+      class: "card-body",
+      // On envoie les données du formulaire à l'URL /gerante/compte/cadeaux
+      method: "post",
+      action: "/gerante/compte/cadeaux",
+    });
+
+    // NOTE: Utiliser gestion_personnes.getColumns() pour obtenir les colonnes ?
+    // On récupère les champs de la table nécessaire pour le formulaire
+    let champs = [
+      "nom",
+      "prix",
+      "taille",
+      "couleur",
+      "description",
+      "image"
+    ];
+
+    // Pour chaque champ, on ajoute un input au formulaire
+    champs.forEach(function (champ) {
+      if (champ === "nom") {
+        form.append(
+          $("<input>", {
+            type: "text",
+            class: "form-control " + champ,
+            name: champ,
+            placeholder: champ,
+            required: true,
+          })
+        );
+      }
+      else if (champ === "prix") {
+        form.append(
+          $("<input>", {
+            type: "number",
+            class: "form-control " + champ,
+            name: champ,
+            placeholder: champ,
+            required: true,
+          })
+        );
+      }
+      else {
+        form.append(
+          $("<input>", {
+            type: "text",
+            class: "form-control " + champ,
+            name: champ,
+            placeholder: champ,
+            required: false,
+          })
+        );
+      }
+    });
+
+    // Ajouter les boutons Valider et Annuler
+    form.append(
+      $("<button>", {
+        text: "Valider",
+        class: "btn btn-success cadeau-add-valider",
+        type: "submit",
+      })
+    );
+    form.append(
+      $("<button>", {
+        text: "Annuler",
+        class: "btn btn-warning cadeau-add-reset",
+        type: "button",
+      })
+    );
+
+    // On remplace le contenu actuel de la card par le formulaire
+    card.html(form);
+  });
+
+  /* Ajout: Sélection de tous les boutons de classe "cadeau-add-valider"
+  * Envoie les données du formulaire au serveur pour ajouter un cadeau. */
+  $(document).on("submit", ".cadeau-add-valider", function (e) {
+    // La card représentant l'élément
+    let card = $(this).closest(".card");
+
+    // Les données pour le nouveau cadeau
+    let data = {};
+    card.find("input").each(function () {
+      // On récupère l'attribut (la classe) et la valeur correspondant
+      data[$(this).attr("name")] = $(this).val();
+    });
+
+    // Requête AJAX pour mettre à jour l'élément
+    $.ajax({
+      // On envoie une requête de type POST à l'URL /gerante/compte/cadeaux
+      url: "/gerante/compte/cadeaux",
+      type: "POST",
+      data: data, // Les données à envoyer
+      success: function (data) {
+        console.log("succes");
+        // Si l'ajout dans la BD a réussi, le serveur à rechargé la page
+        window.location.href = "/gerante/compte?data=cadeau";
+      },
+      error: function (error) {
+        // En cas d'erreur, on affiche l'erreur dans la console
+        console.error(error.responseJSON.message);
+        // On affiche une alerte pour informer l'utilisateur
+        alert("Une erreur est survenue lors de l'ajout du cadeau.");
+      },
+    });
+  });
+
+  // Si l'ajout de cadeau est annulé
+  $(document).on("click", ".cadeau-add-reset", function (e) {
+    // La card représentant l'élément
+    let card = $(this).closest(".card");
+
+    // On efface le contenu actuel de la card, i.e le formulaire
+    card.empty();
+    // On remplace ce contenu par la card d'ajout de cadeau initiale
+    let cardBody = $("<div>", {
+      class: "card-body d-flex justify-content-center align-items-center",
+    });
+
+    // On ajoute le bouton "Ajouter cadeau"
+    cardBody.append(
+      '<button id="add_cadeau" class="btn btn-success cadeau-add" type="button">Ajouter cadeau</button>'
+    );
+
+    // On remplace le contenu actuel de la card par cardBody
+    card.html(cardBody);
+  });
 
   /* ******************** Gestion des boutons des card - Clients *********** */
 
@@ -276,6 +413,7 @@ $(document).ready(function () {
       data: data, // Les données à envoyer
       success: function (data) {
         // Si l'ajout dans la BD a réussi, le serveur à rechargé la page
+        window.location.href = "/gerante/compte?data=client";
       },
       error: function (error) {
         // En cas d'erreur, on affiche l'erreur dans la console

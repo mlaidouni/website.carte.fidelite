@@ -345,15 +345,14 @@ server.post("/gerante/compte/cadeaux", async (req, res) => {
 
     // Si on a pas levé d'erreur, on renvoie un statut de succès
     res.status(200);
-
     // On recharge la page (on envoie pas de message de succès car on redirige)
     res.redirect("/gerante/compte?data=cadeaux");
   } catch (error) {
-    printError("serveur: Erreur lors de l'ajout du client:");
+    printError("serveur: Erreur lors de l'ajout du cadeau:");
     printError(`-> ${error}`);
     res.status(500).json({
       success: false,
-      message: "Une erreur est survenue lors de l'ajout du client.",
+      message: "Une erreur est survenue lors de l'ajout du cadeau.",
     });
   }
 });
