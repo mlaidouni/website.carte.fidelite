@@ -176,11 +176,23 @@
       </div>
     </div>
     <% } else if (datatype === "panier") { %>
-    <h2>Cadeaux actuellement dans le panier</h2>
+    <h2 class="card-body d-flex justify-content-center align-items-center">
+      Cadeaux actuellement dans le panier
+    </h2>
     <div class="container mt-5">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
         Cher <%= client.user_id %>, votre panier est tristement vide. Ajoutez
         des cadeaux depuis <a href="/client/compte?data=accueil">cette page</a>
+      </div>
+      <div class="card-body d-flex justify-content-center align-items-center">
+        <button
+          id="valide-panier"
+          class="btn btn-success valide-panier"
+          type="button"
+        >
+          Valider la commande 
+          Total : <%panier_value%> 
+        </button>
       </div>
     </div>
     <% } %>
