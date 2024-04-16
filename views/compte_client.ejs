@@ -157,11 +157,9 @@
                 <%if (cadeau.taille){%>
                 <p class="card-text">Taille : <%=cadeau.taille%></p>
                 <%}%> <%if (cadeau.couleur){%>
-                <hr />
-                <p class="card-text">Couleur : <%=cadeau.couleur%></p>
+                <hr /><p class="card-text">Couleur : <%=cadeau.couleur%> </p>
                 <%}%> <%if (cadeau.description){%>
-                <hr />
-                <p class="card-text"><%=cadeau.description%></p>
+                <hr /><p class="card-text"> <%=cadeau.description%> </p>
                 <%}%>
               </details>
               <button
@@ -181,38 +179,8 @@
     <h2>Cadeaux actuellement dans le panier</h2>
     <div class="container mt-5">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
-        <% if (panier_counter > 0) { %> <% for (let i = 0; i < data.length; i++)
-        { let cadeau = data[i]; %>
-        <div class="col mb-4">
-          <div id="<%= cadeau.cadeaux_id %>" class="card">
-            <img
-              class="card-img-top"
-              src="/<%= cadeau.image %>"
-              alt="<%= cadeau.nom %>"
-            />
-            <div class="card-body">
-              <h5 class="card-title"><%= cadeau.nom %></h5>
-              <p class="card-text"><%= cadeau.prix %> €</p>
-              <details>
-                <summary>Plus d'informations</summary>
-                <% if (cadeau.taille) { %>
-                <p class="card-text">Taille : <%= cadeau.taille %></p>
-                <% } %> <% if (cadeau.couleur) { %>
-                <hr />
-                <p class="card-text">Couleur : <%= cadeau.couleur %></p>
-                <% } %> <% if (cadeau.description) { %>
-                <hr />
-                <p class="card-text"><%= cadeau.description %></p>
-                <% } %>
-              </details>
-            </div>
-          </div>
-        </div>
-        <% } %> <% } else { %>
-        <p>
-          Aucun cadeau dans le panier pour l'utilisateur <%= client.user_id %> !
-        </p>
-        <% } %>
+        Cher <%= client.user_id %>, votre panier est tristement vide. Ajoutez
+        des cadeaux depuis <a href="/client/compte?data=accueil">cette page</a>
       </div>
     </div>
     <% } %>
