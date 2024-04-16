@@ -155,9 +155,9 @@
                 <%if (cadeau.taille){%>
                 <p class="card-text">Taille : <%=cadeau.taille%> </p>
                 <%}%> <%if (cadeau.couleur){%>
-                  <hr /><p class="card-text">Couleur : <%=cadeau.couleur%> </p>
+                <hr /><p class="card-text">Couleur : <%=cadeau.couleur%> </p>
                 <%}%> <%if (cadeau.description){%>
-                  <hr /><p class="card-text"> <%=cadeau.description%> </p>
+                <hr /><p class="card-text"> <%=cadeau.description%> </p>
                 <%}%>
               </details>
               <button
@@ -176,7 +176,8 @@
     <h2>Cadeaux actuellement dans le panier</h2>
     <div class="container mt-5">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
-        Aucun cadeau dans le panier pour l'utilisateur <%= client.user_id %> !
+        Cher <%= client.user_id %>, votre panier est tristement vide. Ajoutez
+        des cadeaux depuis <a href="/client/compte?data=accueil">cette page</a>
       </div>
     </div>
     <% } %>
