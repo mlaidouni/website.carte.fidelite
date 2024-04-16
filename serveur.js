@@ -487,10 +487,10 @@ server.post("/gerante/compte/cadeaux", async (req, res) => {
       data[5]
     );
 
-    // Si on a pas levé d'erreur, on renvoie un message de succès
-    res
-      .status(200)
-      .json({ success: true, message: "Cadeau ajouté avec succès!" });
+    // Si on a pas levé d'erreur, on renvoie un statut de succès
+    res.status(200);
+    // On recharge la page (on envoie pas de message de succès car on redirige)
+    res.redirect("/gerante/compte?data=cadeaux");
   } catch (error) {
     printError("serveur: Erreur lors de l'ajout du cadeau:");
     printError(`-> ${error}`);
