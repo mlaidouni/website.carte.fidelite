@@ -363,8 +363,9 @@ server.get("/gerante/compte", async (req, res) => {
     // Rendu de la page avec les bonnes données
     res.render(compte_gerante, reponse);
   } catch (error) {
-    // prettier-ignore
-    printError("serveur: Erreur lors de l'affichage de la page de compte de la gérante:");
+    printError(
+      "serveur: Erreur lors de l'affichage de la page de compte de la gérante:"
+    );
     printError(`-> ${error}`);
     res.status(500).send(`${error}`);
   }
