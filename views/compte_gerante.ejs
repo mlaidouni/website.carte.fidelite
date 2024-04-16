@@ -85,16 +85,16 @@
             <div id="<%= client.user_id %>" class="card">
               <img src="/images/backg.jpg" class="card-img-top" alt="/images/backg.jpg" />
               <div class="card-body">
-                <h5 class="card-title"><span class="nom"><%= client.nom %></span> <span class="prenom"><%= client.prenom %></span></h5>
-                <h6 class="card-subtitle mb-2 text-muted"><span class="user_id"><%= client.user_id %></span></h6>
+                <h5 class="card-title"><span class="nom" type="text"><%= client.nom %></span> <span class="prenom" type="text"><%= client.prenom %></span></h5>
+                <h6 class="card-subtitle mb-2 text-muted"><span class="user_id" type="text"><%= client.user_id %></span></h6>
                 <details>
                   <summary>Plus d'informations</summary>
                   <p class="card-text">
-                    Contact: <span class="email"><%= client.email %></span> - <span class="telephone"><%= client.telephone %></span>
+                    Contact: <span class="email" type="email"><%= client.email %></span> - <span class="telephone" type="texte"><%= client.telephone %></span>
                     <hr>
-                    Date de naissance: <span class="date_naissance"><%= client.date_naissance %></span>
+                    Date de naissance: <span class="date_naissance" type="date"><%= client.date_naissance %></span>
                     <hr>
-                    Points: <span class="points"><%= client.points %></span>
+                    Points: <span class="points" type="number"><%= client.points %></span>
                   </p>
                 </details>
                 <button id="<%= client.user_id %>" class="btn btn-dark client-update" type="button">Modifier</button>
@@ -122,29 +122,26 @@
           <% for (let i=0; i < data.length; i++) { let cadeau=data[i]; %>
             <div class="col mb-4">
               <div id="<%= cadeau.cadeaux_id %>" class="card">
-                <img src="/<%= cadeau.image %>" class="card-img-top" alt="/<%= cadeau.image %>" />
+                <img src="/images/<%= cadeau.image %>" class="card-img-top" alt="/images/<%= cadeau.image %>" />
                 <div class="card-body">
-                  <h5 class="card-title"><span class="nom"><%= cadeau.nom %></span></h5>
+                  <h5 class="card-title"><span class="nom" type="text"><%= cadeau.nom %></span></h5>
                   <h6 class="card-subtitle mb-2 text-muted">
                     <!-- TODO: Ajouter la quantité restante -->
-                    Quantite restante: <!-- <span class="quantite"><%= cadeau.quantite %></span> -->
+                    Quantite restante: <!-- <span class="quantite" type="number"><%= cadeau.quantite %></span> -->
                   </h6>
                   <details>
                     <summary>Plus d'informations</summary>
 
                       <p class="card-text">
                       <!-- On affiche que les informations existantes -->
-                      <%if (cadeau.taille){%>
-                      <p class="card-text taille">Taille : <%=cadeau.taille%> </p>
-                      <%}%> <%if (cadeau.couleur){%>
-                        <hr /><p class="card-text couleur">Couleur : <%=cadeau.couleur%> </p>
-                      <%}%> <%if (cadeau.description){%>
-                        <hr /><p class="card-text description"> <%=cadeau.description%> </p>
-                      <%}%>
+                      <p class="card-text taille">Taille : <span class="taille" type="text"><%=cadeau.taille%></span></p>
+                        <hr /><p class="card-text couleur">Couleur : <span class="couleur" type="text"><%=cadeau.couleur%></span></p>
+                        <hr /><p class="card-text description"><span class="description" type="text"><%=cadeau.description%></span></p>
+                        <hr /><p class="card-text image"><span class="imagea" type="image"><%=cadeau.image%></span></p>
                     </p>
                   </details>
                   <button id="<%= cadeau.cadeaux_id %>" class="btn btn-dark cadeau-update" type="button">Modifier</button>
-                  <button id="<%= cadeau.cadeaux_id %>" class="btn btn-warning cadeau-annule" type="button">Annuler</button>
+                  <!-- <button id="<%= cadeau.cadeaux_id %>" class="btn btn-warning cadeau-annule" type="button">Annuler</button> -->
                   <button id="<%= cadeau.cadeaux_id %>" class="btn btn-danger cadeau-delete" type="button">Supprimer</button>
                 </div>
               </div>

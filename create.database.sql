@@ -50,7 +50,7 @@ INSERT INTO CADEAUX (
     NULL,
     'Bleu',
     'Sac à dos en nylon imperméable',
-    'images/kungfupanda.png'
+    'sac-a-dos.png'
 ),
 (
     'Mug',
@@ -58,7 +58,7 @@ INSERT INTO CADEAUX (
     NULL,
     NULL,
     'Mug en céramique avec motif personnalisé',
-    'images/shrek_swamp.png'
+    'mug-blanc.png'
 ),
 (
     'Clé USB',
@@ -66,7 +66,7 @@ INSERT INTO CADEAUX (
     NULL,
     'Argent',
     'Clé USB 32 Go avec connecteur rétractable',
-    'images/kenganashura.png'
+    'usb.png'
 ),
 (
     'Parapluie',
@@ -74,7 +74,7 @@ INSERT INTO CADEAUX (
     NULL,
     'Rouge',
     'Parapluie pliable avec motif floral',
-    'images/kungfupanda.png'
+    'parapluie.png'
 ),
 (
     'Gourde',
@@ -82,7 +82,7 @@ INSERT INTO CADEAUX (
     NULL,
     'Vert',
     'Gourde en acier inoxydable 500 ml',
-    'images/kungfupanda.png'
+    'kungfupanda.png'
 ),
 (
     'Stylo',
@@ -90,7 +90,7 @@ INSERT INTO CADEAUX (
     NULL,
     NULL,
     'Stylo à bille rétractable',
-    'images/shrek_swamp.png'
+    'stylo.png'
 ),
 (
     'Carnet de notes',
@@ -98,7 +98,7 @@ INSERT INTO CADEAUX (
     NULL,
     'Rose',
     'Carnet de notes ligné avec couverture en cuir synthétique',
-    'images/kenganashura.png'
+    'carnet-de-notes.png'
 ),
 (
     'Porte-clés',
@@ -106,7 +106,7 @@ INSERT INTO CADEAUX (
     NULL,
     'Jaune',
     'Porte-clés en métal avec pendentif en forme de cœur',
-    'images/kungfupanda.png'
+    'kungfupanda.png'
 ),
 (
     'Tapis de souris',
@@ -114,7 +114,7 @@ INSERT INTO CADEAUX (
     NULL,
     'Gris',
     'Tapis de souris avec surface lisse',
-    'images/kungfupanda.png'
+    'kungfupanda.png'
 ),
 (
     'Lampe de poche',
@@ -122,7 +122,7 @@ INSERT INTO CADEAUX (
     NULL,
     'Noir',
     'Lampe de poche LED compacte avec dragonne',
-    'images/shrek_swamp.png'
+    'shrek_swamp.png'
 );
 
 -- Insertion des données dans la table personnes
@@ -144,7 +144,7 @@ INSERT INTO PERSONNES (
     'Ayman',
     'ayman@grimpette.fr',
     '0600000000',
-    '01/11/2003',
+    '2003-11-01',
     25000
 ),
 (
@@ -155,7 +155,7 @@ INSERT INTO PERSONNES (
     'Jana',
     'jana@grimpette.fr',
     '0600000000',
-    '23/10/2003',
+    '2003-10-23',
     95
 ),
 (
@@ -166,7 +166,7 @@ INSERT INTO PERSONNES (
     'Elyo',
     'elyo@grimpette.fr',
     '0600000000',
-    '11/02/2003',
+    '2003-02-11',
     6
 ),
 (
@@ -177,7 +177,7 @@ INSERT INTO PERSONNES (
     'Manon',
     'man@grimpette.fr',
     '0600000000',
-    '19/01/2003',
+    '2003-01-19',
     300
 ),
 (
@@ -188,7 +188,7 @@ INSERT INTO PERSONNES (
     'Ilian',
     'iliou@grimpette.fr',
     '0600000000',
-    '14/12/2004',
+    '2004-12-14',
     10
 ),
 (
@@ -199,7 +199,7 @@ INSERT INTO PERSONNES (
     'Navdeep',
     'nav@grimpette.fr',
     '0600000000',
-    '01/01/2003',
+    '2003-01-01',
     300
 ),
 (
@@ -210,7 +210,7 @@ INSERT INTO PERSONNES (
     'Victor',
     'morel@grimpette.fr',
     '0600000000',
-    '08/07/2003',
+    '2003-07-08',
     24
 ),
 (
@@ -221,7 +221,7 @@ INSERT INTO PERSONNES (
     'Elisa',
     'elisa@grimpette.fr',
     '0600000000',
-    '10/06/2003',
+    '2003-06-10',
     500
 ),
 (
@@ -232,7 +232,7 @@ INSERT INTO PERSONNES (
     'Mohamed',
     'mohaldn@grimpette.fr',
     '0600000000',
-    '30/06/2003',
+    '2003-06-30',
     1
 ),
 (
@@ -243,7 +243,7 @@ INSERT INTO PERSONNES (
     'Laure',
     'lh@grimpette.fr',
     '0600000000',
-    '01/01/2003',
+    '2003-01-01',
     4532546
 ),
 (
@@ -254,6 +254,6 @@ INSERT INTO PERSONNES (
     'John',
     'john@gmail.com',
     '0123456789',
-    '01/01/1990',
+    '2006-06-06',
     100
 );

@@ -39,7 +39,7 @@ $(document).ready(function () {
        * les mêmes classes et valeurs */
       card.find("span").each(function () {
         let input = $("<input>", {
-          type: "text",
+          type: $(this).attr("type"),
           class: $(this).attr("class"),
           value: $(this).text(),
         });
@@ -94,8 +94,9 @@ $(document).ready(function () {
       $(this).removeClass("btn-success").addClass("btn-dark");
     }
   });
+
   /* Ajout: Sélection de tous les boutons de classe "cadeau-add"
-* Crée le formulaire pour l'ajout d'un cadeau. */
+   * Crée le formulaire pour l'ajout d'un cadeau. */
   $(document).on("click", ".cadeau-add", function (e) {
     // La card représentant l'élément
     let card = $(this).closest(".card");
@@ -108,21 +109,17 @@ $(document).ready(function () {
       // On envoie les données du formulaire à l'URL /gerante/compte/cadeaux
       method: "post",
       action: "/gerante/compte/cadeaux",
+      // Nécessaire pour le module multer
+      enctype: "multipart/form-data",
     });
 
     // NOTE: Utiliser gestion_personnes.getColumns() pour obtenir les colonnes ?
     // On récupère les champs de la table nécessaire pour le formulaire
-    let champs = [
-      "nom",
-      "prix",
-      "taille",
-      "couleur",
-      "description",
-      "image"
-    ];
+    let champs = ["nom", "prix", "taille", "couleur", "description", "image"];
 
     // Pour chaque champ, on ajoute un input au formulaire
     champs.forEach(function (champ) {
+      // Les champs nom, prix et image sont obligatoires
       if (champ === "nom") {
         form.append(
           $("<input>", {
@@ -133,8 +130,7 @@ $(document).ready(function () {
             required: true,
           })
         );
-      }
-      else if (champ === "prix") {
+      } else if (champ === "prix") {
         form.append(
           $("<input>", {
             type: "number",
@@ -144,11 +140,22 @@ $(document).ready(function () {
             required: true,
           })
         );
-      }
-      else {
+      } else if (champ === "image") {
         form.append(
           $("<input>", {
-            type: "text",
+            type: "file",
+            // Nom pour être reconnu par multer et le serveur
+            name: "uploaded-image",
+            // On ajoute la classe "form-control-file" pour le style bootstrap
+            class: "form-control-file " + champ,
+            placeholder: champ,
+            required: true,
+          })
+        );
+      } else {
+        form.append(
+          $("<input>", {
+            type: $(this).attr("type"),
             class: "form-control " + champ,
             name: champ,
             placeholder: champ,
@@ -179,7 +186,7 @@ $(document).ready(function () {
   });
 
   /* Ajout: Sélection de tous les boutons de classe "cadeau-add-valider"
-  * Envoie les données du formulaire au serveur pour ajouter un cadeau. */
+   * Envoie les données du formulaire au serveur pour ajouter un cadeau. */
   $(document).on("submit", ".cadeau-add-valider", function (e) {
     // La card représentant l'élément
     let card = $(this).closest(".card");
@@ -274,7 +281,7 @@ $(document).ready(function () {
        * les mêmes classes et valeurs */
       card.find("span").each(function () {
         let input = $("<input>", {
-          type: "text",
+          type: $(this).attr("type"),
           class: $(this).attr("class"),
           value: $(this).text(),
         });
@@ -371,8 +378,7 @@ $(document).ready(function () {
             required: true,
           })
         );
-      }
-      else {
+      } else {
         form.append(
           $("<input>", {
             type: "text",

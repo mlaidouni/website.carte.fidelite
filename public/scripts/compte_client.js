@@ -66,7 +66,7 @@ $(document).ready(function () {
           <div id="${cadeau.cadeaux_id}" class="card">
             <img
               class="card-img-top"
-              src="/${cadeau.image}"
+              src="/images/${cadeau.image}"
               alt="${cadeau.image}"
             />
             <div class="card-body">

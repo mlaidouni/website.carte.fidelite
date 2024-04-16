@@ -46,6 +46,14 @@
 - Ajout de la classe '.list-cadeau' pour identifier le bloc (de class row) qui contient les cadeaux dans la page d'accueil.
 - Affichage dynamique des cadeaux dans la page d'accueil lors de l'ajout d'un cadeau.
 
+<!--  -->
+
+- Dans le compte gérante, toutes les sections sont affichés pour les cadeaux, car elles sont toutes potentiellement modifiables.
+- Ajout du champ image pour les cadeaux dans le compte gérante.
+- Ajout de la possibilité d'uploader des fichiers lors de l'ajout des cadeaux par la gérante.
+- Gestion des inputs en fonction de leur type (text, number, file, email, data, ...).
+- Correction du chemin des images.
+
 ## Notes du nettoyage
 
 - [ ] Rendre le texte du dropdown client blanc (ou plus lisibles)
@@ -58,6 +66,7 @@
 - [ ] N'afficher les boutons que lorsque la card est survolée (voir exemple sur le site de la fnac.)
 - [ ] Ajouter les menus déroulants pour les caractéristiques des cadeaux. Ces caractéristiques doivent modifier l'id de la card qui représente le cadeau, id qui sera pris en compte lors de l'ajout du cadeau au panier.
 - [ ] Le titre des sections (comme 'Liste des clients', 'Liste des cadeaux') doit être centré et stylisé.
+- [ ] Lorsqu'il y a une erreur lors d'une modif de client, les input ne partent pas alors que le bouton valider part. Pour reproduire cette erreur: modifier un client -> changer le numéro avec plus de 10 chiffres -> valider.
 
 <!-- Fix rule MD028 -->
 

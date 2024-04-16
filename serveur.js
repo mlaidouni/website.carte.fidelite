@@ -9,6 +9,25 @@ const module_personne = require("./public/scripts/gestion_personnes");
 const gestion_cadeaux = new module_cadeau("cadeaux");
 const gestion_personnes = new module_personne("personnes");
 
+/* ********** Import et configuration de multer ********** */
+
+const multer = require("multer");
+/* Ici, cb est une fonction de callback. Elle est appelée par multer lorsqu'il
+ *  a terminé de traiter le fichier. */
+const storage = multer.diskStorage({
+  // Configuration de la destination de stockage des fichiers uploadés.
+  destination: function (req, file, cb) {
+    cb(null, "public/images");
+  },
+  // Configuration du nom des fichiers uploadés.
+  filename: function (req, file, cb) {
+    // On conserve le nom original, auquel on ajoute la date actuelle
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
 /* ********** Création et configuration du serveur ********** */
 
 // Création du serveur
@@ -471,36 +490,43 @@ server.put("/gerante/compte/clients", async (req, res) => {
   }
 });
 
-// Ajout d'un cadeau
-server.post("/gerante/compte/cadeaux", async (req, res) => {
-  try {
-    // Récupérer les données du formulaire dans un tableau
-    let data = [];
-    for (let attr in req.body) data.push(req.body[attr]);
+// Gérer l'ajout d'un cadeau avec l'updload d'une image
+server.post(
+  "/gerante/compte/cadeaux",
+  upload.single("uploaded-image"),
+  async (req, res) => {
+    try {
+      // Récupérer les données du formulaire dans un tableau
+      let data = [];
+      for (let attr in req.body) data.push(req.body[attr]);
 
-    // On ajoute les valeurs dans la BD
-    await gestion_cadeaux.insert(
-      data[0],
-      data[1],
-      data[2],
-      data[3],
-      data[4],
-      data[5]
-    );
+      // Ajouter le chemin du fichier téléchargé à data
+      data.push(req.file.filename);
 
-    // Si on a pas levé d'erreur, on renvoie un statut de succès
-    res.status(200);
-    // On recharge la page (on envoie pas de message de succès car on redirige)
-    res.redirect("/gerante/compte?data=cadeaux");
-  } catch (error) {
-    printError("serveur: Erreur lors de l'ajout du cadeau:");
-    printError(`-> ${error}`);
-    res.status(500).json({
-      success: false,
-      message: "Une erreur est survenue lors de l'ajout du cadeau.",
-    });
+      // On ajoute les valeurs dans la BD
+      await gestion_cadeaux.insert(
+        data[0],
+        data[1],
+        data[2],
+        data[3],
+        data[4],
+        data[5],
+        data[6]
+      );
+
+      // Si on a pas levé d'erreur, on renvoie un message de succès
+      res.status(200);
+      res.redirect("/gerante/compte?data=cadeaux");
+    } catch (error) {
+      printError("serveur: Erreur lors de l'ajout du cadeau:");
+      printError(`-> ${error}`);
+      res.status(500).json({
+        success: false,
+        message: "Une erreur est survenue lors de l'ajout du cadeau.",
+      });
+    }
   }
-});
+);
 
 // Ajout d'un client
 server.post("/gerante/compte/clients", async (req, res) => {

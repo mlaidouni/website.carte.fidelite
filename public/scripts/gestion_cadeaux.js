@@ -61,6 +61,7 @@ function Cadeau(tableName) {
    * @param {string} taille - La taille du cadeau.
    * @param {string} couleur - La couleeur du cadeau.
    * @param {string} description - La description du cadeau.
+   * @param {string} image - Le nom de l'image du cadeau.
    * @async
    */
   this.insert = async function (
@@ -75,7 +76,10 @@ function Cadeau(tableName) {
     client = await pool.connect();
     //Récupérer les colonnes de la tables
     let columns = await this.getColumns();
-    let filterColumns = columns.filter(col => col.toLowerCase() !== 'cadeaux_id'); // Filtrer 'CADEAUX_ID'
+    // On filtre les colonnes pour ne pas insérer 'CADEAUX_ID'
+    let filterColumns = columns.filter(
+      (col) => col.toLowerCase() !== "cadeaux_id"
+    );
     // On transforme le tableau en une string séparée par des virgules
     let column = filterColumns.join(", ");
 
