@@ -178,7 +178,9 @@
       </div>
     </div>
     <% } else if (datatype === "panier") { %>
-    <h2>Cadeaux actuellement dans le panier</h2>
+    <h2 class="card-body d-flex justify-content-center align-items-center">
+      Cadeaux actuellement dans le panier
+    </h2>
     <div class="container mt-5">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
         <% if (panier_counter > 0) { %> <% for (let i = 0; i < data.length; i++)
@@ -213,6 +215,16 @@
           Aucun cadeau dans le panier pour l'utilisateur <%= client.user_id %> !
         </p>
         <% } %>
+      </div>
+      <div class="card-body d-flex justify-content-center align-items-center">
+        <button
+          id="valide-panier"
+          class="btn btn-success valide-panier"
+          type="button"
+        >
+          Valider la commande 
+          Total : <%panier_value%> 
+        </button>
       </div>
     </div>
     <% } %>
