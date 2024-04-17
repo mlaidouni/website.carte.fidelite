@@ -139,6 +139,12 @@ let client_add = function (cadeau) {
   client_connected.points_h -= cadeau.prix;
 };
 
+let client_empty_panier= function(){
+  client_connected.points = client_connected.points_h;
+  client_connected.panier = [];
+  client_connected.panier_counter = 0;
+  client_connected.panier_value = 0;
+}
 let client_valid = function (client) {
   client_connected.points = client_connected.points_h;
   client_reset();
@@ -406,11 +412,11 @@ server.post("/client/compte/cadeau", async (req, res) => {
 
 server.get("/client/compte/panier", async (req, res) => {
   try {
-    for (let i = 0; i < panier.length; i++) {
-      await gestion_cadeaux.destock(panier[i].id);
+    for (let i = 0; i < client_connected.panier.length; i++) {
+      await gestion_cadeaux.destock(client_connected.panier[i].cadeau_id);
     }
-    await gestion_personnes.update(client_connected.client.id, "points", client_connected.points_h);
-
+    await gestion_personnes.update(client_connected.client.user_id, "points", client_connected.points_h);
+    client_empty_panier();
   } catch (error) {
     printError("serveur: Erreur lors de la validation du panier:");
     printError(`-> ${error}`);
