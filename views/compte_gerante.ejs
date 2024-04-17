@@ -127,17 +127,24 @@
                   <h5 class="card-title"><span class="nom" type="text"><%= cadeau.nom %></span></h5>
                   <h6 class="card-subtitle mb-2 text-muted">
                     <!-- TODO: Ajouter la quantité restante -->
-                    Quantite restante: <!-- <span class="quantite" type="number"><%= cadeau.quantite %></span> -->
+                    Quantite restante: <span class="quantite" type="number"><%= cadeau.stock %></span> 
                   </h6>
                   <details>
                     <summary>Plus d'informations</summary>
 
                       <p class="card-text">
                       <!-- On affiche que les informations existantes -->
+                      <%if (cadeau.taille){%>
                       <p class="card-text taille">Taille : <span class="taille" type="text"><%=cadeau.taille%></span></p>
-                        <hr /><p class="card-text couleur">Couleur : <span class="couleur" type="text"><%=cadeau.couleur%></span></p>
-                        <hr /><p class="card-text description"><span class="description" type="text"><%=cadeau.description%></span></p>
-                        <hr /><p class="card-text image"><span class="image" type="image"><%=cadeau.image%></span></p>
+                      <%}%>
+                      <%if (cadeau.couleur){%>
+                      <hr /><p class="card-text couleur">Couleur : <span class="couleur" type="text"><%=cadeau.couleur%></span></p>
+                      <%}%>
+                      <%if (cadeau.description){%>
+                      <hr /><p class="card-text description"><span class="description" type="text"><%=cadeau.description%></span></p>
+                      <%}%>
+                      <hr /><p class="card-text image"><span class="image" type="image"><%=cadeau.image%></span></p>
+
                     </p>
                   </details>
                   <button id="<%= cadeau.cadeau_id %>" class="btn btn-dark cadeau-update" type="button">Modifier</button>
