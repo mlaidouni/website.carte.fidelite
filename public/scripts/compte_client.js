@@ -168,9 +168,7 @@ $(document).ready(function () {
       },
     });
   });
-  $(document).on("click", ".valide-panier", function () {
-
-  });
+  $(document).on("click", ".valide-panier", function () {});
 
   /* ******************** Gestion des boutons - Panier *********** */
 });

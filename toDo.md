@@ -66,6 +66,11 @@
 - Fix de la taille des images des card.
 - Ombre + affichage des boutons lorsque l'on passe sur une card.
 
+<!--  -->
+
+- Ajout des types de cadeaux (normal ou special).
+- Modification de 'gestion_cadeaux', pour gérer les types de cadeaux.
+
 ## A faire (style)
 
 - [x] Rendre le texte du dropdown client blanc (ou plus lisibles)
@@ -93,8 +98,7 @@
 
 - [ ] Ajouter les menus déroulants pour les caractéristiques des cadeaux. Ces caractéristiques doivent modifier l'id de la card qui représente le cadeau, id qui sera pris en compte lors de l'ajout du cadeau au panier.
 - [x] au début de la connection, vérifier si la date = DATE_NAISSANCE du client, afficher animation
-  - [ ] si oui, on **ajoute** des cadeaux spéciaux au client
-    - _FIXME: Comment ajouter des cadeaux, alors que l'on affiche toujours tous les cadeaux dont les points est $\le$ points du client et que ces cadeaux spéciaux ne sont pas dans la BD, ou du moins, pas partagés._
+  - [x] si oui, on **ajoute** des cadeaux spéciaux au client
 - [x] affichage des cadeaux actuellements dans le panier
   - [ ] **bouton** pour **supprimer** un cadeau du panier
   - [ ] **bouton** pour **vider** le panier

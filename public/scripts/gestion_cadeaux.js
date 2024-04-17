@@ -67,6 +67,7 @@ function Cadeau(tableName) {
   this.insert = async function (
     nom,
     prix,
+    type,
     taille,
     couleur,
     description,
@@ -87,9 +88,9 @@ function Cadeau(tableName) {
     try {
       // Requête à exécuter
       let query = {
-        text: `INSERT INTO ${tableName} (${column}) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        text: `INSERT INTO ${tableName} (${column}) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
         // Les valeurs à remplacer dans la requête
-        values: [nom, prix, taille, couleur, description, stock, image],
+        values: [nom, prix, type, taille, couleur, description, stock, image],
       };
 
       // On attent l'exécution de la requête
@@ -104,17 +105,20 @@ function Cadeau(tableName) {
   };
 
   /**
- * Supprime un élément d'un cadeau dans la BD.
- * @param {integer} id - L'id du cadeau.
- * @async
- */
+   * Supprime un élément d'un cadeau dans la BD.
+   * @param {integer} id - L'id du cadeau.
+   * @async
+   */
   this.destock = async function (id) {
     // Connexion à la BD
     client = await pool.connect();
 
     try {
       // Requête à exécuter
-      const selectResult = await client.query(`SELECT stock FROM ${tableName} WHERE id = $1`, [id]);
+      const selectResult = await client.query(
+        `SELECT stock FROM ${tableName} WHERE id = $1`,
+        [id]
+      );
       const stock = selectResult.rows[0].stock;
 
       if (stock > 1) {
@@ -126,8 +130,7 @@ function Cadeau(tableName) {
 
         // On attent l'exécution de la requête
         await client.query(query);
-      }
-      else{
+      } else {
         this.delete(id);
       }
     } catch (error) {
@@ -195,6 +198,64 @@ function Cadeau(tableName) {
   };
 
   /**
+   * @returns Renvoie la liste des cadeaux normaux.
+   * @async
+   */
+  this.getNormal = async function () {
+    // Connexion à la BD
+    const client = await pool.connect();
+    // Les données récupérées dans la BD
+    let data;
+
+    try {
+      // On attent l'exécution de la requête
+      data = await client.query(
+        `SELECT * FROM ${tableName} WHERE type = 'normal'`
+      );
+    } catch (error) {
+      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
+      throw error;
+    } finally {
+      // On libère le client, que la requête ait réussi ou non.
+      client.release();
+    }
+
+    // On stocke les données dans un tableau
+    let result = [];
+    for (let row of data.rows) result.push(row);
+    return result;
+  };
+
+  /**
+   * @returns Renvoie la liste des cadeaux spéciaux.
+   * @async
+   */
+  this.getSpecial = async function () {
+    // Connexion à la BD
+    const client = await pool.connect();
+    // Les données récupérées dans la BD
+    let data;
+
+    try {
+      // On attent l'exécution de la requête
+      data = await client.query(
+        `SELECT * FROM ${tableName} WHERE type = 'special'`
+      );
+    } catch (error) {
+      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
+      throw error;
+    } finally {
+      // On libère le client, que la requête ait réussi ou non.
+      client.release();
+    }
+
+    // On stocke les données dans un tableau
+    let result = [];
+    for (let row of data.rows) result.push(row);
+    return result;
+  };
+
+  /**
    * @returns Renvoie la liste des cadeaux inférieurs à un montant n.
    * @param {integer} n - Le montant maximal.
    * @async
@@ -208,7 +269,7 @@ function Cadeau(tableName) {
     try {
       // Requête à exécuter
       let query = {
-        text: `SELECT * FROM ${tableName} WHERE prix <= $1`,
+        text: `SELECT * FROM ${tableName} WHERE prix <= $1 AND type = 'normal'`,
         // Les valeurs à remplacer dans la requête
         values: [n],
       };

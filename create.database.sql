@@ -17,6 +17,7 @@ CREATE TABLE CADEAUX (
     CADEAU_ID SERIAL PRIMARY KEY, -- Identifiant du cadeau
     NOM VARCHAR(255) NOT NULL, -- Nom du cadeau
     PRIX INTEGER NOT NULL, -- Prix du cadeau en points
+    TYPE VARCHAR(7) NOT NULL DEFAULT 'normal', -- Type du cadeau (normal ou special)
     TAILLE VARCHAR(255), -- Taille du cadeau (not required)
     COULEUR VARCHAR(255), -- Couleur du cadeau (not required)
     DESCRIPTION TEXT, -- Description du cadeau (not required)
@@ -41,14 +42,26 @@ CREATE TABLE PERSONNES (
 INSERT INTO CADEAUX (
     NOM,
     PRIX,
+    TYPE,
     TAILLE,
     COULEUR,
     DESCRIPTION,
     STOCK,
     IMAGE
 ) VALUES (
+    'Moumou le mouton',
+    100,
+    'special',
+    '20 cm',
+    'Blanc',
+    'Un doudou ultra doux !',
+    1,
+    'moumou.png'
+),
+(
     'Sac à dos',
-    150,
+    15,
+    'normal',
     NULL,
     'Bleu',
     'Sac à dos en nylon imperméable',
@@ -57,7 +70,8 @@ INSERT INTO CADEAUX (
 ),
 (
     'Mug',
-    50,
+    6,
+    'normal',
     NULL,
     NULL,
     'Mug en céramique avec motif personnalisé',
@@ -66,7 +80,8 @@ INSERT INTO CADEAUX (
 ),
 (
     'Clé USB',
-    30,
+    7,
+    'normal',
     NULL,
     'Argent',
     'Clé USB 32 Go avec connecteur rétractable',
@@ -75,7 +90,8 @@ INSERT INTO CADEAUX (
 ),
 (
     'Parapluie',
-    70,
+    12,
+    'normal',
     NULL,
     'Rouge',
     'Parapluie pliable avec motif floral',
@@ -84,7 +100,8 @@ INSERT INTO CADEAUX (
 ),
 (
     'Gourde',
-    40,
+    10,
+    'normal',
     NULL,
     'Vert',
     'Gourde en acier inoxydable 500 ml',
@@ -93,7 +110,8 @@ INSERT INTO CADEAUX (
 ),
 (
     'Stylo',
-    20,
+    2,
+    'normal',
     NULL,
     NULL,
     'Stylo à bille rétractable',
@@ -102,7 +120,8 @@ INSERT INTO CADEAUX (
 ),
 (
     'Carnet de notes',
-    60,
+    11,
+    'normal',
     NULL,
     'Rose',
     'Carnet de notes ligné avec couverture en cuir synthétique',
@@ -111,7 +130,8 @@ INSERT INTO CADEAUX (
 ),
 (
     'Porte-clés',
-    25,
+    3,
+    'normal',
     NULL,
     'Jaune',
     'Porte-clés en métal avec pendentif en forme de cœur',
@@ -120,7 +140,8 @@ INSERT INTO CADEAUX (
 ),
 (
     'Tapis de souris',
-    35,
+    18,
+    'normal',
     NULL,
     'Gris',
     'Tapis de souris avec surface lisse',
@@ -129,12 +150,23 @@ INSERT INTO CADEAUX (
 ),
 (
     'Lampe de poche',
-    45,
+    16,
+    'normal',
     NULL,
     'Noir',
     'Lampe de poche LED compacte avec dragonne',
     8,
     'shrek_swamp.png'
+),
+(
+    'Maillot Real Madrid',
+    105,
+    'special',
+    'M',
+    'Noir',
+    'Maillot Third du Real Madrid 2023/2024',
+    10,
+    'real.png'
 );
 
 -- Insertion des données dans la table personnes
@@ -157,7 +189,7 @@ INSERT INTO PERSONNES (
     'ayman@grimpette.fr',
     '0600000000',
     '2003-11-01',
-    25000
+    10
 ),
 (
     'janad',
@@ -168,7 +200,7 @@ INSERT INTO PERSONNES (
     'jana@grimpette.fr',
     '0600000000',
     '2003-10-23',
-    95
+    105
 ),
 (
     'elyogangshit',
@@ -179,7 +211,7 @@ INSERT INTO PERSONNES (
     'elyo@grimpette.fr',
     '0600000000',
     '2003-02-11',
-    6
+    500
 ),
 (
     'man',
@@ -190,7 +222,7 @@ INSERT INTO PERSONNES (
     'man@grimpette.fr',
     '0600000000',
     '2003-01-19',
-    300
+    14
 ),
 (
     'iliou',
@@ -201,7 +233,7 @@ INSERT INTO PERSONNES (
     'iliou@grimpette.fr',
     '0600000000',
     '2004-12-14',
-    10
+    4
 ),
 (
     'nav',
@@ -212,7 +244,7 @@ INSERT INTO PERSONNES (
     'nav@grimpette.fr',
     '0600000000',
     '2003-01-01',
-    300
+    6
 ),
 (
     'villomega',
@@ -223,7 +255,7 @@ INSERT INTO PERSONNES (
     'morel@grimpette.fr',
     '0600000000',
     '2003-07-08',
-    24
+    2
 ),
 (
     'ralizz',
@@ -234,7 +266,7 @@ INSERT INTO PERSONNES (
     'elisa@grimpette.fr',
     '0600000000',
     '2003-06-10',
-    500
+    13
 ),
 (
     'kmzx',
@@ -256,7 +288,7 @@ INSERT INTO PERSONNES (
     'lh@grimpette.fr',
     '0600000000',
     '2003-01-01',
-    4532546
+    25
 ),
 (
     'john.doe',
@@ -267,5 +299,5 @@ INSERT INTO PERSONNES (
     'john@gmail.com',
     '0123456789',
     '2006-06-06',
-    100
+    4
 );

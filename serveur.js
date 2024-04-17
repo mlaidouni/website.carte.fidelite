@@ -144,7 +144,7 @@ let client_add = function (cadeau) {
 let client_valid = function (client) {
   client_connected.points = client_connected.points_h;
   client_reset();
-}
+};
 
 /* ******************** Gestion des routes ******************** */
 
@@ -294,8 +294,10 @@ server.get("/client/compte", async (req, res) => {
     if (dataType === "accueil") {
       // On récupère la liste des cadeaux du client
       let cadeaux = await gestion_cadeaux.getClient(client_connected.points_h);
+      let speciaux = await gestion_cadeaux.getSpecial();
       // On renvoie les données correspondantes
       reponse["data"] = cadeaux;
+      reponse["speciaux"] = speciaux;
     } else if (dataType === "panier") {
       // On renvoie les données correspondantes
       reponse["data"] = client_connected.panier;
@@ -409,8 +411,11 @@ server.get("/client/compte/panier", async (req, res) => {
     for (let i = 0; i < panier.length; i++) {
       await gestion_cadeaux.destock(panier[i].id);
     }
-    await gestion_personnes.update(client_connected.client.id, "points", client_connected.points_h);
-
+    await gestion_personnes.update(
+      client_connected.client.id,
+      "points",
+      client_connected.points_h
+    );
   } catch (error) {
     printError("serveur: Erreur lors de la validation du panier:");
     printError(`-> ${error}`);
@@ -483,7 +488,7 @@ server.get("/gerante/compte", async (req, res) => {
       reponse["data"] = clients;
     } else if (dataType === "cadeaux") {
       // On récupère la liste des cadeaux
-      let cadeaux = await gestion_cadeaux.getAll();
+      let cadeaux = await gestion_cadeaux.getNormal();
       // On renvoie le type de la donnée demandée et les données correspondantes
       reponse["data"] = cadeaux;
     }
