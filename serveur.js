@@ -2,6 +2,10 @@
 const express = require("express");
 const path = require("path");
 
+/* On charge les variables d'environnement. Cela permet notamment de charger
+ * les variables nécessaires à la connexion du pool, pour plus de sécurité. */
+require("dotenv").config();
+
 // Import des modules de gestion des cadeaux et des personnes
 const module_cadeau = require("./public/scripts/gestion_cadeaux");
 const module_personne = require("./public/scripts/gestion_personnes");

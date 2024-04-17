@@ -54,21 +54,38 @@
 - Gestion des inputs en fonction de leur type (text, number, file, email, data, ...).
 - Correction du chemin des images.
 
-## Notes du nettoyage
+## A faire (style)
 
 - [ ] Rendre le texte du dropdown client blanc (ou plus lisibles)
-- [ ] Certaines colonnes sont encore écrites en dur dans le code de gestion_personnes et gestion_cadeaux.
-- [ ] Gérer l'affichage graphique des erreurs, un peu comme pour la page de connexion (par ex, avec des alertes).
-- [ ] Pour la suppression, il faut vérifier que le client existe avant de le supprimer.
 - [ ] Ajouter du padding entre les boutons (notamment modifier, supprimer etc dans le compte gérante)
 - [ ] Les inputs dépassent de la card lorsqu'on tente une modification.
-- [ ] Ajouter un affichage propre d'erreur dans le cas où le client ne s'est pas connecté. Pour reproduire cette erreur: se déconnecter -> revenir à la page précédente -> recharger la page.
 - [ ] N'afficher les boutons que lorsque la card est survolée (voir exemple sur le site de la fnac.)
-- [ ] Ajouter les menus déroulants pour les caractéristiques des cadeaux. Ces caractéristiques doivent modifier l'id de la card qui représente le cadeau, id qui sera pris en compte lors de l'ajout du cadeau au panier.
 - [ ] Le titre des sections (comme 'Liste des clients', 'Liste des cadeaux') doit être centré et stylisé.
-- [ ] Lorsqu'il y a une erreur lors d'une modif de client, les input ne partent pas alors que le bouton valider part. Pour reproduire cette erreur: modifier un client -> changer le numéro avec plus de 10 chiffres -> valider.
+- [ ] Fixer la taille des images des card, notamment pour les cadeaux, pcq là c'est du grand n'importe quoi.
 
-<!-- Fix rule MD028 -->
+## A faire (gestion d'erreur et affichage)
+
+- [ ] Gérer l'affichage graphique des erreurs, un peu comme pour la page de connexion (par ex, avec des alertes).
+- [ ] Lorsqu'il y a une erreur lors d'une modif de client, les input ne partent pas alors que le bouton valider part. Pour reproduire cette erreur: modifier un client -> changer le numéro avec plus de 10 chiffres -> valider.
+- [ ] Ajouter un affichage propre d'erreur dans le cas où le client ne s'est pas connecté. Pour reproduire cette erreur: se déconnecter -> revenir à la page précédente -> recharger la page.
+
+## A faire (correction et fonctionnalités)
+
+- [ ] Certaines colonnes sont encore écrites en dur dans le code de gestion_personnes et gestion_cadeaux.
+- [ ] Pour la suppression, il faut vérifier que le client existe avant de le supprimer. **UTILE ??**
+- [ ] Ajouter les menus déroulants pour les caractéristiques des cadeaux. Ces caractéristiques doivent modifier l'id de la card qui représente le cadeau, id qui sera pris en compte lors de l'ajout du cadeau au panier.
+
+## A faire (exigences du sujet)
+
+- [ ] au début de la connection, vérifier si la date = DATE_NAISSANCE du client
+  - [ ] si oui, on **ajoute** des cadeaux spéciaux au client
+    - _FIXME: Comment ajouter des cadeaux, alors que l'on affiche toujours tous les cadeaux dont les points est $\le$ points du client et que ces cadeaux spéciaux ne sont pas dans la BD, ou du moins, pas partagés._
+- [ ] affichage des cadeaux actuellements dans le panier
+  - [ ] **bouton** pour **supprimer** un cadeau du panier
+  - [ ] **bouton** pour **vider** le panier
+- [ ] **bouton** pour valider le panier
+  - [ ] **mise à jour** du nombre de points
+  - [ ] **vider le panier**
 
 > [!WARNING]  
 > Régler le problème de la date de naissance

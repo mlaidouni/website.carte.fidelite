@@ -9,10 +9,10 @@ function Cadeau(tableName) {
   // Création d'un pool de connection à la BD
   const pool = new pg.Pool({
     // port, hôte, nom de la BD et mot de passe (obligatoire)
-    port: 5432,
-    host: "localhost",
-    database: "websitecartefidelite",
-    password: "alo",
+    port: process.env.DB_PORT,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
   });
 
   // Client global pour les requêtes
