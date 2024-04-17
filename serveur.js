@@ -141,6 +141,11 @@ let client_add = function (cadeau) {
   client_connected.points_h -= cadeau.prix;
 };
 
+let client_valid = function(client){
+  client_connected.points=client_connected.points_h;
+  client_reset();
+}
+
 /* ******************** Gestion des routes ******************** */
 
 // Notification sur le terminal pour toutes les requêtes
@@ -281,6 +286,7 @@ server.get("/client/compte", async (req, res) => {
       points: client_connected.points,
       points_h: client_connected.points_h,
       panier_counter: client_connected.panier_counter,
+      panier_value: client_connected.panier_value,
       datatype: dataType,
       anniversaire: isAnniversaire,
     };
@@ -398,6 +404,9 @@ server.post("/client/compte/cadeau", async (req, res) => {
   }
 });
 
+server.post("/client/compte/panier", async (req, res) => {
+  
+});
 /* ******************** Routes pour la gerante ******************** */
 
 // Gestion de la connexion de la gerante

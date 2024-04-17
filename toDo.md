@@ -69,12 +69,11 @@
 ## A faire (style)
 
 - [x] Rendre le texte du dropdown client blanc (ou plus lisibles)
-- [x] Ajouter du padding entre les boutons (notamment modifier, supprimer etc dans le compte gérante)
-- [x] Les inputs dépassent de la card lorsqu'on tente une modification.
-- [x] N'afficher les boutons que lorsque la card est survolée (voir exemple sur le site de la fnac.)
-- [x] Le titre des sections (comme 'Liste des clients', 'Liste des cadeaux') doit être centré et stylisé.
-- [x] Fixer la taille des images des card, notamment pour les cadeaux, pcq là c'est du grand n'importe quoi.
-- [ ] Ajouter du padding entre les boutons de l'ajout de client/cadeau dans la gérante.
+- [ ] Ajouter du padding entre les boutons (notamment modifier, supprimer etc dans le compte gérante)
+- [ ] Les inputs dépassent de la card lorsqu'on tente une modification.
+- [ ] N'afficher les boutons que lorsque la card est survolée (voir exemple sur le site de la fnac.)
+- [ ] Le titre des sections (comme 'Liste des clients', 'Liste des cadeaux') doit être centré et stylisé.
+- [ ] Fixer la taille des images des card, notamment pour les cadeaux, pcq là c'est du grand n'importe quoi.
 
 ## A faire (gestion d'erreur et affichage)
 

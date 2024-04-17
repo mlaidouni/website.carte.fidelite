@@ -49,7 +49,7 @@ $(document).ready(function () {
       // On change le bouton
       $(this).text("Valider");
       // On change le style du bouton
-      $(this).removeClass("btn-dark").addClass("btn-success");
+      $(this).removeClass("btn-primary").addClass("btn-success");
     }
 
     // Si le bouton dit "Valider", on envoie les modifications au serveur
@@ -91,7 +91,7 @@ $(document).ready(function () {
       // On change le bouton
       $(this).text("Modifier");
       // On change le style du bouton
-      $(this).removeClass("btn-success").addClass("btn-dark");
+      $(this).removeClass("btn-success").addClass("btn-primary");
     }
   });
 
@@ -291,7 +291,7 @@ $(document).ready(function () {
       // On change le bouton
       $(this).text("Valider");
       // On change le style du bouton
-      $(this).removeClass("btn-dark").addClass("btn-success");
+      $(this).removeClass("btn-primary").addClass("btn-success");
     }
 
     // Si le bouton dit "Valider", on envoie les modifications au serveur
@@ -333,7 +333,7 @@ $(document).ready(function () {
       // On change le bouton
       $(this).text("Modifier");
       // On change le style du bouton
-      $(this).removeClass("btn-success").addClass("btn-dark");
+      $(this).removeClass("btn-success").addClass("btn-primary");
     }
   });
 
