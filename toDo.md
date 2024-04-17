@@ -60,7 +60,7 @@
 - Correction bug: mauvaise classe pour le span image, dans la modification des cadeaux de la gérante.
 - Ajout d'une fonction confettiAnimation pour ne pas faire boucler l'animation des confetti.
 - Dropdownmenu passé en mode sombre.
-- Les inputs ne dépassent plus de la card lors des modifications
+- Les inputs ne dépassent plus de la card lors des modifications.
 - Les boutons ne sont plus affichés par défaut, mais seulement lorsqu'on survole la card.
 - Les titres des sections sont centrés et stylisés.
 - Fix de la taille des images des card.
@@ -69,11 +69,12 @@
 ## A faire (style)
 
 - [x] Rendre le texte du dropdown client blanc (ou plus lisibles)
-- [ ] Ajouter du padding entre les boutons (notamment modifier, supprimer etc dans le compte gérante)
-- [ ] Les inputs dépassent de la card lorsqu'on tente une modification.
-- [ ] N'afficher les boutons que lorsque la card est survolée (voir exemple sur le site de la fnac.)
-- [ ] Le titre des sections (comme 'Liste des clients', 'Liste des cadeaux') doit être centré et stylisé.
-- [ ] Fixer la taille des images des card, notamment pour les cadeaux, pcq là c'est du grand n'importe quoi.
+- [x] Ajouter du padding entre les boutons (notamment modifier, supprimer etc dans le compte gérante)
+- [x] Les inputs dépassent de la card lorsqu'on tente une modification.
+- [x] N'afficher les boutons que lorsque la card est survolée (voir exemple sur le site de la fnac.)
+- [x] Le titre des sections (comme 'Liste des clients', 'Liste des cadeaux') doit être centré et stylisé.
+- [x] Fixer la taille des images des card, notamment pour les cadeaux, pcq là c'est du grand n'importe quoi.
+- [ ] Ajouter du padding entre les boutons de l'ajout de client/cadeau dans la gérante.
 
 ## A faire (gestion d'erreur et affichage)
 
@@ -86,6 +87,7 @@
 - [ ] Certaines colonnes sont encore écrites en dur dans le code de gestion_personnes et gestion_cadeaux.
 - [ ] Pour la suppression, il faut vérifier que le client existe avant de le supprimer. **UTILE ??**
 - [ ] Modification des images des cadeaux.
+- [ ] Problème lors de la mise à jour d'un client. Pour reproduire cette erreur: se connecter avec un client. Puis changer le nb de points côté gérante, et reload côté client. rien ne change.
 
 ## A faire (exigences du sujet)
 
