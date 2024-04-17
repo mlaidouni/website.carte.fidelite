@@ -20,6 +20,7 @@ CREATE TABLE CADEAUX (
     TAILLE VARCHAR(255), -- Taille du cadeau (not required)
     COULEUR VARCHAR(255), -- Couleur du cadeau (not required)
     DESCRIPTION TEXT, -- Description du cadeau (not required)
+    STOCK INTEGER NOT NULL, --Nombre d'élément en stock
     IMAGE VARCHAR(255) -- URL de l'image du cadeau (not required)
 );
 
@@ -43,6 +44,7 @@ INSERT INTO CADEAUX (
     TAILLE,
     COULEUR,
     DESCRIPTION,
+    STOCK,
     IMAGE
 ) VALUES (
     'Sac à dos',
@@ -50,6 +52,7 @@ INSERT INTO CADEAUX (
     NULL,
     'Bleu',
     'Sac à dos en nylon imperméable',
+    3,
     'sac-a-dos.png'
 ),
 (
@@ -58,6 +61,7 @@ INSERT INTO CADEAUX (
     NULL,
     NULL,
     'Mug en céramique avec motif personnalisé',
+    12,
     'mug-blanc.png'
 ),
 (
@@ -66,6 +70,7 @@ INSERT INTO CADEAUX (
     NULL,
     'Argent',
     'Clé USB 32 Go avec connecteur rétractable',
+    7,
     'usb.png'
 ),
 (
@@ -74,6 +79,7 @@ INSERT INTO CADEAUX (
     NULL,
     'Rouge',
     'Parapluie pliable avec motif floral',
+    6,
     'parapluie.png'
 ),
 (
@@ -82,6 +88,7 @@ INSERT INTO CADEAUX (
     NULL,
     'Vert',
     'Gourde en acier inoxydable 500 ml',
+    5,
     'kungfupanda.png'
 ),
 (
@@ -90,6 +97,7 @@ INSERT INTO CADEAUX (
     NULL,
     NULL,
     'Stylo à bille rétractable',
+    6,
     'stylo.png'
 ),
 (
@@ -98,6 +106,7 @@ INSERT INTO CADEAUX (
     NULL,
     'Rose',
     'Carnet de notes ligné avec couverture en cuir synthétique',
+    5,
     'carnet-de-notes.png'
 ),
 (
@@ -106,6 +115,7 @@ INSERT INTO CADEAUX (
     NULL,
     'Jaune',
     'Porte-clés en métal avec pendentif en forme de cœur',
+    912,
     'kungfupanda.png'
 ),
 (
@@ -114,6 +124,7 @@ INSERT INTO CADEAUX (
     NULL,
     'Gris',
     'Tapis de souris avec surface lisse',
+    2,
     'kungfupanda.png'
 ),
 (
@@ -122,6 +133,7 @@ INSERT INTO CADEAUX (
     NULL,
     'Noir',
     'Lampe de poche LED compacte avec dragonne',
+    8,
     'shrek_swamp.png'
 );
 

@@ -70,6 +70,7 @@ function Cadeau(tableName) {
     taille,
     couleur,
     description,
+    stock,
     image
   ) {
     // Connexion à la BD
@@ -86,13 +87,49 @@ function Cadeau(tableName) {
     try {
       // Requête à exécuter
       let query = {
-        text: `INSERT INTO ${tableName} (${column}) VALUES ($1, $2, $3, $4, $5, $6)`,
+        text: `INSERT INTO ${tableName} (${column}) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
         // Les valeurs à remplacer dans la requête
-        values: [nom, prix, taille, couleur, description, image],
+        values: [nom, prix, taille, couleur, description, stock, image],
       };
 
       // On attent l'exécution de la requête
       await client.query(query);
+    } catch (error) {
+      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
+      throw error;
+    } finally {
+      // On libère le client, que la requête ait réussi ou non.
+      client.release();
+    }
+  };
+
+  /**
+ * Supprime un élément d'un cadeau dans la BD.
+ * @param {integer} id - L'id du cadeau.
+ * @async
+ */
+  this.destock = async function (id) {
+    // Connexion à la BD
+    client = await pool.connect();
+
+    try {
+      // Requête à exécuter
+      const selectResult = await client.query(`SELECT stock FROM ${tableName} WHERE id = $1`, [id]);
+      const stock = selectResult.rows[0].stock;
+
+      if (stock > 1) {
+        let query = {
+          text: `UPDATE ${tableName} SET stock = stock - 1 WHERE id = $1`,
+          // Les valeurs à remplacer dans la requête
+          values: [id],
+        };
+
+        // On attent l'exécution de la requête
+        await client.query(query);
+      }
+      else{
+        this.delete(id);
+      }
     } catch (error) {
       // On relance l'erreur pour qu'elle puisse être gérée par le serveur
       throw error;

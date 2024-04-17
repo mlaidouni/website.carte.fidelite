@@ -115,7 +115,7 @@ $(document).ready(function () {
 
     // NOTE: Utiliser gestion_personnes.getColumns() pour obtenir les colonnes ?
     // On récupère les champs de la table nécessaire pour le formulaire
-    let champs = ["nom", "prix", "taille", "couleur", "description", "image"];
+    let champs = ["nom", "prix", "taille", "couleur", "description", "stock", "image"];
 
     // Pour chaque champ, on ajoute un input au formulaire
     champs.forEach(function (champ) {
@@ -130,7 +130,7 @@ $(document).ready(function () {
             required: true,
           })
         );
-      } else if (champ === "prix") {
+      } else if (champ === "prix" || champ === 'stock') {
         form.append(
           $("<input>", {
             type: "number",

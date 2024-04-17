@@ -141,8 +141,8 @@ let client_add = function (cadeau) {
   client_connected.points_h -= cadeau.prix;
 };
 
-let client_valid = function(client){
-  client_connected.points=client_connected.points_h;
+let client_valid = function (client) {
+  client_connected.points = client_connected.points_h;
   client_reset();
 }
 
@@ -404,8 +404,21 @@ server.post("/client/compte/cadeau", async (req, res) => {
   }
 });
 
-server.post("/client/compte/panier", async (req, res) => {
-  
+server.get("/client/compte/panier", async (req, res) => {
+  try {
+    for (let i = 0; i < panier.length; i++) {
+      await gestion_cadeaux.destock(panier[i].id);
+    }
+    await gestion_personnes.update(client_connected.client.id, "points", client_connected.points_h);
+
+  } catch (error) {
+    printError("serveur: Erreur lors de la validation du panier:");
+    printError(`-> ${error}`);
+    res.status(500).json({
+      success: false,
+      message: "Une erreur est survenue lors de la validation du panier.",
+    });
+  }
 });
 /* ******************** Routes pour la gerante ******************** */
 
