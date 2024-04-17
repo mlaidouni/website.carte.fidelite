@@ -133,7 +133,7 @@
         </ul>
       </div>
     </nav>
-    <!-- TODO: Gérer le cas où c'est l'anniversaire -->
+
     <% if (anniversaire) { %>
     <div class="alert alert-success anniv-div role="alert">
       <span class="anniv-text"
@@ -143,7 +143,7 @@
     <% } %>
     <!-- Contenu principal -->
     <% if (datatype==="accueil") { %>
-    <h2>Liste des cadeaux disponibles</h2>
+    <h2 class="page-title">Liste des cadeaux disponibles</h2>
     <div class="container mt-5">
       <div
         class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 list-cadeaux"

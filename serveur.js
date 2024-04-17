@@ -1,6 +1,8 @@
 // Import des modules express et path
 const express = require("express");
 const path = require("path");
+// Impot du module moment pour manipuler les dates
+const moment = require("moment");
 
 /* On charge les variables d'environnement. Cela permet notamment de charger
  * les variables nécessaires à la connexion du pool, pour plus de sécurité. */
@@ -227,9 +229,7 @@ server.post("/client/connexion", async (req, res) => {
   }
 });
 
-// Importez la bibliothèque moment pour manipuler les dates
-const moment = require("moment");
-
+// On renvoie true si c'est l'anniversaire du client_connected
 server.get("/client/isAnniversaire", async (req, res) => {
   try {
     // Si aucun client n'est connecté, on renvoie false

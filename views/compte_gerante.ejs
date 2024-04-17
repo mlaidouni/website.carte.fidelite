@@ -77,7 +77,7 @@
 
   <!-- Contenu principal -->
   <% if (datatype==="clients") { %>
-    <h2>Liste des clients</h2>
+    <h2 class="page-title">Liste des clients</h2>
     <div class="container mt-5">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
         <% for (let i=0; i < data.length; i++) { let client=data[i]; %>
@@ -97,7 +97,7 @@
                     Points: <span class="points" type="number"><%= client.points %></span>
                   </p>
                 </details>
-                <button id="<%= client.user_id %>" class="btn btn-dark client-update" type="button">Modifier</button>
+                <button id="<%= client.user_id %>" class="btn btn-primary client-update" type="button">Modifier</button>
                 <!-- <button id="<%= client.user_id %>" class="btn btn-warning client-reset" type="button">Annuler</button> -->
                 <button id="<%= client.user_id %>" class="btn btn-danger client-delete" type="button">Supprimer</button>
               </div>
@@ -116,7 +116,7 @@
       </div>
     </div>
     <% } else if (datatype==="cadeaux") { %>  
-      <h2>Liste des cadeaux</h2>
+      <h2 class="page-title">Liste des cadeaux</h2>
       <div class="container mt-5">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
           <% for (let i=0; i < data.length; i++) { let cadeau=data[i]; %>
@@ -140,7 +140,7 @@
                         <hr /><p class="card-text image"><span class="image" type="image"><%=cadeau.image%></span></p>
                     </p>
                   </details>
-                  <button id="<%= cadeau.cadeau_id %>" class="btn btn-dark cadeau-update" type="button">Modifier</button>
+                  <button id="<%= cadeau.cadeau_id %>" class="btn btn-primary cadeau-update" type="button">Modifier</button>
                   <!-- <button id="<%= cadeau.cadeau_id %>" class="btn btn-warning cadeau-annule" type="button">Annuler</button> -->
                   <button id="<%= cadeau.cadeau_id %>" class="btn btn-danger cadeau-delete" type="button">Supprimer</button>
                 </div>

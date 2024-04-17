@@ -58,15 +58,23 @@
 
 - Correction de l'erreur dans le cas où le client ne s'est pas connecté.
 - Correction bug: mauvaise classe pour le span image, dans la modification des cadeaux de la gérante.
+- Ajout d'une fonction confettiAnimation pour ne pas faire boucler l'animation des confetti.
+- Dropdownmenu passé en mode sombre.
+- Les inputs ne dépassent plus de la card lors des modifications
+- Les boutons ne sont plus affichés par défaut, mais seulement lorsqu'on survole la card.
+- Les titres des sections sont centrés et stylisés.
+- Fix de la taille des images des card.
+- Ombre + affichage des boutons lorsque l'on passe sur une card.
 
 ## A faire (style)
 
-- [ ] Rendre le texte du dropdown client blanc (ou plus lisibles)
-- [ ] Ajouter du padding entre les boutons (notamment modifier, supprimer etc dans le compte gérante)
-- [ ] Les inputs dépassent de la card lorsqu'on tente une modification.
-- [ ] N'afficher les boutons que lorsque la card est survolée (voir exemple sur le site de la fnac.)
-- [ ] Le titre des sections (comme 'Liste des clients', 'Liste des cadeaux') doit être centré et stylisé.
-- [ ] Fixer la taille des images des card, notamment pour les cadeaux, pcq là c'est du grand n'importe quoi.
+- [x] Rendre le texte du dropdown client blanc (ou plus lisibles)
+- [x] Ajouter du padding entre les boutons (notamment modifier, supprimer etc dans le compte gérante)
+- [x] Les inputs dépassent de la card lorsqu'on tente une modification.
+- [x] N'afficher les boutons que lorsque la card est survolée (voir exemple sur le site de la fnac.)
+- [x] Le titre des sections (comme 'Liste des clients', 'Liste des cadeaux') doit être centré et stylisé.
+- [x] Fixer la taille des images des card, notamment pour les cadeaux, pcq là c'est du grand n'importe quoi.
+- [ ] Ajouter du padding entre les boutons de l'ajout de client/cadeau dans la gérante.
 
 ## A faire (gestion d'erreur et affichage)
 
@@ -78,11 +86,12 @@
 
 - [ ] Certaines colonnes sont encore écrites en dur dans le code de gestion_personnes et gestion_cadeaux.
 - [ ] Pour la suppression, il faut vérifier que le client existe avant de le supprimer. **UTILE ??**
-- [ ] Ajouter les menus déroulants pour les caractéristiques des cadeaux. Ces caractéristiques doivent modifier l'id de la card qui représente le cadeau, id qui sera pris en compte lors de l'ajout du cadeau au panier.
+- [ ] Modification des images des cadeaux.
 
 ## A faire (exigences du sujet)
 
-- [ ] au début de la connection, vérifier si la date = DATE_NAISSANCE du client
+- [ ] Ajouter les menus déroulants pour les caractéristiques des cadeaux. Ces caractéristiques doivent modifier l'id de la card qui représente le cadeau, id qui sera pris en compte lors de l'ajout du cadeau au panier.
+- [x] au début de la connection, vérifier si la date = DATE_NAISSANCE du client, afficher animation
   - [ ] si oui, on **ajoute** des cadeaux spéciaux au client
     - _FIXME: Comment ajouter des cadeaux, alors que l'on affiche toujours tous les cadeaux dont les points est $\le$ points du client et que ces cadeaux spéciaux ne sont pas dans la BD, ou du moins, pas partagés._
 - [ ] affichage des cadeaux actuellements dans le panier

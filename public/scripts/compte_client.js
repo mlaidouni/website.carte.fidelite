@@ -16,7 +16,9 @@ $(document).ready(function () {
       // On relance l'animation
       annivAnimation();
     });
+  }
 
+  function confettiAnimation() {
     // On fait chuter pleins de confettis depuis le haut de l'écran
     for (let i = 0; i < 10; i++) {
       confetti({
@@ -47,6 +49,7 @@ $(document).ready(function () {
     success: function (data) {
       if (data.isAnniversaire) {
         annivAnimation();
+        confettiAnimation();
       }
     },
   });
