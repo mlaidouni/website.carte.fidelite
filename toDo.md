@@ -95,17 +95,12 @@
 - [x] au début de la connection, vérifier si la date = DATE_NAISSANCE du client, afficher animation
   - [ ] si oui, on **ajoute** des cadeaux spéciaux au client
     - _FIXME: Comment ajouter des cadeaux, alors que l'on affiche toujours tous les cadeaux dont les points est $\le$ points du client et que ces cadeaux spéciaux ne sont pas dans la BD, ou du moins, pas partagés._
-- [ ] affichage des cadeaux actuellements dans le panier
+- [x] affichage des cadeaux actuellements dans le panier
   - [ ] **bouton** pour **supprimer** un cadeau du panier
   - [ ] **bouton** pour **vider** le panier
-- [ ] **bouton** pour valider le panier
+- [x] **bouton** pour valider le panier
   - [ ] **mise à jour** du nombre de points
   - [ ] **vider le panier**
-
-> [!WARNING]  
-> Régler le problème de la date de naissance
-
-<!-- Fix rule MD028 -->
 
 > [!CAUTION]  
 > ![alt text](toDo.png)
