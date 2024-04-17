@@ -10,3 +10,17 @@
   /* Couleur du texte en blanc */
   color: aliceblue;
 }
+
+.anniv-div {
+  /* La div prend toute la largeur de la page */
+  width: 100%;
+  /* Le contenu qui dépasse des limites de la div est masqué */
+  overflow: hidden;
+}
+
+.anniv-text {
+  position: relative;
+  /* Le texte ne passe pas à la ligne. Si besoin, il dépassera des limites de
+  la div */
+  white-space: nowrap;
+}

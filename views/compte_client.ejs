@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Import Libraries -->
+    <!-- Canvas-confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.3"></script>
     <!-- Bootstrap CSS -->
     <link
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -131,7 +133,14 @@
         </ul>
       </div>
     </nav>
-
+    <!-- TODO: Gérer le cas où c'est l'anniversaire -->
+    <% if (anniversaire) { %>
+    <div class="alert alert-success anniv-div role="alert">
+      <span class="anniv-text"
+        >Joyeux anniversaire <%= client.prenom %> ! Vous avez reçu des cadeaux spéciaux, profitez-en !</span
+      >
+    </div>
+    <% } %>
     <!-- Contenu principal -->
     <% if (datatype==="accueil") { %>
     <h2>Liste des cadeaux disponibles</h2>
@@ -190,8 +199,7 @@
           class="btn btn-success valide-panier"
           type="button"
         >
-          Valider la commande 
-          Total : <%panier_value%> 
+          Valider la commande Total : <%panier_value%>
         </button>
       </div>
     </div>

@@ -1,4 +1,55 @@
 $(document).ready(function () {
+  /* ******************** Gestion de l'anniversaire *********** */
+  // Animation de l'aniversaire
+  function annivAnimation() {
+    // Le texte à animer
+    let annivText = $(".anniv-text");
+    // On récupère la largeur du texte et du div contenant le texte
+    let textWidth = annivText.width();
+    let divWidth = $(".anniv-div").width();
+    // On place le texte à droite du div
+    annivText.css({ left: divWidth });
+    // On anime le texte pour le faire défiler
+    annivText.animate({ left: -textWidth }, 20000, "linear", function () {
+      // On replace le texte à droite du div
+      annivText.css({ left: divWidth });
+      // On relance l'animation
+      annivAnimation();
+    });
+
+    // On fait chuter pleins de confettis depuis le haut de l'écran
+    for (let i = 0; i < 10; i++) {
+      confetti({
+        particleCount: 200,
+        spread: 70,
+        startVelocity: 20,
+        // Les confettis chutent progressivement
+        gravity: 1,
+        origin: { y: 0, x: i / 10 }, // start from different positions across the width
+      });
+    }
+    // On lance des confetti
+    confetti({
+      // Nombre de particules
+      particleCount: 2000,
+      // Couleurs des particules
+      spread: 70,
+      // Les confettis remontent progressivement
+      gravity: -1,
+      origin: { y: 0.4 },
+    });
+  }
+
+  // Requête AJAX pour obtenir la valeur de isAnniversaire
+  $.ajax({
+    url: "/client/isAnniversaire",
+    type: "GET",
+    success: function (data) {
+      if (data.isAnniversaire) {
+        annivAnimation();
+      }
+    },
+  });
   /* ******************** Gestion des boutons - Général *********** */
 
   // Déconnexion du client

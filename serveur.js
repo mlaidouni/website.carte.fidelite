@@ -91,7 +91,7 @@ const printWarning = (message) => {
 
 /* ********** Gestion du client connecté ********** */
 
-let client_connected = {
+const client_connected = {
   // Le client actuellement connecté
   client: undefined,
   // Points actuels
@@ -227,11 +227,53 @@ server.post("/client/connexion", async (req, res) => {
   }
 });
 
+// Importez la bibliothèque moment pour manipuler les dates
+const moment = require("moment");
+
+server.get("/client/isAnniversaire", async (req, res) => {
+  try {
+    // Si aucun client n'est connecté, on renvoie false
+    if (client_connected.client === undefined) {
+      res.status(200).json({ isAnniversaire: false });
+      return;
+    }
+
+    // On récupère la date actuelle et la date de naissance du client
+    const now = moment();
+    const anniversaire = moment(client_connected.client.date_naissance);
+    // On vérifie si c'est l'anniversaire du client
+    let isAnniversaire =
+      now.date() === anniversaire.date() &&
+      now.month() === anniversaire.month();
+
+    // On renvoie la valeur de isAnniversaire
+    res.status(200).json({ isAnniversaire: isAnniversaire });
+  } catch (error) {
+    printError("serveur: Erreur lors de la vérification de l'anniversaire:");
+    printError(`-> ${error}`);
+    res.status(500).send(`${error}`);
+  }
+});
+
 // Affiche la page de compte du client
 server.get("/client/compte", async (req, res) => {
   try {
     // On récupère le type de données demandées. (accueil ou panier)
     const dataType = req.query.data === undefined ? "accueil" : req.query.data;
+
+    // Si aucun client n'est connecté, on redirige vers la page de connexion
+    if (client_connected.client === undefined) {
+      res.redirect("/client/connexion");
+      return;
+    }
+
+    // On récupère la date actuelle et la date de naissance du client
+    const now = moment();
+    const anniversaire = moment(client_connected.client.date_naissance);
+    // On vérifie si c'est l'anniversaire du client
+    let isAnniversaire =
+      now.date() === anniversaire.date() &&
+      now.month() === anniversaire.month();
 
     // On renvoie le type de la donnée demandée
     let reponse = {
@@ -240,6 +282,7 @@ server.get("/client/compte", async (req, res) => {
       points_h: client_connected.points_h,
       panier_counter: client_connected.panier_counter,
       datatype: dataType,
+      anniversaire: isAnniversaire,
     };
 
     if (dataType === "accueil") {
@@ -260,6 +303,46 @@ server.get("/client/compte", async (req, res) => {
     res.status(500).send(`${error}`);
   }
 });
+
+// // Affiche la page de compte du client
+// server.get("/client/compte", async (req, res) => {
+//   try {
+//     // On récupère le type de données demandées. (accueil ou panier)
+//     const dataType = req.query.data === undefined ? "accueil" : req.query.data;
+
+//     // Si aucun client n'est connecté, on redirige vers la page de connexion
+//     if (client_connected.client === undefined) {
+//       res.redirect("/client/connexion");
+//       return;
+//     }
+
+//     // On renvoie le type de la donnée demandée
+//     let reponse = {
+//       client: client_connected.client,
+//       points: client_connected.points,
+//       points_h: client_connected.points_h,
+//       panier_counter: client_connected.panier_counter,
+//       datatype: dataType,
+//     };
+
+//     if (dataType === "accueil") {
+//       // On récupère la liste des cadeaux du client
+//       let cadeaux = await gestion_cadeaux.getClient(client_connected.points_h);
+//       // On renvoie les données correspondantes
+//       reponse["data"] = cadeaux;
+//     } else if (dataType === "panier") {
+//       // On renvoie les données correspondantes
+//       reponse["data"] = client_connected.panier;
+//     }
+
+//     // Rendu de la page avec les bonnes données
+//     res.render(compte_client, reponse);
+//   } catch (error) {
+//     printError("serveur: Erreur lors de la connexion de la gerante:");
+//     printError(`-> ${error}`);
+//     res.status(500).send(`${error}`);
+//   }
+// });
 
 // Gestion de la deconnexion du client
 server.post("/client/deconnexion", (req, res) => {

@@ -54,6 +54,11 @@
 - Gestion des inputs en fonction de leur type (text, number, file, email, data, ...).
 - Correction du chemin des images.
 
+<!--  -->
+
+- Correction de l'erreur dans le cas où le client ne s'est pas connecté.
+- Correction bug: mauvaise classe pour le span image, dans la modification des cadeaux de la gérante.
+
 ## A faire (style)
 
 - [ ] Rendre le texte du dropdown client blanc (ou plus lisibles)
@@ -67,7 +72,7 @@
 
 - [ ] Gérer l'affichage graphique des erreurs, un peu comme pour la page de connexion (par ex, avec des alertes).
 - [ ] Lorsqu'il y a une erreur lors d'une modif de client, les input ne partent pas alors que le bouton valider part. Pour reproduire cette erreur: modifier un client -> changer le numéro avec plus de 10 chiffres -> valider.
-- [ ] Ajouter un affichage propre d'erreur dans le cas où le client ne s'est pas connecté. Pour reproduire cette erreur: se déconnecter -> revenir à la page précédente -> recharger la page.
+- [x] Gérer l'erreur dans le cas où le client ne s'est pas connecté. Pour reproduire cette erreur: se déconnecter -> revenir à la page précédente -> recharger la page.
 
 ## A faire (correction et fonctionnalités)
 
