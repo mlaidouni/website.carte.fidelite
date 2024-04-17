@@ -139,14 +139,19 @@ let client_add = function (cadeau) {
   client_connected.points_h -= cadeau.prix;
 };
 
-let client_valider_panier= function(){
+let client_valider_panier = function () {
   client_connected.points = client_connected.points_h;
   client_connected.panier = [];
   client_connected.panier_counter = 0;
   client_connected.panier_value = 0;
-}
+};
 
-
+let client_empty_panier = function () {
+  client_connected.points_h = client_connected.points;
+  client_connected.panier = [];
+  client_connected.panier_counter = 0;
+  client_connected.panier_value = 0;
+};
 /* ******************** Gestion des routes ******************** */
 
 // Notification sur le terminal pour toutes les requêtes
@@ -407,13 +412,38 @@ server.post("/client/compte/cadeau", async (req, res) => {
   }
 });
 
+//En cas de validation du panier
 server.get("/client/compte/panier", async (req, res) => {
   try {
+    //On décrémente le stock de chaque cadeau dans le panier
     for (let i = 0; i < client_connected.panier.length; i++) {
       await gestion_cadeaux.destock(client_connected.panier[i].cadeau_id);
     }
+    //On met a jour les points du clients
     await gestion_personnes.update(client_connected.client.user_id, "points", client_connected.points_h);
     client_valider_panier();
+    res.status(200).json({
+      success: true,
+      message: "Panier validé!",
+    });
+  } catch (error) {
+    printError("serveur: Erreur lors de la validation du panier:");
+    printError(`-> ${error}`);
+    res.status(500).json({
+      success: false,
+      message: "Une erreur est survenue lors de la validation du panier.",
+    });
+  }
+});
+
+//On vide le panier
+server.delete("/client/compte/panier", (req, res) => {
+  try {
+    client_empty_panier()
+    res.status(200).json({
+      success: true,
+      message: "Panier vidé!",
+    });
   } catch (error) {
     printError("serveur: Erreur lors de la validation du panier:");
     printError(`-> ${error}`);

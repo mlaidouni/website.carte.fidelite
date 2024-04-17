@@ -180,15 +180,37 @@ $(document).ready(function () {
       },
       success: function (response) {
         console.log('Réponse du serveur:', response);
-        // Vous pouvez également mettre à jour l'interface utilisateur ici pour confirmer que la commande a été traitée.
+        // Vous pouvez également mettre à jour l'interface utilisateur ici pour confirmer que la commande a été traitée.card.append('<h1 class = "card-body d-flex justify-content-center fw-bold text-white" >Commande envoyée</h1>');
+        window.location.href = "/client/compte?data=panier";
+
       },
       error: function (xhr, status, error) {
         console.error('Erreur lors de l\'envoi de la commande:', error);
       }
 
     });
-    card.append('<h1 class = "card-body d-flex justify-content-center fw-bold text-white" >Commande envoyée</h1>');
-    card.append(' <a href="/client/compte" id="return" class="btn btn-success align-items-center return" type="button" >Revenir a la page d\'achat</a>')
+
+  });
+
+  $(document).on("click", ".empty-panier", function () {
+    $.ajax({
+      url: '/client/compte/panier',  // L'URL du endpoint du serveur
+      type: 'DELETE',                          // Type de la requête HTTP
+      data: {
+        // Ici, vous pouvez ajouter les données que vous souhaitez envoyer au serveur.
+        // Par exemple, si vous avez besoin d'envoyer des identifiants des cadeaux dans le panier :
+        // cadeauxId: [123, 456, 789]
+      },
+      success: function () {
+        console.log('Réponse du serveur:');
+        // Vous pouvez également mettre à jour l'interface utilisateur ici pour confirmer que la commande a été traitée.
+        window.location.href = "/client/compte?data=panier";
+      },
+      error: function (xhr, status, error) {
+        console.error('Erreur lors de l\'envoi de la commande:', error);
+      }
+    });
+
   });
 
 
