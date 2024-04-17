@@ -61,7 +61,7 @@
 
 ## A faire (style)
 
-- [ ] Rendre le texte du dropdown client blanc (ou plus lisibles)
+- [x] Rendre le texte du dropdown client blanc (ou plus lisibles)
 - [ ] Ajouter du padding entre les boutons (notamment modifier, supprimer etc dans le compte gérante)
 - [ ] Les inputs dépassent de la card lorsqu'on tente une modification.
 - [ ] N'afficher les boutons que lorsque la card est survolée (voir exemple sur le site de la fnac.)
