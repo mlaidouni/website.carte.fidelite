@@ -9,10 +9,10 @@ function Cadeau(tableName) {
   // Création d'un pool de connection à la BD
   const pool = new pg.Pool({
     // port, hôte, nom de la BD et mot de passe (obligatoire)
-    port: process.env.DB_PORT,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
+    port: process.env.PG_PORT,
+    host: process.env.PG_HOST,
+    database: process.env.PG_DATABASE,
+    password: process.env.PG_PASSWORD,
   });
 
   // Client global pour les requêtes
@@ -76,9 +76,9 @@ function Cadeau(tableName) {
     client = await pool.connect();
     //Récupérer les colonnes de la tables
     let columns = await this.getColumns();
-    // On filtre les colonnes pour ne pas insérer 'CADEAUX_ID'
+    // On filtre les colonnes pour ne pas insérer 'CADEAU_ID'
     let filterColumns = columns.filter(
-      (col) => col.toLowerCase() !== "cadeaux_id"
+      (col) => col.toLowerCase() !== "cadeau_id"
     );
     // On transforme le tableau en une string séparée par des virgules
     let column = filterColumns.join(", ");
@@ -114,7 +114,7 @@ function Cadeau(tableName) {
     try {
       // Requête à exécuter
       let query = {
-        text: `DELETE FROM ${tableName} WHERE CADEAUX_ID = $1`,
+        text: `DELETE FROM ${tableName} WHERE CADEAU_ID = $1`,
         // Les valeurs à remplacer dans la requête
         values: [id],
       };
@@ -211,7 +211,7 @@ function Cadeau(tableName) {
     try {
       // Requête à exécuter
       let query = {
-        text: `UPDATE ${tableName} SET ${attr} = $1 WHERE cadeaux_id = $2`,
+        text: `UPDATE ${tableName} SET ${attr} = $1 WHERE cadeau_id = $2`,
         // Les valeurs à remplacer dans la requête
         values: [value, cadeauxid],
       };
@@ -241,7 +241,7 @@ function Cadeau(tableName) {
     try {
       // Requête à exécuter
       let query = {
-        text: `SELECT * FROM ${tableName} WHERE CADEAUX_ID = $1`,
+        text: `SELECT * FROM ${tableName} WHERE CADEAU_ID = $1`,
         // Les valeurs à remplacer dans la requête
         values: [id],
       };

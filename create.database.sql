@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS PERSONNES;
 
 -- Création de la table cadeaux
 CREATE TABLE CADEAUX (
-    CADEAUX_ID SERIAL PRIMARY KEY, -- Identifiant du cadeau
+    CADEAU_ID SERIAL PRIMARY KEY, -- Identifiant du cadeau
     NOM VARCHAR(255) NOT NULL, -- Nom du cadeau
     PRIX INTEGER NOT NULL, -- Prix du cadeau en points
     TAILLE VARCHAR(255), -- Taille du cadeau (not required)

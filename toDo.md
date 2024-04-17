@@ -192,7 +192,7 @@
   - voir la liste des clients
   - boutons sur chaque client pour modifier / supprimer
   - bouton pour ajouter client -> redirection vers un formulaire ???
-  - boutons pour ajouter (par caracteristiques) / supprimer (par cadeaux_id) un cadeau
+  - boutons pour ajouter (par caracteristiques) / supprimer (par cadeau_id) un cadeau
 - module `gestion_personnes`:  
   voir liste / ajouter / supprimer / modifier client. Utilisé pour trouver les personnes (clients / gérante) lors de la connexion.
 - module `gestion_cadeaux`: ajouter / supprimer cadeaux

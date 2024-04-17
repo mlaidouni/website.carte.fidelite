@@ -63,7 +63,7 @@ $(document).ready(function () {
           let cadeau = cadeaux[i];
           // On crée une card pour chaque cadeau
           let card = `<div class="col mb-4">
-          <div id="${cadeau.cadeaux_id}" class="card">
+          <div id="${cadeau.cadeau_id}" class="card">
             <img
               class="card-img-top"
               src="/images/${cadeau.image}"
@@ -77,7 +77,7 @@ $(document).ready(function () {
                 <p class="card-text"></p>
               </details>
               <button
-                id="${cadeau.cadeaux_id}"
+                id="${cadeau.cadeau_id}"
                 class="btn btn-success add-to-panier"
                 type="button"
                 >Ajouter au panier</button

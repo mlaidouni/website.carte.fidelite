@@ -141,7 +141,7 @@
       >
         <% for (let i=0; i < data.length; i++) { let cadeau = data[i] %>
         <div class="col mb-4">
-          <div id="<%= cadeau.cadeaux_id %>" class="card">
+          <div id="<%= cadeau.cadeau_id %>" class="card">
             <img
               class="card-img-top"
               src="/images/<%= cadeau.image %>"
@@ -163,7 +163,7 @@
                 <%}%>
               </details>
               <button
-                id="<%= cadeau.cadeaux_id %>"
+                id="<%= cadeau.cadeau_id %>"
                 class="btn btn-success add-to-panier"
                 type="button"
               >
