@@ -20,6 +20,7 @@
     <!-- CSS -->
     <link href="/styles/theme.css" rel="stylesheet" />
     <link href="/styles/compte_client.css" rel="stylesheet" />
+    <link href="/styles/card-client-cadeau.css" rel="stylesheet" />
     <!-- Script pour gérer les interractions avec l'utilisateur (boutons, ...) -->
     <script src="/scripts/compte_client.js"></script>
     <title>Compte</title>
@@ -135,57 +136,57 @@
     </nav>
 
     <% if (anniversaire) { %>
-    <div class="alert alert-success anniv-div role="alert">
+    <div class="alert alert-success anniv-div" role="alert">
       <span class="anniv-text"
-        >Joyeux anniversaire <%= client.prenom %> ! Vous avez reçu des cadeaux spéciaux, profitez-en !</span
+        >Joyeux anniversaire <%= client.prenom %> ! Vous avez reçu des cadeaux
+        spéciaux, profitez-en !</span
       >
     </div>
     <% } %>
-        
+
     <!-- Contenu principal -->
-    <% if (datatype==="accueil") { %>
-      <% if (anniversaire) { %>
-        <h2 class="page-title">Liste des cadeaux spéciaux</h2>
-        <div class="container mt-5">
-          <div
-            class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 list-cadeaux"
-          >
-            <% for (let i=0; i < speciaux.length; i++) { let cadeau = speciaux[i] %>
-            <div class="col mb-4">
-              <div id="<%= cadeau.cadeau_id %>" class="card">
-                <img
-                  class="card-img-top"
-                  src="/images/<%= cadeau.image %>"
-                  alt="<%= cadeau.image %>"
-                />
-                <div class="card-body">
-                  <h5 class="card-title"><%=cadeau.nom%></h5>
-                  <p class="card-text"><%=cadeau.prix%> €</p>
-                  <details>
-                    <summary>Plus d'informations</summary>
-                    <p class="card-text"></p>
-                    <!-- On affiche que les informations existantes -->
-                    <%if (cadeau.taille){%>
-                    <p class="card-text">Taille : <%=cadeau.taille%></p>
-                    <%}%> <%if (cadeau.couleur){%>
-                    <hr /><p class="card-text">Couleur : <%=cadeau.couleur%> </p>
-                    <%}%> <%if (cadeau.description){%>
-                    <hr /><p class="card-text"> <%=cadeau.description%> </p>
-                    <%}%>
-                  </details>
-                  <button
-                    id="<%= cadeau.cadeau_id %>"
-                    class="btn btn-success add-to-panier"
-                    type="button"
-                  >
-                    Ajouter au panier
-                  </button>
-                </div>
-              </div>
+    <% if (datatype==="accueil") { %> <% if (anniversaire) { %>
+    <h2 class="page-title">Liste des cadeaux spéciaux</h2>
+    <div class="container mt-5">
+      <div
+        class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 list-cadeaux"
+      >
+        <% for (let i=0; i < speciaux.length; i++) { let cadeau = speciaux[i] %>
+        <div class="col mb-4">
+          <div id="<%= cadeau.cadeau_id %>" class="card">
+            <img
+              class="card-img-top"
+              src="/images/<%= cadeau.image %>"
+              alt="/images/<%= cadeau.image %>"
+            />
+            <div class="card-body">
+              <h5 class="card-title"><%= cadeau.nom %></h5>
+              <p class="card-text"><%= cadeau.prix %> €</p>
+              <p class="card-text">Stock : <%= cadeau.stock %></p>
+              <details>
+                <summary>Plus d'informations</summary>
+                <!-- On affiche que les informations existantes -->
+                <% if (cadeau.taille){ %>
+                <p class="card-text">Taille : <%= cadeau.taille %></p>
+                <%}%> <% if (cadeau.couleur) { %>
+                <hr /><p class="card-text">Couleur : <%= cadeau.couleur %></p>
+                <%}%> <% if (cadeau.description) { %>
+                <hr /><p class="card-text"><%= cadeau.description %></p>
+                <%}%>
+              </details>
+              <button
+                id="<%= cadeau.cadeau_id %>"
+                class="btn btn-success add-to-panier"
+                type="button"
+                >Ajouter au panier</button
+              >
             </div>
-            <% } %>
           </div>
-        </div> <% } %>
+        </div>
+        <% } %>
+      </div>
+    </div>
+    <% } %>
     <h2 class="page-title">Liste des cadeaux disponibles</h2>
     <div class="container mt-5">
       <div
@@ -197,31 +198,29 @@
             <img
               class="card-img-top"
               src="/images/<%= cadeau.image %>"
-              alt="<%= cadeau.image %>"
+              alt="/images/<%= cadeau.image %>"
             />
             <div class="card-body">
-              <h5 class="card-title"><%=cadeau.nom%></h5>
-              <p class="card-text"><%=cadeau.prix%> €</p>
-              <p class="card-text">Quantite restante : <%= cadeau.stock %></p>
+              <h5 class="card-title"><%= cadeau.nom %></h5>
+              <p class="card-text"><%= cadeau.prix %> €</p>
+              <p class="card-text">Stock : <%= cadeau.stock %></p>
               <details>
                 <summary>Plus d'informations</summary>
-                <p class="card-text"></p>
                 <!-- On affiche que les informations existantes -->
-                <%if (cadeau.taille){%>
-                <p class="card-text">Taille : <%=cadeau.taille%></p>
-                <%}%> <%if (cadeau.couleur){%>
-                <hr /><p class="card-text">Couleur : <%=cadeau.couleur%> </p>
-                <%}%> <%if (cadeau.description){%>
-                <hr /><p class="card-text"> <%=cadeau.description%> </p>
+                <% if (cadeau.taille){ %>
+                <p class="card-text">Taille : <%= cadeau.taille %></p>
+                <%}%> <% if (cadeau.couleur) { %>
+                <hr /><p class="card-text">Couleur : <%= cadeau.couleur %></p>
+                <%}%> <% if (cadeau.description) { %>
+                <hr /><p class="card-text"><%= cadeau.description %></p>
                 <%}%>
               </details>
               <button
                 id="<%= cadeau.cadeau_id %>"
                 class="btn btn-success add-to-panier"
                 type="button"
+                >Ajouter au panier</button
               >
-                Ajouter au panier
-              </button>
             </div>
           </div>
         </div>
@@ -229,47 +228,58 @@
       </div>
     </div>
     <% } else if (datatype === "panier") { %>
-
     <div class="container mt-5">
-      <a href="/client/compte" id="return" class="btn btn-primary align-items-start return" type="button" >Revenir a la page d'achat</a>
+      <a
+        href="/client/compte"
+        id="return"
+        class="btn btn-primary align-items-start return"
+        type="button"
+        >Revenir a la page d'achat</a
+      >
       <h2 class="card-body d-flex justify-content-center align-items-center">
-        Cadeaux actuellement dans le panier<%if(panier_value>0){%>, prix total : <%= panier_value %><%}%>
+        Cadeaux actuellement dans le panier<%if(panier_value>0){%>, prix total :
+        <%= panier_value %><%}%>
       </h2>
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
         <% if (panier_counter > 0) { %> <% for (let i = 0; i < data.length; i++)
-          { let cadeau = data[i]; %>
-          <div class="col mb-4">
-            <div id="<%= cadeau.cadeaux_id %>" class="card">
-              <img
-                class="card-img-top"
-                src="/images/<%= cadeau.image %>"
-                alt="<%= cadeau.nom %>"
-              />
-              <div class="card-body">
-                <h5 class="card-title"><%= cadeau.nom %></h5>
-                <p class="card-text"><%= cadeau.prix %> €</p>
-                <p class="card-text">Quantite restante : <%= cadeau.stock %></p>
-                <details>
-                  <summary>Plus d'informations</summary>
-                  <% if (cadeau.taille) { %>
-                  <p class="card-text">Taille : <%= cadeau.taille %></p>
-                  <% } %> <% if (cadeau.couleur) { %>
-                  <hr />
-                  <p class="card-text">Couleur : <%= cadeau.couleur %></p>
-                  <% } %> <% if (cadeau.description) { %>
-                  <hr />
-                  <p class="card-text"><%= cadeau.description %></p>
-                  <% } %>
-                </details>
-              </div>
+        { let cadeau = data[i]; %>
+        <div class="col mb-4">
+          <div id="<%= cadeau.cadeau_id %>" class="card">
+            <img
+              class="card-img-top"
+              src="/images/<%= cadeau.image %>"
+              alt="/images/<%= cadeau.image %>"
+            />
+            <div class="card-body">
+              <h5 class="card-title"><%= cadeau.nom %></h5>
+              <p class="card-text"><%= cadeau.prix %> €</p>
+              <!-- IDEA: Dans le panier, remplacer par quantité prise -->
+              <p class="card-text">Stock : <%= cadeau.stock %></p>
+              <details>
+                <summary>Plus d'informations</summary>
+                <!-- On affiche que les informations existantes -->
+                <% if (cadeau.taille){ %>
+                <p class="card-text">Taille : <%= cadeau.taille %></p>
+                <%}%> <% if (cadeau.couleur) { %>
+                <hr /><p class="card-text">Couleur : <%= cadeau.couleur %></p>
+                <%}%> <% if (cadeau.description) { %>
+                <hr /><p class="card-text"><%= cadeau.description %></p>
+                <%}%>
+              </details>
+              <button
+                id="<%= cadeau.cadeau_id %>"
+                class="btn btn-success <%= btntype %>"
+                type="button"
+                ><%= btntext %></button
+              >
             </div>
           </div>
-          <% } %> <% } else { %>
-          <p>
-            Aucun cadeau dans le panier pour l'utilisateur <%= client.user_id %> !
-          </p>
-          <% } %>
-
+        </div>
+        <% } %> <% } else { %>
+        <p>
+          Aucun cadeau dans le panier pour l'utilisateur <%= client.user_id %> !
+        </p>
+        <% } %>
       </div>
       <%if(panier_counter>0){%>
       <div class="card-body d-flex justify-content-center align-items-center">

@@ -116,14 +116,14 @@ function Cadeau(tableName) {
     try {
       // Requête à exécuter
       const selectResult = await client.query(
-        `SELECT stock FROM ${tableName} WHERE id = $1`,
+        `SELECT stock FROM ${tableName} WHERE CADEAU_ID = $1`,
         [id]
       );
       const stock = selectResult.rows[0].stock;
 
       if (stock > 1) {
         let query = {
-          text: `UPDATE ${tableName} SET stock = stock - 1 WHERE CADEAU_ID = $1`,
+          text: `UPDATE ${tableName} SET stock = stock-1 WHERE CADEAU_ID = $1`,
           // Les valeurs à remplacer dans la requête
           values: [id],
         };

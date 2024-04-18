@@ -21,38 +21,3 @@ body {
   transition: box-shadow 0.3s ease-in-out;
 }
 
-.card:hover {
-  /* Ombre lors du survol avec la souris */
-  box-shadow: 0 0 10px #00000080;
-}
-
-/* Gestion des images des card */
-.card .card-img-top {
-  /* pour que l'image prenne toute la largeur de la carte */
-  width: 100%;
-  /* hauteur fixe pour toutes les images */
-  /* La taille doit être max entre la taille originale et 200 px */
-  height: 200px;
-  /* height: 200px; */
-  /* pour que l'image couvre toute la zone définie sans déformation */
-  object-fit: cover;
-}
-
-/* Gestion des boutons des card */
-.card .btn {
-  /* Les boutons sont invisibiles par défaut. */
-  opacity: 0;
-  /* Transition pour rendre les boutons visibles */
-  transition: opacity 0.5s;
-}
-
-.card btn:not(:last-child) {
-  /* On met une marge pour que les boutons ne soient pas collés sauf le last */
-  margin-right: 10px;
-  margin-bottom: 10px;
-}
-
-.card:hover .btn {
-  /* Les boutons deviennent visibles lorsque la souris passe sur la carte */
-  opacity: 1;
-}

@@ -1,0 +1,22 @@
+<div class="col mb-4">
+    <div id="<%= client.user_id %>" class="card">
+      <img src="/images/backg.jpg" class="card-img-top" alt="/images/backg.jpg" />
+      <div class="card-body">
+        <h5 class="card-title"><span class="nom" type="text"><%= client.nom %></span> <span class="prenom" type="text"><%= client.prenom %></span></h5>
+        <h6 class="card-subtitle mb-2 text-muted"><span class="user_id" type="text"><%= client.user_id %></span></h6>
+        <details>
+          <summary>Plus d'informations</summary>
+          <p class="card-text">
+            Contact: <span class="email" type="email"><%= client.email %></span> - <span class="telephone" type="texte"><%= client.telephone %></span>
+            <hr>
+            Date de naissance: <span class="date_naissance" type="date"><%= client.date_naissance %></span>
+            <hr>
+            Points: <span class="points" type="number"><%= client.points %></span>
+          </p>
+        </details>
+        <button id="<%= client.user_id %>" class="btn btn-primary client-update" type="button">Modifier</button>
+        <!-- <button id="<%= client.user_id %>" class="btn btn-warning client-reset" type="button">Annuler</button> -->
+        <button id="<%= client.user_id %>" class="btn btn-danger client-delete" type="button">Supprimer</button>
+      </div>
+    </div>
+  </div>

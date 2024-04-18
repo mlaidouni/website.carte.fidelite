@@ -14,6 +14,6 @@
 }
 
 .card#add .btn {
-  /* Les inputs sont invisibles par défaut. */
+  /* Les boutons d'ajout de cadeau et client sont visibles par défaut. */
   opacity: 1;
 }

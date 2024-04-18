@@ -1,5 +1,89 @@
 $(document).ready(function () {
+  /* ******************** Fonction utilitaire *********** */
+
+  // Crée une card représentant un cadeau
+  function createCard(cadeau, btntext, btntype) {
+    let card = `
+<div class="col mb-4">
+  <div id="${cadeau.cadeau_id}" class="card">
+    <img
+      class="card-img-top"
+      src="/images/${cadeau.image}"
+      alt="/images/${cadeau.image}"
+    />
+    <div class="card-body">
+      <h5 class="card-title">${cadeau.nom}</h5>
+      <p class="card-text">${cadeau.prix} €</p>
+      <p class="card-text">Stock : ${cadeau.stock}</p>
+      <details>
+        <summary>Plus d'informations</summary>
+        ${
+          cadeau.taille
+            ? `<p class="card-text">Taille : ${cadeau.taille}</p>`
+            : ""
+        }
+        ${
+          cadeau.couleur
+            ? `<hr /><p class="card-text">Couleur : ${cadeau.couleur}</p>`
+            : ""
+        }
+        ${
+          cadeau.description
+            ? `<hr /><p class="card-text">${cadeau.description}</p>`
+            : ""
+        }
+      </details>
+      <button
+        id="${cadeau.cadeau_id}"
+        class="btn btn-success ${btntype}"
+        type="button"
+        >${btntext}</button
+      >
+    </div>
+  </div>
+</div>
+`;
+    return card;
+  }
+
+  // Envoie une requête AJAX
+  function sendAJAX(url, type, data, successCb, errorTxt) {
+    $.ajax({
+      url: url,
+      type: type,
+      data: data,
+      success: successCb,
+      error: function (error) {
+        // En cas d'erreur, on affiche l'erreur dans la console
+        console.error(error.responseJSON.message);
+        // On affiche une alerte pour informer l'utilisateur
+        alert(`Une erreur est survenue lors de ${errorTxt}.`);
+      },
+    });
+  }
+
+  // Envoie d'une requête AJAX pour supprimer des données
+  function delAJAX(url, successCb, errorTxt) {
+    sendAJAX(url, "DELETE", null, successCb, `la suppression ${errorTxt}`);
+  }
+
+  // Envoie d'une requête AJAX pour mettre à jour des données
+  function putAJAX(url, data, successCb, errorTxt) {
+    sendAJAX(url, "PUT", data, successCb, `la mise à jour ${errorTxt}`);
+  }
+
+  // Envoie d'une requête AJAX pour ajouter des données
+  function postAJAX(url, data, successCb, errorTxt) {
+    sendAJAX(url, "POST", data, successCb, `l'ajout ${errorTxt}`);
+  }
+
+  // Envoie d'une requête AJAX pour récupérer des données
+  function getAJAX(url, successCb, errorTxt) {
+    sendAJAX(url, "GET", null, successCb, `la récupération ${errorTxt}`);
+  }
+
   /* ******************** Gestion de l'anniversaire *********** */
+
   // Animation de l'aniversaire
   function annivAnimation() {
     // Le texte à animer
@@ -18,71 +102,74 @@ $(document).ready(function () {
     });
   }
 
+  // Animation des confettis pour l'anniversaire
   function confettiAnimation() {
-    // On fait chuter pleins de confettis depuis le haut de l'écran
-    for (let i = 0; i < 10; i++) {
-      confetti({
-        particleCount: 200,
-        spread: 70,
-        startVelocity: 20,
-        // Les confettis chutent progressivement
-        gravity: 1,
-        origin: { y: 0, x: i / 10 }, // start from different positions across the width
-      });
-    }
     // On lance des confetti
     confetti({
-      // Nombre de particules
+      // Nombre de confettis
       particleCount: 2000,
-      // Couleurs des particules
-      spread: 70,
-      // Les confettis remontent progressivement
-      gravity: -1,
-      origin: { y: 0.4 },
+      // Vitesse des confettis
+      startVelocity: 70,
+      // Angle de dispersion
+      spread: 360,
+      // Les confettis chutent progressivement
+      gravity: 1,
+      // Durée de vie des confettis
+      ticks: 300,
+      // Position de départ
+      origin: { y: 0.5 },
     });
   }
 
-  // Requête AJAX pour obtenir la valeur de isAnniversaire
-  $.ajax({
-    url: "/client/isAnniversaire",
-    type: "GET",
-    success: function (data) {
+  /* Au chargement de la page, récupération de la date d'anniversaire du client
+   * pour savoir s'il faut afficher l'animation d'anniversaire. */
+  sendAJAX(
+    "/client/isAnniversaire",
+    "GET",
+    null,
+    function (data) {
       if (data.isAnniversaire) {
         annivAnimation();
         confettiAnimation();
       }
     },
-  });
-  /* ******************** Gestion des boutons - Général *********** */
+    "la récupération de la date d'anniversaire."
+  );
 
-  // Déconnexion du client
+  /* ******************** Gestion des boutons - Déconnexion *********** */
+
+  // Déconnexion du client (bouton de class client-deconnexion)
   $(document).on("click", ".client-deconnexion", function () {
     /* On envoie une requête en POST pour indiquer au serveur de déconnecter
-     * le client. Le serveur se charge de rediriger l'utilisateur vers la
-     * page de connexion client. On se contente donc d'afficher un message
-     * de succès. */
-
-    // Requête AJAX pour déconnecter le client
-    $.ajax({
-      // On envoie une requête de type POST à l'URL /gerante/compte/clients
-      url: "/client/deconnexion",
-      type: "POST",
-      success: function (data) {
+     * le client. */
+    postAJAX(
+      "/client/deconnexion",
+      null,
+      (data) => {
         // Si la déconnexion a réussi, on redirigie la page
         window.location.href = "/client/connexion";
       },
-      error: function (error) {
-        // En cas d'erreur, on affiche l'erreur dans la console
-        console.error(error.responseJSON.message);
-        // On affiche une alerte pour informer l'utilisateur
-        alert("Une erreur est survenue lors de la déconnexion du client.");
-      },
-    });
+      "la déconnexion du client."
+    );
   });
 
   /* ******************** Gestion des boutons - Accueil *********** */
 
-  // Ajout d'un cadeau au panier
+  /**
+   * Met à jour l'affichage du nombre de points et de cadeaux dans le panier.
+   * @param {*} panier_counter - Le nombre de cadeaux dans le panier.
+   * @param {*} points - Le nombre de points du client.
+   * @param {*} points_h - Le nombre de points hypothétiques du client.
+   */
+  function updateCounters(panier_counter, points, points_h) {
+    // On met à jour l'affichage du nombre de cadeaux dans le panier
+    $(".nav-panier-counter").text(panier_counter);
+
+    // On met à jour l'affichage du nombre de points
+    $(".nav-points-counter").html(`<del>${points}</del> ${points_h}`);
+  }
+
+  // Ajout d'un cadeau au panier (bouton de class add-to-panier)
   $(document).on("click", ".add-to-panier", function () {
     // La card représentant l'élément
     let card = $(this).closest(".card");
@@ -90,127 +177,65 @@ $(document).ready(function () {
     // L'identifiant de la card, i.e du cadeau
     let id = card.attr("id");
 
-    $.ajax({
-      type: "POST",
-      url: "/client/compte/cadeau?data=accueil",
-      data: { id: id },
-      success: function (response) {
+    // On envoie une requête en POST pour ajouter le cadeau au panier
+    postAJAX(
+      "/client/compte/cadeau?data=accueil",
+      { id: id },
+      (data) => {
         // TODO: Gérer le nombre de cadeaux d'un même type pour pouvoir faire les TODO suivants
         // TODO: Supprimer la card de l'affichage si la quantité est à 0
         // TODO: Add la possibilité de sélectionner la quantité à ajouter au panier
 
-        // On met à jour l'affichage du nombre de cadeaux dans le panier
-        $(".nav-panier-counter").text(response.panier_counter);
+        // On met à jour les compteurs de points et de cadeaux
+        updateCounters(data.panier_counter, data.points, data.points_h);
 
-        // On met à jour l'affichage du nombre de points
-        $(".nav-points-counter").html(
-          `<del>${response.points}</del> ${response.points_h}`
-        );
-
-        // TODO: On met à jour l'affichage des cadeaux
-        // ... card.parent().remove();
         // On vide la ligne contenant la liste des cadeaux
         $(".list-cadeaux").empty();
+
         // Puis on la rempli avec les cadeaux achetables
-        let cadeaux = response.cadeaux;
+        let cadeaux = data.cadeaux;
         for (let i = 0; i < cadeaux.length; i++) {
           let cadeau = cadeaux[i];
           // On crée une card pour chaque cadeau
-          let card = `<div class="col mb-4">
-          <div id="${cadeau.cadeau_id}" class="card">
-            <img
-              class="card-img-top"
-              src="/images/${cadeau.image}"
-              alt="${cadeau.image}"
-            />
-            <div class="card-body">
-              <h5 class="card-title">${cadeau.nom}</h5>
-              <p class="card-text">${cadeau.prix} €</p>
-              <details>
-                <summary>Plus d'informations</summary>
-                <p class="card-text"></p>
-              </details>
-              <button
-                id="${cadeau.cadeau_id}"
-                class="btn btn-success add-to-panier"
-                type="button"
-                >Ajouter au panier</button
-              >
-            </div>
-          </div>
-        </div>`;
-
-          /* On ajoute le détails du cadeau. $(card) est un objet jQuery créé à
-          partir de la card, nécessaire pour utiliser la fonction find(). */
-          let details = $(card).find("details");
-          if (cadeau.taille)
-            details.append(
-              `<p class="card-text">Taille : ${cadeau.taille}</p>`
-            );
-          if (cadeau.couleur) card;
-          details.append(
-            `<hr /><p class="card-text">Couleur : ${cadeau.couleur}</p>`
-          );
-          if (cadeau.couleur) card;
-          details.append(
-            `<hr /><p class="card-text"> ${cadeau.description}</p>`
-          );
+          let card = createCard(cadeau, "Ajouter au panier", "add-to-panier");
 
           // Une fois entièrement créée, on ajoute la card
           $(".list-cadeaux").append(card);
         }
       },
-      error: function (error) {
-        // En cas d'erreur, on affiche l'erreur dans la console
-        console.error(error.responseJSON.message);
-        // On affiche une alerte pour informer l'utilisateur
-        alert("Une erreur est survenue lors de l'ajout du cadeau au panier.");
-      },
-    });
-  });
-
-  $(document).on("click", ".valide-panier", function () {
-    let card = $(this).closest(".container");
-    card.empty();
-
-    $.ajax({
-      url: "/client/compte/panier", // L'URL du endpoint du serveur
-      type: "GET", // Type de la requête HTTP
-      data: {
-        // Ici, vous pouvez ajouter les données que vous souhaitez envoyer au serveur.
-        // Par exemple, si vous avez besoin d'envoyer des identifiants des cadeaux dans le panier :
-        // cadeauxId: [123, 456, 789]
-      },
-      success: function (response) {
-        console.log("Réponse du serveur:", response);
-        // Vous pouvez également mettre à jour l'interface utilisateur ici pour confirmer que la commande a été traitée.card.append('<h1 class = "card-body d-flex justify-content-center fw-bold text-white" >Commande envoyée</h1>');
-        window.location.href = "/client/compte?data=panier";
-      },
-      error: function (xhr, status, error) {
-        console.error("Erreur lors de l'envoi de la commande:", error);
-      },
-    });
-  });
-
-  $(document).on("click", ".empty-panier", function () {
-    $.ajax({
-      url: "/client/compte/panier", // L'URL du endpoint du serveur
-      type: "DELETE", // Type de la requête HTTP
-      data: {
-        // Ici, vous pouvez ajouter les données que vous souhaitez envoyer au serveur.
-        // Par exemple, si vous avez besoin d'envoyer des identifiants des cadeaux dans le panier :
-        // cadeauxId: [123, 456, 789]
-      },
-      success: function () {
-        console.log("Réponse du serveur:");
-        // Vous pouvez également mettre à jour l'interface utilisateur ici pour confirmer que la commande a été traitée.
-        window.location.href = "/client/compte?data=panier";
-      },
-      error: function (xhr, status, error) {
-        console.error("Erreur lors de l'envoi de la commande:", error);
-      },
-    });
+      "l'ajout du cadeau au panier."
+    );
   });
 
   /* ******************** Gestion des boutons - Panier *********** */
+
+  // Validation du panier (bouton de class valide-panier)
+  $(document).on("click", ".valide-panier", function () {
+    let card = $(this).closest(".container");
+
+    // On commence par vider l'affichage du panier
+    card.empty();
+
+    // Requête pour valider le panier
+    postAJAX(
+      "/client/compte/panier",
+      null,
+      (data) => {
+        window.location.href = "/client/compte?data=panier";
+      },
+      "des modifications au serveur après la validation du panier."
+    );
+  });
+
+  // Vider le panier (bouton de class empty-panier)
+  $(document).on("click", ".empty-panier", function () {
+    // Requête pour vider le panier
+    delAJAX(
+      "/client/compte/panier",
+      (data) => {
+        window.location.href = "/client/compte?data=panier";
+      },
+      "de tous les cadeaux du panier."
+    );
+  });
 });

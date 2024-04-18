@@ -71,6 +71,13 @@
 - Ajout des types de cadeaux (normal ou special).
 - Modification de 'gestion_cadeaux', pour gérer les types de cadeaux.
 
+<!--  -->
+
+- Correction: mauvais nom de colonne lors de la validation du panier
+- Séparation du style des card représentant les cadeaux et les clients.
+- Factorisation de 'compte_gerante.ejs', à l'aide de nouveaux fichiers de vue 'card_client.ejs', 'card_cadeau.ejs' et 'card_add.ejs'.
+-
+
 ## A faire (style)
 
 - [x] Rendre le texte du dropdown client blanc (ou plus lisibles)
@@ -91,8 +98,9 @@
 
 - [ ] Certaines colonnes sont encore écrites en dur dans le code de gestion_personnes et gestion_cadeaux.
 - [ ] Pour la suppression, il faut vérifier que le client existe avant de le supprimer. **UTILE ??**
-- [ ] Modification des images des cadeaux.
+- [x] Modification des images des cadeaux.
 - [ ] Problème lors de la mise à jour d'un client. Pour reproduire cette erreur: se connecter avec un client. Puis changer le nb de points côté gérante, et reload côté client. rien ne change.
+- [ ] **Gérer l'insertion par type (normal/spécial) !**
 
 ## A faire (exigences du sujet)
 

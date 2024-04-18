@@ -320,46 +320,6 @@ server.get("/client/compte", async (req, res) => {
   }
 });
 
-// // Affiche la page de compte du client
-// server.get("/client/compte", async (req, res) => {
-//   try {
-//     // On récupère le type de données demandées. (accueil ou panier)
-//     const dataType = req.query.data === undefined ? "accueil" : req.query.data;
-
-//     // Si aucun client n'est connecté, on redirige vers la page de connexion
-//     if (client_connected.client === undefined) {
-//       res.redirect("/client/connexion");
-//       return;
-//     }
-
-//     // On renvoie le type de la donnée demandée
-//     let reponse = {
-//       client: client_connected.client,
-//       points: client_connected.points,
-//       points_h: client_connected.points_h,
-//       panier_counter: client_connected.panier_counter,
-//       datatype: dataType,
-//     };
-
-//     if (dataType === "accueil") {
-//       // On récupère la liste des cadeaux du client
-//       let cadeaux = await gestion_cadeaux.getClient(client_connected.points_h);
-//       // On renvoie les données correspondantes
-//       reponse["data"] = cadeaux;
-//     } else if (dataType === "panier") {
-//       // On renvoie les données correspondantes
-//       reponse["data"] = client_connected.panier;
-//     }
-
-//     // Rendu de la page avec les bonnes données
-//     res.render(compte_client, reponse);
-//   } catch (error) {
-//     printError("serveur: Erreur lors de la connexion de la gerante:");
-//     printError(`-> ${error}`);
-//     res.status(500).send(`${error}`);
-//   }
-// });
-
 // Gestion de la deconnexion du client
 server.post("/client/deconnexion", (req, res) => {
   try {

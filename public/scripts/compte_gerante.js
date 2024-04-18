@@ -1,103 +1,188 @@
 $(document).ready(function () {
-  /* ******************** Gestion des boutons des card - Cadeaux *********** */
+  /* *********** Fonctions utilitaires *********** */
 
-  // Suppression: Sélection de tous les boutons de classe "cadeau-delete"
-  $(document).on("click", ".cadeau-delete", function () {
-    // La card représentant l'élément
-    let card = $(this).closest(".card");
+  // Crée un input
+  function createInput(type, className, value) {
+    return $("<input>", {
+      type: type,
+      class: className,
+      value: value,
+    });
+  }
 
-    // L'identifiant de la card, i.e du cadeau
-    let id = card.attr("id");
+  // Crée un span
+  function createSpan(className, text) {
+    return $("<span>", {
+      class: className,
+      text: text,
+    });
+  }
 
-    // Requête AJAX pour supprimer le cadeau
+  // Modifier un bouton
+  function switchButton(button, text, oldClass, newClass) {
+    // On change le texte du bouton
+    button.text(text);
+    // On change le style du bouton
+    button.removeClass(oldClass).addClass(newClass);
+  }
+
+  // Envoie une requête AJAX
+  function sendAJAX(url, type, data, successCb, errorTxt) {
     $.ajax({
-      // On envoie une requête de type DELETE à l'URL /gerante/compte/cadeaux
-      url: `/gerante/compte/cadeaux?id=${id}`,
-      type: "DELETE",
-      success: function (data) {
-        /* Si la suppression dans la BD a réussi, on supprime entièrement la
-         * card, i.e la card elle-même et la colonne qui la contient */
-        card.parent().remove();
-      },
+      url: url,
+      type: type,
+      data: data,
+      success: successCb,
       error: function (error) {
         // En cas d'erreur, on affiche l'erreur dans la console
         console.error(error.responseJSON.message);
         // On affiche une alerte pour informer l'utilisateur
-        alert("Une erreur est survenue lors de la suppression du cadeau.");
+        alert(`Une erreur est survenue lors de ${errorTxt}.`);
       },
     });
+  }
+
+  // Envoie d'une requête AJAX pour supprimer des données
+  function delAJAX(url, successCb, errorTxt) {
+    sendAJAX(url, "DELETE", null, successCb, `la suppression ${errorTxt}`);
+  }
+
+  // Envoie d'une requête AJAX pour mettre à jour des données
+  function putAJAX(url, data, successCb, errorTxt) {
+    sendAJAX(url, "PUT", data, successCb, `la mise à jour ${errorTxt}`);
+  }
+
+  // Envoie d'une requête AJAX pour ajouter des données
+  function postAJAX(url, data, successCb, errorTxt) {
+    sendAJAX(url, "POST", data, successCb, `l'ajout ${errorTxt}`);
+  }
+
+  /* *********** Gestion des boutons des card - Suppression *********** */
+
+  // TODO: Ajouter le bouton "Annuler", pour annuler les modifications
+
+  /**
+   * Supprime un élément dans la BD et dans l'interface.
+   * @param {button} button - Le bouton qui a été cliqué.
+   * @param {string} urlType - Le type de l'URL (cadeaux ou clients).
+   * @param {string} type - Le type de l'élément (cadeau ou client).
+   */
+  function deleteDbElement(button, urlType, type) {
+    // La card représentant l'élément
+    let card = button.closest(".card");
+
+    // L'identifiant de la card, i.e de l'élément
+    let id = card.attr("id");
+    console.log(button.attr("class") + " " + button.attr("id"));
+
+    // Requête AJAX pour supprimer l'élément
+    delAJAX(
+      `/gerante/compte/${urlType}?id=${id}`,
+      (data) => {
+        /* Si la suppression dans la BD a réussi, on supprime entièrement la
+         * card, i.e la card elle-même et la colonne qui la contient */
+        card.parent().remove();
+      },
+      `du ${type}`
+    );
+  }
+
+  // Suppression d'un cadeau (bouton de classe "cadeau-delete")
+  $(document).on("click", ".cadeau-delete", function () {
+    deleteDbElement($(this), "cadeaux", "cadeau");
   });
 
-  // Modification: Sélection de tous les boutons de classe "cadeau-update"
-  $(document).on("click", ".cadeau-update", function (e) {
+  // Suppression d'un client (bouton de classe "client-delete")
+  $(".client-delete").click(function () {
+    deleteDbElement($(this), "clients", "client");
+  });
+
+  /* *********** Gestion des boutons des card - Update *********** */
+
+  /**
+   * Met à jour l'affichage pour modifier un élément.
+   * @param {*} button - Le bouton qui a été cliqué.
+   * @param {*} card - La card représentant l'élément.
+   */
+  function updateElement(button, card) {
+    /* Pour chaque champ, on remplace le span par un input de type text, avec
+     * les mêmes classes et valeurs */
+    card.find("span").each(() => {
+      let input = $("<input>", {
+        type: button.attr("type"),
+        class: button.attr("class"),
+        value: button.text(),
+      });
+      button.replaceWith(input);
+    });
+
+    // On update le bouton
+    switchButton(button, "Valider", "btn-primary", "btn-success");
+  }
+
+  /**
+   * Valide la modification d'un élément dans la BD et dans l'interface.
+   * @param {*} button - Le bouton qui a été cliqué.
+   * @param {*} card - La card représentant l'élément.
+   * @param {*} urlType - Le type de l'URL (cadeaux ou clients).
+   * @param {*} type - Le type de l'élément (cadeau ou client).
+   */
+  function valideElement(button, card, urlType, type) {
+    // L'identifiant de la card, i.e de l'élément
+    const id = card.attr("id");
+
+    // Les nouvelles valeurs pour l'élément
+    const newValues = {};
+    card.find("input").each(() => {
+      // On récupère l'attribut (la classe) et la valeur correspondant
+      newValues[button.attr("class")] = button.val();
+    });
+
+    // Requête AJAX pour mettre à jour l'élément
+    putAJAX(
+      `/gerante/compte/${urlType}?id=${id}`,
+      newValues,
+      (data) => {
+        // Si l'update dans la BD a réussi, on transforme les input en span
+        card.find("input").each(() => {
+          let span = createSpan(button.attr("class"), button.val());
+          button.replaceWith(span);
+        });
+      },
+      `du ${type}`
+    );
+
+    // On update le bouton
+    switchButton(button, "Modifier", "btn-success", "btn-primary");
+  }
+
+  // Modification d'un cadeau (bouton de classe "cadeau-update")
+  $(document).on("click", ".cadeau-update", function () {
     // La card représentant l'élément
     let card = $(this).closest(".card");
 
     // Si le bouton dit "Modifier", on transforme les span en input
-    if ($(this).text() === "Modifier") {
-      /* Pour chaque champ, on remplace le span par un input de type text, avec
-       * les mêmes classes et valeurs */
-      card.find("span").each(function () {
-        let input = $("<input>", {
-          type: $(this).attr("type"),
-          class: $(this).attr("class"),
-          value: $(this).text(),
-        });
-        $(this).replaceWith(input);
-      });
-
-      // On change le bouton
-      $(this).text("Valider");
-      // On change le style du bouton
-      $(this).removeClass("btn-primary").addClass("btn-success");
-    }
-
+    if ($(this).text() === "Modifier") updateElement($(this), card);
     // Si le bouton dit "Valider", on envoie les modifications au serveur
-    else {
-      // L'identifiant de la card, i.e de l'élément
-      let id = card.attr("id");
-
-      // Les nouvelles valeurs pour le cadeau
-      let newValues = {};
-      card.find("input").each(function () {
-        // On récupère l'attribut (la classe) et la valeur correspondant
-        newValues[$(this).attr("class")] = $(this).val();
-      });
-
-      // Requête AJAX pour mettre à jour l'élément
-      $.ajax({
-        // On envoie une requête de type PUT à l'URL /gerante/compte/cadeaux
-        url: `/gerante/compte/cadeaux?id=${id}`,
-        type: "PUT",
-        data: newValues, // Les nouvelles valeurs à envoyer
-        success: function (data) {
-          // Si l'update dans la BD a réussi, on transforme les input en span
-          card.find("input").each(function () {
-            let span = $("<span>", {
-              class: $(this).attr("class"),
-              text: $(this).val(),
-            });
-            $(this).replaceWith(span);
-          });
-        },
-        error: function (error) {
-          // En cas d'erreur, on affiche l'erreur dans la console
-          console.error(error.responseJSON.message);
-          // On affiche une alerte pour informer l'utilisateur
-          alert("Une erreur est survenue lors de la mise à jour du cadeau.");
-        },
-      });
-
-      // On change le bouton
-      $(this).text("Modifier");
-      // On change le style du bouton
-      $(this).removeClass("btn-success").addClass("btn-primary");
-    }
+    else valideElement($(this), card, "cadeaux", "cadeau");
   });
 
-  /* Ajout: Sélection de tous les boutons de classe "cadeau-add"
+  // Modification d'un client (bouton de classe "client-update")
+  $(document).on("click", ".client-update", function () {
+    // La card représentant l'élément
+    let card = $(this).closest(".card");
+
+    // Si le bouton dit "Modifier", on transforme les span en input
+    if ($(this).text() === "Modifier") updateElement($(this), card);
+    // Si le bouton dit "Valider", on envoie les modifications au serveur
+    else valideElement($(this), card, "clients", "client");
+  });
+
+  /* *********** Gestion des boutons des card - Ajout *********** */
+
+  /* Ajout: Sélection de tous les boutons de classe "cadeaux-add"
    * Crée le formulaire pour l'ajout d'un cadeau. */
-  $(document).on("click", ".cadeau-add", function (e) {
+  $(document).on("click", ".cadeaux-add", function (e) {
     // La card représentant l'élément
     let card = $(this).closest(".card");
 
@@ -113,11 +198,12 @@ $(document).ready(function () {
       enctype: "multipart/form-data",
     });
 
-    // NOTE: Utiliser gestion_personnes.getColumns() pour obtenir les colonnes ?
+    // NOTE: Utiliser gestion_personnes.getColumns() pour obtenir les colonnes?
     // On récupère les champs de la table nécessaire pour le formulaire
     let champs = [
       "nom",
       "prix",
+      "type",
       "taille",
       "couleur",
       "description",
@@ -127,6 +213,7 @@ $(document).ready(function () {
 
     // Pour chaque champ, on ajoute un input au formulaire
     champs.forEach(function (champ) {
+      // TODO: Changer l'input pour le champs 'type'
       // Les champs nom, prix et image sont obligatoires
       if (champ === "nom") {
         form.append(
@@ -177,14 +264,14 @@ $(document).ready(function () {
     form.append(
       $("<button>", {
         text: "Valider",
-        class: "btn btn-success cadeau-add-valider",
+        class: "btn btn-success cadeaux-add-valider",
         type: "submit",
       })
     );
     form.append(
       $("<button>", {
         text: "Annuler",
-        class: "btn btn-warning cadeau-add-reset",
+        class: "btn btn-warning cadeaux-add-reset",
         type: "button",
       })
     );
@@ -193,41 +280,33 @@ $(document).ready(function () {
     card.html(form);
   });
 
-  /* Ajout: Sélection de tous les boutons de classe "cadeau-add-valider"
+  /* Ajout: Sélection de tous les boutons de classe "cadeaux-add-valider"
    * Envoie les données du formulaire au serveur pour ajouter un cadeau. */
-  $(document).on("submit", ".cadeau-add-valider", function (e) {
+  $(document).on("submit", ".cadeaux-add-valider", function (e) {
     // La card représentant l'élément
     let card = $(this).closest(".card");
 
     // Les données pour le nouveau cadeau
     let data = {};
-    card.find("input").each(function () {
+    card.find("input").each(() => {
       // On récupère l'attribut (la classe) et la valeur correspondant
       data[$(this).attr("name")] = $(this).val();
     });
 
     // Requête AJAX pour mettre à jour l'élément
-    $.ajax({
-      // On envoie une requête de type POST à l'URL /gerante/compte/cadeaux
-      url: "/gerante/compte/cadeaux",
-      type: "POST",
-      data: data, // Les données à envoyer
-      success: function (data) {
-        console.log("succes");
-        // Si l'ajout dans la BD a réussi, le serveur à rechargé la page
+    postAJAX(
+      "/gerante/compte/cadeaux",
+      data,
+      (data) => {
+        // Si l'ajout dans la BD a réussi, on recharge la page
         window.location.href = "/gerante/compte?data=cadeau";
       },
-      error: function (error) {
-        // En cas d'erreur, on affiche l'erreur dans la console
-        console.error(error.responseJSON.message);
-        // On affiche une alerte pour informer l'utilisateur
-        alert("Une erreur est survenue lors de l'ajout du cadeau.");
-      },
-    });
+      "du cadeau"
+    );
   });
 
   // Si l'ajout de cadeau est annulé
-  $(document).on("click", ".cadeau-add-reset", function (e) {
+  $(document).on("click", ".cadeaux-add-reset", function (e) {
     // La card représentant l'élément
     let card = $(this).closest(".card");
 
@@ -239,115 +318,18 @@ $(document).ready(function () {
     });
 
     // On ajoute le bouton "Ajouter cadeau"
+    // FIXME: ça dépasse 80 colonnes
     cardBody.append(
-      '<button id="add_cadeau" class="btn btn-success cadeau-add" type="button">Ajouter cadeau</button>'
+      '<button id="add_cadeau" class="btn btn-success cadeaux-add" type="button">Ajouter cadeau</button>'
     );
 
     // On remplace le contenu actuel de la card par cardBody
     card.html(cardBody);
   });
 
-  /* ******************** Gestion des boutons des card - Clients *********** */
-
-  // TODO: Ajouter le bouton "Annuler", pour annuler les modifications
-  // Suppression: Sélection de tous les boutons de classe "client-delete"
-  $(".client-delete").click(function (e) {
-    // La card représentant l'élément
-    let card = $(this).closest(".card");
-
-    // L'identifiant de la card, i.e du client
-    let id = card.attr("id");
-
-    // Requête AJAX pour supprimer le client
-    $.ajax({
-      // On envoie une requête de type DELETE à l'URL /gerante/compte/clients
-      url: `/gerante/compte/clients?id=${id}`,
-      type: "DELETE",
-      success: function (data) {
-        /* Si la suppression dans la BD a réussi, on supprime entièrement la
-         * card, i.e la card elle-même et la colonne qui la contient */
-        card.parent().remove();
-      },
-      // En cas d'erreur, on affiche l'erreur dans la console
-      error: function (error) {
-        // En cas d'erreur, on affiche l'erreur dans la console
-        console.error(error.responseJSON.message);
-        // On affiche une alerte pour informer l'utilisateur
-        alert("Une erreur est survenue lors de la suppression du client.");
-      },
-    });
-  });
-
-  // Modification: Sélection de tous les boutons de classe "client-update"
-  $(document).on("click", ".client-update", function (e) {
-    // La card représentant l'élément
-    let card = $(this).closest(".card");
-
-    // Si le bouton dit "Modifier", on transforme les span en input
-    if ($(this).text() === "Modifier") {
-      /* Pour chaque champ, on remplace le span par un input de type text, avec
-       * les mêmes classes et valeurs */
-      card.find("span").each(function () {
-        let input = $("<input>", {
-          type: $(this).attr("type"),
-          class: $(this).attr("class"),
-          value: $(this).text(),
-        });
-        $(this).replaceWith(input);
-      });
-
-      // On change le bouton
-      $(this).text("Valider");
-      // On change le style du bouton
-      $(this).removeClass("btn-primary").addClass("btn-success");
-    }
-
-    // Si le bouton dit "Valider", on envoie les modifications au serveur
-    else {
-      // L'identifiant de la card, i.e de l'élément
-      let id = card.attr("id");
-
-      // Les nouvelles valeurs pour le client
-      let newValues = {};
-      card.find("input").each(function () {
-        // On récupère l'attribut (la classe) et la valeur correspondant
-        newValues[$(this).attr("class")] = $(this).val();
-      });
-
-      // Requête AJAX pour mettre à jour l'élément
-      $.ajax({
-        // On envoie une requête de type PUT à l'URL /gerante/compte/clients
-        url: `/gerante/compte/clients?id=${id}`,
-        type: "PUT",
-        data: newValues, // Les nouvelles valeurs à envoyer
-        success: function (data) {
-          // Si l'update dans la BD a réussi, on transforme les input en span
-          card.find("input").each(function () {
-            let span = $("<span>", {
-              class: $(this).attr("class"),
-              text: $(this).val(),
-            });
-            $(this).replaceWith(span);
-          });
-        },
-        error: function (error) {
-          // En cas d'erreur, on affiche l'erreur dans la console
-          console.error(error.responseJSON.message);
-          // On affiche une alerte pour informer l'utilisateur
-          alert("Une erreur est survenue lors de la mise à jour du client.");
-        },
-      });
-
-      // On change le bouton
-      $(this).text("Modifier");
-      // On change le style du bouton
-      $(this).removeClass("btn-success").addClass("btn-primary");
-    }
-  });
-
-  /* Ajout: Sélection de tous les boutons de classe "client-add"
+  /* Ajout: Sélection de tous les boutons de classe "clients-add"
    * Crée le formulaire pour l'ajout d'un client. */
-  $(document).on("click", ".client-add", function (e) {
+  $(document).on("click", ".clients-add", function (e) {
     // La card représentant l'élément
     let card = $(this).closest(".card");
 
@@ -403,14 +385,14 @@ $(document).ready(function () {
     form.append(
       $("<button>", {
         text: "Valider",
-        class: "btn btn-success client-add-valider",
+        class: "btn btn-success clients-add-valider",
         type: "submit",
       })
     );
     form.append(
       $("<button>", {
         text: "Annuler",
-        class: "btn btn-warning client-add-reset",
+        class: "btn btn-warning clients-add-reset",
         type: "button",
       })
     );
@@ -419,9 +401,9 @@ $(document).ready(function () {
     card.html(form);
   });
 
-  /* Ajout: Sélection de tous les boutons de classe "client-add-valider"
+  /* Ajout: Sélection de tous les boutons de classe "clients-add-valider"
    * Envoie les données du formulaire au serveur pour ajouter un client. */
-  $(document).on("submit", ".client-add-valider", function (e) {
+  $(document).on("submit", ".clients-add-valider", function (e) {
     // La card représentant l'élément
     let card = $(this).closest(".card");
 
@@ -452,7 +434,7 @@ $(document).ready(function () {
   });
 
   // Si l'ajout de client est annulé
-  $(document).on("click", ".client-add-reset", function (e) {
+  $(document).on("click", ".clients-add-reset", function (e) {
     // La card représentant l'élément
     let card = $(this).closest(".card");
 
@@ -464,8 +446,9 @@ $(document).ready(function () {
     });
 
     // On ajoute le bouton "Ajouter Client"
+    // FIXME: ça dépasse 80 colonnes
     cardBody.append(
-      '<button id="add_cadeau" class="btn btn-success client-add" type="button">Ajouter Client</button>'
+      '<button id="add_cadeau" class="btn btn-success clients-add" type="button">Ajouter Client</button>'
     );
 
     // On remplace le contenu actuel de la card par cardBody

@@ -1,0 +1,32 @@
+<div class="col mb-4">
+  <div id="<%= cadeau.cadeau_id %>" class="card">
+    <img
+      class="card-img-top"
+      src="/images/<%= cadeau.image %>"
+      alt="/images/<%= cadeau.image %>"
+    />
+    <div class="card-body">
+      <h5 class="card-title"><%= cadeau.nom %></h5>
+      <p class="card-text"><%= cadeau.prix %> €</p>
+      <!-- IDEA: Dans le panier, remplacer par quantité prise -->
+      <p class="card-text">Stock : <%= cadeau.stock %></p>
+      <details>
+        <summary>Plus d'informations</summary>
+        <!-- On affiche que les informations existantes -->
+        <% if (cadeau.taille){ %>
+        <p class="card-text">Taille : <%= cadeau.taille %></p>
+        <%}%> <% if (cadeau.couleur) { %>
+        <hr /><p class="card-text">Couleur : <%= cadeau.couleur %></p>
+        <%}%> <% if (cadeau.description) { %>
+        <hr /><p class="card-text"><%= cadeau.description %></p>
+        <%}%>
+      </details>
+      <button
+        id="<%= cadeau.cadeau_id %>"
+        class="btn btn-success <%= btntype %>"
+        type="button"
+        ><%= btntext %></button
+      >
+    </div>
+  </div>
+</div>

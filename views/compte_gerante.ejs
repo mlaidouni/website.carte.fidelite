@@ -1,170 +1,111 @@
 <!DOCTYPE html>
 <html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Import Libraries -->
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-  <!-- Import Libraries -->
-  <!-- Bootstrap CSS -->
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
-  <!-- Bootstrap JavaScript -->
-  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- CSS -->
+    <link href="/styles/theme.css" rel="stylesheet" />
+    <link href="/styles/compte_gerante.css" rel="stylesheet" />
+    <link href="/styles/card-client-cadeau.css" rel="stylesheet" />
+    <!-- Script de fonctions utilitaires utilisées dans compte_gerante.js -->
+    <!-- <script src="/scripts/comptes.js"></script> -->
+    <!-- Script pour gérer les interractions avec l'utilisateur (boutons, ...) -->
+    <script src="/scripts/compte_gerante.js"></script>
+    <title>Gérante: Compte</title>
+  </head>
 
-  <!-- CSS -->
-  <link href="/styles/theme.css" rel="stylesheet" />
-  <link href="/styles/compte_gerante.css" rel="stylesheet" />
-  <!-- Script pour gérer les interractions avec l'utilisateur (boutons, ...) -->
-  <script src="/scripts/compte_gerante.js"></script>
-  <title>Gérante: Compte</title>
-</head>
-
-<body>
-  <!-- Navigation Bar -->
-  <!-- Navigation Bar
+  <body>
+    <!-- Navigation Bar -->
+    <!-- Navigation Bar
       @sticky-top: fixe la navbar en haut de la page
       @navbar-expand-lg: collapse la navbar sur les écrants small, 
       (i.e étend la navbar pour les écrans >= large) et ajoute un bouton
     -->
-  <nav id="navNavBar" class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-    <!-- La navbar possède une icône qui renvoie vers le haut de la page. -->
-    <a id="aNavbar" class="navbar-brand" href="#">
-      <img src="/images/gerante.png" width="30" height="30" class="d-inline-block align-top" alt="gerante.png" />
-      Menu Gérante
-    </a>
+    <nav
+      id="navNavBar"
+      class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark"
+    >
+      <!-- La navbar possède une icône qui renvoie vers le haut de la page. -->
+      <a id="aNavbar" class="navbar-brand" href="#">
+        <img
+          src="/images/gerante.png"
+          width="30"
+          height="30"
+          class="d-inline-block align-top"
+          alt="gerante.png"
+        />
+        Menu Gérante
+      </a>
 
-    <!-- Bouton en cas de collapse de la navbar -->
-    <button
-    id="buttonNavbarToggler"
-    class="navbar-toggler"
-    type="button"
-    data-toggle="collapse"
-    data-target="#navBarContent"
-    aria-controls="navBarContent"
-    aria-expanded="false"
-    aria-label="Toggle navigation">
-    <!-- Button icon -->
-    <span class="navbar-toggler-icon"></span>
-    </button>
+      <!-- Bouton en cas de collapse de la navbar -->
+      <button
+        id="buttonNavbarToggler"
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navBarContent"
+        aria-controls="navBarContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <!-- Button icon -->
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <!-- Contenu de la Navbar 
+      <!-- Contenu de la Navbar 
       @collapse: Indique que le contenu de la navbar peut être collapsé
     -->
-    <div id="navBarContent" class="collapse navbar-collapse">
-      <!-- List non ordonnée contenant les éléments à afficher (soit les clients, soit les cadeaux)
+      <div id="navBarContent" class="collapse navbar-collapse">
+        <!-- List non ordonnée contenant les éléments à afficher (soit les clients, soit les cadeaux)
         @navbar-nav: Applique le style navbar à la liste
         @mr-auto: margin right auto, "pousse" la liste vers la gauche
         @nav-item: Applique le style nav-item à chaque élément de la liste
        -->
-      <ul id="ulNavbarContent" class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="/gerante/compte?data=clients">Gestion des clients</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/gerante/compte?data=cadeaux">Gestion des cadeaux</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+        <ul id="ulNavbarContent" class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/gerante/compte?data=clients"
+              >Gestion des clients</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/gerante/compte?data=cadeaux"
+              >Gestion des cadeaux</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
 
-  <!-- TODO: Remplir avec les bonnes valeurs
-    - bouton pour ajouter client -> redirection vers un formulaire ??? (ajout d'une barre navigation pour ajouter)
-    - ajouter une barre de recherche pour filtrer les clients
-    - boutons pour ajouter (par caracteristiques) / supprimer (par cadeau_id) un cadeau
-    -->
+    <!-- TODO: ajouter une barre de recherche pour filtrer les clients -->
 
-  <!-- Contenu principal -->
-  <% if (datatype==="clients") { %>
-    <h2 class="page-title">Liste des clients</h2>
+    <!-- Contenu principal -->
+    <h2 class="page-title">Liste des <%= datatype %></h2>
     <div class="container mt-5">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
-        <% for (let i=0; i < data.length; i++) { let client=data[i]; %>
-          <div class="col mb-4">
-            <div id="<%= client.user_id %>" class="card">
-              <img src="/images/backg.jpg" class="card-img-top" alt="/images/backg.jpg" />
-              <div class="card-body">
-                <h5 class="card-title"><span class="nom" type="text"><%= client.nom %></span> <span class="prenom" type="text"><%= client.prenom %></span></h5>
-                <h6 class="card-subtitle mb-2 text-muted"><span class="user_id" type="text"><%= client.user_id %></span></h6>
-                <details>
-                  <summary>Plus d'informations</summary>
-                  <p class="card-text">
-                    Contact: <span class="email" type="email"><%= client.email %></span> - <span class="telephone" type="texte"><%= client.telephone %></span>
-                    <hr>
-                    Date de naissance: <span class="date_naissance" type="date"><%= client.date_naissance %></span>
-                    <hr>
-                    Points: <span class="points" type="number"><%= client.points %></span>
-                  </p>
-                </details>
-                <button id="<%= client.user_id %>" class="btn btn-primary client-update" type="button">Modifier</button>
-                <!-- <button id="<%= client.user_id %>" class="btn btn-warning client-reset" type="button">Annuler</button> -->
-                <button id="<%= client.user_id %>" class="btn btn-danger client-delete" type="button">Supprimer</button>
-              </div>
-            </div>
-          </div>
-          <% } %>
-          <div class="col mb-4">
-            <!-- On donne une hauteur similaire pour l'affichage et on centre le bouton avec une flexbox -->
-            <div id="card-add" class="card h-100">
-              <div class="card-body d-flex justify-content-center align-items-center">
-                <!-- CHANGER ID -->
-                <button id="add_client" class="btn btn-success client-add" type="button">Ajouter Client</button>
-              </div>
-            </div>
-          </div>
+        <!-- On utilise une template pour la card représentant le type de
+            données correspond, en passant bien les variables nécessaires. -->
+        <% for ( let i = 0; i < data.length; i++) { %>
+        <!-- Si on affiche des clients -->
+        <% if( datatype === "clients" ) { let client = data[i]; %> <%-
+        include('card_client.ejs', {client: client}) %> <% } else if ( datatype
+        === "cadeaux" ) { let cadeau = data[i]; %> <%-
+        include('card_cadeau.ejs', {cadeau: cadeau}) %> <% } %> <% } %>
+        <!-- On utilise une template pour la card représentant l'ajout d'un
+        cadeau/client, en passant bien les variables nécessaires. -->
+        <%- include('card_add.ejs', {datatype : datatype}) %>
       </div>
     </div>
-    <% } else if (datatype==="cadeaux") { %>  
-      <h2 class="page-title">Liste des cadeaux</h2>
-      <div class="container mt-5">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
-          <% for (let i=0; i < data.length; i++) { let cadeau=data[i]; %>
-            <div class="col mb-4">
-              <div id="<%= cadeau.cadeau_id %>" class="card">
-                <img src="/images/<%= cadeau.image %>" class="card-img-top" alt="/images/<%= cadeau.image %>" />
-                <div class="card-body">
-                  <h5 class="card-title"><span class="nom" type="text"><%= cadeau.nom %></span></h5>
-                  <h6 class="card-subtitle mb-2 text-muted">
-                    <!-- TODO: Ajouter la quantité restante -->
-                    Quantite restante: <span class="quantite" type="number"><%= cadeau.stock %></span> 
-                  </h6>
-                  <details>
-                    <summary>Plus d'informations</summary>
-
-                      <p class="card-text">
-                      <!-- On affiche que les informations existantes -->
-                      <%if (cadeau.taille){%>
-                      <p class="card-text taille">Taille : <span class="taille" type="text"><%=cadeau.taille%></span></p>
-                      <%}%>
-                      <%if (cadeau.couleur){%>
-                      <hr /><p class="card-text couleur">Couleur : <span class="couleur" type="text"><%=cadeau.couleur%></span></p>
-                      <%}%>
-                      <%if (cadeau.description){%>
-                      <hr /><p class="card-text description"><span class="description" type="text"><%=cadeau.description%></span></p>
-                      <%}%>
-                      <hr /><p class="card-text image"><span class="image" type="image"><%=cadeau.image%></span></p>
-
-                    </p>
-                  </details>
-                  <button id="<%= cadeau.cadeau_id %>" class="btn btn-primary cadeau-update" type="button">Modifier</button>
-                  <!-- <button id="<%= cadeau.cadeau_id %>" class="btn btn-warning cadeau-annule" type="button">Annuler</button> -->
-                  <button id="<%= cadeau.cadeau_id %>" class="btn btn-danger cadeau-delete" type="button">Supprimer</button>
-                </div>
-              </div>
-            </div>
-            <% } %>
-              <div class="col mb-4">
-                <!-- On donne une hauteur similaire a la carte pour l'affichage et on centre le bouton avec une flexbox -->
-                <div id="add" class="card h-100">
-                  <div class="card-body d-flex justify-content-center align-items-center">
-                    <button id="add_cadeau" class="btn btn-success cadeau-add" type="button">Ajouter Cadeau</button>
-                  </div>
-                </div>
-              </div>
-        </div>
-      </div>
-      <% } %>
-</body>
-
+  </body>
 </html>
