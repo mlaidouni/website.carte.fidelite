@@ -101,10 +101,10 @@
   - [x] si oui, on **ajoute** des cadeaux spéciaux au client
 - [x] affichage des cadeaux actuellements dans le panier
   - [ ] **bouton** pour **supprimer** un cadeau du panier
-  - [ ] **bouton** pour **vider** le panier
+  - [x] **bouton** pour **vider** le panier
 - [x] **bouton** pour valider le panier
-  - [ ] **mise à jour** du nombre de points
-  - [ ] **vider le panier**
+  - [x] **mise à jour** du nombre de points
+  - [x] **vider le panier**
 
 > [!CAUTION]  
 > ![alt text](toDo.png)

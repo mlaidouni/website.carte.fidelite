@@ -123,7 +123,7 @@ function Cadeau(tableName) {
 
       if (stock > 1) {
         let query = {
-          text: `UPDATE ${tableName} SET stock = stock - 1 WHERE id = $1`,
+          text: `UPDATE ${tableName} SET stock = stock - 1 WHERE CADEAU_ID = $1`,
           // Les valeurs à remplacer dans la requête
           values: [id],
         };

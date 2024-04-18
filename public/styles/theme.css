@@ -52,7 +52,7 @@ body {
   margin-bottom: 10px;
 }
 
-  .card:hover .btn {
+.card:hover .btn {
   /* Les boutons deviennent visibles lorsque la souris passe sur la carte */
   opacity: 1;
 }

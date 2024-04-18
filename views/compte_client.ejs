@@ -202,6 +202,7 @@
             <div class="card-body">
               <h5 class="card-title"><%=cadeau.nom%></h5>
               <p class="card-text"><%=cadeau.prix%> €</p>
+              <p class="card-text">Quantite restante : <%= cadeau.stock %></p>
               <details>
                 <summary>Plus d'informations</summary>
                 <p class="card-text"></p>
@@ -228,10 +229,12 @@
       </div>
     </div>
     <% } else if (datatype === "panier") { %>
-    <h2 class="card-body d-flex justify-content-center align-items-center">
-      Cadeaux actuellement dans le panier
-    </h2>
+
     <div class="container mt-5">
+      <a href="/client/compte" id="return" class="btn btn-primary align-items-start return" type="button" >Revenir a la page d'achat</a>
+      <h2 class="card-body d-flex justify-content-center align-items-center">
+        Cadeaux actuellement dans le panier<%if(panier_value>0){%>, prix total : <%= panier_value %><%}%>
+      </h2>
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
         <% if (panier_counter > 0) { %> <% for (let i = 0; i < data.length; i++)
           { let cadeau = data[i]; %>
@@ -245,6 +248,7 @@
               <div class="card-body">
                 <h5 class="card-title"><%= cadeau.nom %></h5>
                 <p class="card-text"><%= cadeau.prix %> €</p>
+                <p class="card-text">Quantite restante : <%= cadeau.stock %></p>
                 <details>
                   <summary>Plus d'informations</summary>
                   <% if (cadeau.taille) { %>
@@ -267,6 +271,7 @@
           <% } %>
 
       </div>
+      <%if(panier_counter>0){%>
       <div class="card-body d-flex justify-content-center align-items-center">
         <button
           id="valide-panier"
@@ -276,7 +281,16 @@
           Valider la commande
         </button>
       </div>
-      <div class="card-body d-flex justify-content-center fw-bold text-white">Prix total : <%= panier_value %></div>
+      <div class="card-body d-flex justify-content-center align-items-center">
+        <button
+          id="empty-panier"
+          class="btn btn-danger empty-panier"
+          type="button"
+        >
+          Vider le panier
+        </button>
+      </div>
+      <%}%>
     </div>
     <% } %>
   </body>
