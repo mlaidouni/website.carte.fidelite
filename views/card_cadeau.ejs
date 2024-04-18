@@ -6,50 +6,51 @@
       alt="/images/<%= cadeau.image %>"
     />
     <div class="card-body">
-      <h5 class="card-title"
-        ><span class="nom" type="text"><%= cadeau.nom %></span></h5
-      >
+      <h5 class="card-title"></h5>
+        <span class="nom" type="text"><%= cadeau.nom %></span>
+      </h5>
       <h6 class="card-subtitle mb-2 text-muted">
         Stock:
-        <span class="stock" type="number"><%= cadeau.stock %></span></h6
-      >
+        <span class="stock" type="number"><%= cadeau.stock %></span>
+      </h6>
       <h6 class="card-subtitle mb-2 text-muted">
         Type:
-        <span class="type" type="text"><%= cadeau.type %></span></h6
-      >
+        <span class="type" type="text"><%= cadeau.type %></span>
+      </h6>
       <details>
         <summary>Plus d'informations</summary>
 
-        <p class="card-text taille"
-          >Taille :
-          <span class="taille" type="text"><%=cadeau.taille%></span></p
-        >
-        <hr /><p class="card-text couleur"
-          >Couleur :
-          <span class="couleur" type="text"><%=cadeau.couleur%></span></p
-        >
-        <hr /><p class="card-text description"
-          ><span class="description" type="text"
-            ><%=cadeau.description%></span
-          ></p
-        >
-        <hr /><p class="card-text image"
-          ><span class="image" type="image"><%=cadeau.image%></span></p
-        >
+        <p class="card-text taille">
+          Taille : <span class="taille" type="text"><%=cadeau.taille%></span>
+        </p>
+        <hr />
+        <p class="card-text couleur">
+          Couleur : <span class="couleur" type="text"><%=cadeau.couleur%></span>
+        </p>
+        <hr />
+        <p class="card-text description">
+          <span class="description" type="text"><%=cadeau.description%></span>
+        </p>
+        <hr />
+        <p class="card-text image">
+          <span class="image" type="image"><%=cadeau.image%></span>
+        </p>
       </details>
       <button
         id="<%= cadeau.cadeau_id %>"
-        class="btn btn-primary cadeau-update"
+        class="btn btn-primary mr-4 cadeau-update"
         type="button"
-        >Modifier</button
       >
+        Modifier
+      </button>
       <!-- <button id="<%= cadeau.cadeau_id %>" class="btn btn-warning cadeau-annule" type="button">Annuler</button> -->
       <button
         id="<%= cadeau.cadeau_id %>"
         class="btn btn-danger cadeau-delete"
         type="button"
-        >Supprimer</button
       >
+        Supprimer
+      </button>
     </div>
   </div>
 </div>
