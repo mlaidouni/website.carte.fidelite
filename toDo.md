@@ -96,11 +96,11 @@
 
 ## A faire (correction et fonctionnalités)
 
-- [ ] Certaines colonnes sont encore écrites en dur dans le code de gestion_personnes et gestion_cadeaux.
+- [x] Certaines colonnes sont encore écrites en dur dans le code de gestion_personnes et gestion_cadeaux.
 - [ ] Pour la suppression, il faut vérifier que le client existe avant de le supprimer. **UTILE ??**
 - [x] Modification des images des cadeaux.
 - [ ] Problème lors de la mise à jour d'un client. Pour reproduire cette erreur: se connecter avec un client. Puis changer le nb de points côté gérante, et reload côté client. rien ne change.
-- [ ] **Gérer l'insertion par type (normal/spécial) !**
+- [x] **Gérer l'insertion par type (normal/spécial) !**
 
 ## A faire (exigences du sujet)
 

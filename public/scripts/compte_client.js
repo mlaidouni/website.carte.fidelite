@@ -248,4 +248,23 @@ $(document).ready(function () {
       "de tous les cadeaux du panier."
     );
   });
+
+  // Supprimer un cadeau du panier (bouton de class del-from-panier)
+  $(document).on("click", ".del-from-panier", function () {
+    // La card représentant l'élément
+    let card = $(this).closest(".card");
+
+    // L'identifiant de la card, i.e du cadeau
+    let id = card.attr("id");
+
+    // Requête pour valider le panier
+    putAJAX(
+      "/client/compte/panier",
+      { id: id },
+      (data) => {
+        window.location.href = "/client/compte?data=panier";
+      },
+      "des modifications au serveur après la validation du panier."
+    );
+  });
 });
