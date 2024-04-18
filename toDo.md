@@ -1,83 +1,5 @@
 # To do
 
-## Etat du nettoyage
-
-- Les fonctions qui touchent à la BD ne sont plus vulnérables aux injections SQL
-- Les fonctions qui touchent à la BD sont protégées contre les erreurs
-- Les fonctions qui touchent à la BD sont protégées contre le changement du nom de la table
-
-<!--  -->
-
-- L'affichage des logs et des erreurs **dans la console** est plus clair
-- Les routes sont protégées contre les erreurs
-- Correction de bug: ajout de l'action '/gerante/compte/clients' dans le formulaire pour l'ajout d'un client.
-- Ajout d'une image pour le compte client (`/images/client.png`)
-
-<!--  -->
-
-- Pour l'affichage des erreurs, utilisation de 'console.error' plutôt que 'console.log'
-- Suppression de l'affichage des erreurs dans les fonctions de gestion de la BD. On laisse le serveur s'occuper de l'affichage des erreurs.
-
-<!--  -->
-
-- Ajout d'un rôle aux personnes (U pour USER, A pour ADMIN).
-- Ajout d'une fonction 'getGerantes' pour récupérer la liste des gérantes.
-- Gestion de l'erreur de connexion: identifiant incorrect ou mot de passe incorrect.
-- Suppression de toutes les données en dur dans le code (sauf dans la dernière route incompréhensible de serveur.js).
-
-<!--  -->
-
-- Modification de l'image pour le compte gérente (`/images/gerente.png`)
-- Gestion des erreurs dans les requêtes AJAX
-- Suppression de la route `/gerante/compte/cadeaux` (inutile)
-
-<!--  -->
-
-- Problème avec le lien de connexion (/client/compte) résolue
-- Correction d'erreur: La redirection de la page (lors de l'ajout d'un client/cadeau) a été ajoutée côté client.
-- Ajout d'une fonction pour récupérer les cadeaux d'un certains id.
-- Ajout d'un objet `client_connected` pour gérer les informations du client connecté.
-- Ajout des fonctions `client_reset`, `client_init` et `client_add`.
-- Pour l'instant, lorsqu'on appuie sur le bouton `Ajouter au panier`, les valeurs des points et du nombre de cadeaux dans le panier sont mis à jour.
-
-<!--  -->
-
-- Lors de l'ajout d'un cadeau, le serveur renvoie la liste des cadeaux que le client peut mtn acheter, en se basant sur point_h.
-- Ajout de la classe '.list-cadeau' pour identifier le bloc (de class row) qui contient les cadeaux dans la page d'accueil.
-- Affichage dynamique des cadeaux dans la page d'accueil lors de l'ajout d'un cadeau.
-
-<!--  -->
-
-- Dans le compte gérante, toutes les sections sont affichés pour les cadeaux, car elles sont toutes potentiellement modifiables.
-- Ajout du champ image pour les cadeaux dans le compte gérante.
-- Ajout de la possibilité d'uploader des fichiers lors de l'ajout des cadeaux par la gérante.
-- Gestion des inputs en fonction de leur type (text, number, file, email, data, ...).
-- Correction du chemin des images.
-
-<!--  -->
-
-- Correction de l'erreur dans le cas où le client ne s'est pas connecté.
-- Correction bug: mauvaise classe pour le span image, dans la modification des cadeaux de la gérante.
-- Ajout d'une fonction confettiAnimation pour ne pas faire boucler l'animation des confetti.
-- Dropdownmenu passé en mode sombre.
-- Les inputs ne dépassent plus de la card lors des modifications.
-- Les boutons ne sont plus affichés par défaut, mais seulement lorsqu'on survole la card.
-- Les titres des sections sont centrés et stylisés.
-- Fix de la taille des images des card.
-- Ombre + affichage des boutons lorsque l'on passe sur une card.
-
-<!--  -->
-
-- Ajout des types de cadeaux (normal ou special).
-- Modification de 'gestion_cadeaux', pour gérer les types de cadeaux.
-
-<!--  -->
-
-- Correction: mauvais nom de colonne lors de la validation du panier
-- Séparation du style des card représentant les cadeaux et les clients.
-- Factorisation de 'compte_gerante.ejs', à l'aide de nouveaux fichiers de vue 'card_client.ejs', 'card_cadeau.ejs' et 'card_add.ejs'.
--
-
 ## A faire (style)
 
 - [x] Rendre le texte du dropdown client blanc (ou plus lisibles)
@@ -101,7 +23,9 @@
 - [x] Modification des images des cadeaux.
 - [x] Problème lors de la mise à jour d'un client. Pour reproduire cette erreur: se connecter avec un client. Puis changer le nb de points côté gérante, et reload côté client. rien ne change.
 - [x] **Gérer l'insertion par type (normal/spécial) !**
-- [ ] Problème de mise à jour de l'affichage des points (y'a un `<del>` alors que points)
+- [x] Problème de mise à jour de l'affichage des points (y'a un `<del>` alors que points)
+- [ ] gestion des stock
+      a
 
 ## A faire (exigences du sujet)
 
