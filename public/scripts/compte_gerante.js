@@ -107,13 +107,14 @@ $(document).ready(function () {
   function updateElement(button, card) {
     /* Pour chaque champ, on remplace le span par un input de type text, avec
      * les mêmes classes et valeurs */
-    card.find("span").each(() => {
+    card.find("span").each(function () {
       let input = $("<input>", {
-        type: button.attr("type"),
-        class: button.attr("class"),
-        value: button.text(),
+        type: $(this).attr("type"),
+        class: $(this).attr("class"),
+        value: $(this).text(),
       });
-      button.replaceWith(input);
+      console.log(this.text);
+      $(this).replaceWith(input);
     });
 
     // On update le bouton
@@ -133,9 +134,9 @@ $(document).ready(function () {
 
     // Les nouvelles valeurs pour l'élément
     const newValues = {};
-    card.find("input").each(() => {
+    card.find("input").each(function () {
       // On récupère l'attribut (la classe) et la valeur correspondant
-      newValues[button.attr("class")] = button.val();
+      newValues[$(this).attr("class")] = $(this).val();
     });
 
     // Requête AJAX pour mettre à jour l'élément
@@ -144,9 +145,9 @@ $(document).ready(function () {
       newValues,
       (data) => {
         // Si l'update dans la BD a réussi, on transforme les input en span
-        card.find("input").each(() => {
-          let span = createSpan(button.attr("class"), button.val());
-          button.replaceWith(span);
+        card.find("input").each(function () {
+          let span = createSpan($(this).attr("class"), $(this).val());
+          $(this).replaceWith(span);
         });
       },
       `du ${type}`

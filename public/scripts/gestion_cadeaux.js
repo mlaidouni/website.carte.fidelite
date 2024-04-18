@@ -58,9 +58,11 @@ function Cadeau(tableName) {
    * Insert un cadeau dans la BD.
    * @param {string} nom - Le nom du cadeau.
    * @param {integer} prix - Le prix du cadeau (en points).
+   * @param {string} type - Le type de cadeau (normal ou special).
    * @param {string} taille - La taille du cadeau.
    * @param {string} couleur - La couleeur du cadeau.
    * @param {string} description - La description du cadeau.
+   * @param {integer} stock - Le stock du cadeau.
    * @param {string} image - Le nom de l'image du cadeau.
    * @async
    */
