@@ -86,21 +86,22 @@
 - [x] N'afficher les boutons que lorsque la card est survolée (voir exemple sur le site de la fnac.)
 - [x] Le titre des sections (comme 'Liste des clients', 'Liste des cadeaux') doit être centré et stylisé.
 - [x] Fixer la taille des images des card, notamment pour les cadeaux, pcq là c'est du grand n'importe quoi.
-- [ ] Ajouter du padding entre les boutons de l'ajout de client/cadeau dans la gérante.
+- [x] Ajouter du padding entre les boutons de l'ajout de client/cadeau dans la gérante.
 
 ## A faire (gestion d'erreur et affichage)
 
 - [ ] Gérer l'affichage graphique des erreurs, un peu comme pour la page de connexion (par ex, avec des alertes).
-- [ ] Lorsqu'il y a une erreur lors d'une modif de client, les input ne partent pas alors que le bouton valider part. Pour reproduire cette erreur: modifier un client -> changer le numéro avec plus de 10 chiffres -> valider.
+- [x] Lorsqu'il y a une erreur lors d'une modif de client, les input ne partent pas alors que le bouton valider part. Pour reproduire cette erreur: modifier un client -> changer le numéro avec plus de 10 chiffres -> valider.
 - [x] Gérer l'erreur dans le cas où le client ne s'est pas connecté. Pour reproduire cette erreur: se déconnecter -> revenir à la page précédente -> recharger la page.
 
 ## A faire (correction et fonctionnalités)
 
 - [x] Certaines colonnes sont encore écrites en dur dans le code de gestion_personnes et gestion_cadeaux.
-- [ ] Pour la suppression, il faut vérifier que le client existe avant de le supprimer. **UTILE ??**
+- [x] Pour la suppression, il faut vérifier que le client existe avant de le supprimer. **UTILE ??**
 - [x] Modification des images des cadeaux.
-- [ ] Problème lors de la mise à jour d'un client. Pour reproduire cette erreur: se connecter avec un client. Puis changer le nb de points côté gérante, et reload côté client. rien ne change.
+- [x] Problème lors de la mise à jour d'un client. Pour reproduire cette erreur: se connecter avec un client. Puis changer le nb de points côté gérante, et reload côté client. rien ne change.
 - [x] **Gérer l'insertion par type (normal/spécial) !**
+- [ ] Problème de mise à jour de l'affichage des points (y'a un `<del>` alors que points)
 
 ## A faire (exigences du sujet)
 
@@ -108,7 +109,7 @@
 - [x] au début de la connection, vérifier si la date = DATE_NAISSANCE du client, afficher animation
   - [x] si oui, on **ajoute** des cadeaux spéciaux au client
 - [x] affichage des cadeaux actuellements dans le panier
-  - [ ] **bouton** pour **supprimer** un cadeau du panier
+  - [x] **bouton** pour **supprimer** un cadeau du panier
   - [x] **bouton** pour **vider** le panier
 - [x] **bouton** pour valider le panier
   - [x] **mise à jour** du nombre de points
