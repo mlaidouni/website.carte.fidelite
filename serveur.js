@@ -375,7 +375,7 @@ server.post("/client/compte/cadeau", async (req, res) => {
 });
 
 //En cas de validation du panier
-server.get("/client/compte/panier", async (req, res) => {
+server.post("/client/compte/panier", async (req, res) => {
   try {
     //On décrémente le stock de chaque cadeau dans le panier
     for (let i = 0; i < client_connected.panier.length; i++) {

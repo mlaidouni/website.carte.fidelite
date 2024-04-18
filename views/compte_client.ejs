@@ -169,17 +169,20 @@
                 <% if (cadeau.taille){ %>
                 <p class="card-text">Taille : <%= cadeau.taille %></p>
                 <%}%> <% if (cadeau.couleur) { %>
-                <hr /><p class="card-text">Couleur : <%= cadeau.couleur %></p>
+                <hr />
+                <p class="card-text">Couleur : <%= cadeau.couleur %></p>
                 <%}%> <% if (cadeau.description) { %>
-                <hr /><p class="card-text"><%= cadeau.description %></p>
+                <hr />
+                <p class="card-text"><%= cadeau.description %></p>
                 <%}%>
               </details>
               <button
                 id="<%= cadeau.cadeau_id %>"
                 class="btn btn-success add-to-panier"
                 type="button"
-                >Ajouter au panier</button
               >
+                Ajouter au panier
+              </button>
             </div>
           </div>
         </div>
@@ -210,17 +213,20 @@
                 <% if (cadeau.taille){ %>
                 <p class="card-text">Taille : <%= cadeau.taille %></p>
                 <%}%> <% if (cadeau.couleur) { %>
-                <hr /><p class="card-text">Couleur : <%= cadeau.couleur %></p>
+                <hr />
+                <p class="card-text">Couleur : <%= cadeau.couleur %></p>
                 <%}%> <% if (cadeau.description) { %>
-                <hr /><p class="card-text"><%= cadeau.description %></p>
+                <hr />
+                <p class="card-text"><%= cadeau.description %></p>
                 <%}%>
               </details>
               <button
                 id="<%= cadeau.cadeau_id %>"
                 class="btn btn-success add-to-panier"
                 type="button"
-                >Ajouter au panier</button
               >
+                Ajouter au panier
+              </button>
             </div>
           </div>
         </div>
@@ -261,17 +267,20 @@
                 <% if (cadeau.taille){ %>
                 <p class="card-text">Taille : <%= cadeau.taille %></p>
                 <%}%> <% if (cadeau.couleur) { %>
-                <hr /><p class="card-text">Couleur : <%= cadeau.couleur %></p>
+                <hr />
+                <p class="card-text">Couleur : <%= cadeau.couleur %></p>
                 <%}%> <% if (cadeau.description) { %>
-                <hr /><p class="card-text"><%= cadeau.description %></p>
+                <hr />
+                <p class="card-text"><%= cadeau.description %></p>
                 <%}%>
               </details>
               <button
                 id="<%= cadeau.cadeau_id %>"
-                class="btn btn-success <%= btntype %>"
+                class="btn btn-danger del-from-panier"
                 type="button"
-                ><%= btntext %></button
               >
+                Supprimer
+              </button>
             </div>
           </div>
         </div>
