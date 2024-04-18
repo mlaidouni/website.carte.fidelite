@@ -369,6 +369,17 @@ $(document).ready(function () {
             required: true,
           })
         );
+      }
+      else if (champ === "dateNaissance") {
+        form.append(
+          $("<input>", {
+            type: "date",
+            class: "form-control " + champ,
+            name: champ,
+            placeholder: champ,
+            required: true,
+          })
+        );
       } else {
         form.append(
           $("<input>", {
