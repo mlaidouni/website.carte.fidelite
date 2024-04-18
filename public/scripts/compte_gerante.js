@@ -154,7 +154,6 @@ $(document).ready(function () {
       },
       `du ${type}`
     );
-
   }
 
   // Modification d'un cadeau (bouton de classe "cadeau-update")
@@ -373,8 +372,7 @@ $(document).ready(function () {
             required: true,
           })
         );
-      }
-      else if (champ === "dateNaissance") {
+      } else if (champ === "dateNaissance") {
         form.append(
           $("<input>", {
             type: "date",
