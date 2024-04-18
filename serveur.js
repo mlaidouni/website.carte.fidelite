@@ -361,7 +361,10 @@ server.post("/client/compte/cadeau", async (req, res) => {
     client_add(cadeau);
 
     // On récupère les cadeaux que le client peut désormais acheter
-    let cadeaux = await gestion_cadeaux.getNormalForClient(
+    let cadeaux_normaux = await gestion_cadeaux.getNormalForClient(
+      client_connected.points_h
+    );
+    let cadeaux_speciaux = await gestion_cadeaux.getSpecialForClient(
       client_connected.points_h
     );
 
@@ -373,7 +376,8 @@ server.post("/client/compte/cadeau", async (req, res) => {
       points: client_connected.points,
       points_h: client_connected.points_h,
       panier_counter: client_connected.panier_counter,
-      cadeaux: cadeaux,
+      normaux: cadeaux_normaux,
+      speciaux: cadeaux_speciaux,
     });
   } catch (error) {
     printError("serveur: Erreur lors de l'ajout du cadeau au panier:");
