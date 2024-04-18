@@ -118,7 +118,7 @@
             <a class="navbar-brand"
               >Points de fidélité
               <span class="badge badge-primary badge-pill nav-points-counter"
-                ><% if(points_h !== points) { %><del><%= points %></del> <%=
+                ><% if(points_h < points) { %><del><%= points %></del> <%=
                 points_h %><% } else { %><%= points %><% } %></span
               ></a
             >
