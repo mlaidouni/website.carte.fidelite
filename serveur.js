@@ -130,6 +130,11 @@ let client_init = function (client, points) {
   client_connected.points_h = points;
 };
 
+let client_update = function (points) {
+  client_connected.points = points;
+  client_connected.points_h = client_connected.points - client_connected.panier_value;
+};
+
 // Ajout d'un cadeau au panier
 let client_add = function (cadeau) {
   // On ajoute le cadeau au panier
@@ -590,6 +595,9 @@ server.put("/gerante/compte/clients", async (req, res) => {
     for (let attr in newValues)
       await gestion_personnes.update(id, attr, newValues[attr]);
 
+    if (id === client_connected.client.user_id) {
+      client_update(newValues["points"]);
+    }
     // Si on a pas levé d'erreur, on renvoie un message de succès
     res
       .status(200)
