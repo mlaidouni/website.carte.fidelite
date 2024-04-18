@@ -19,6 +19,42 @@ function Cadeau(tableName) {
   let client;
 
   /**
+   * Récupère les colonnes d'une table.
+   * @returns {Array} Les colonnes de la table.
+   * @async
+   * @throws {Error} Si une erreur survient lors de la récupération des colonnes
+   */
+  this.getColumns = async function () {
+    // Connexion à la BD
+    const client = await pool.connect();
+    let data;
+
+    try {
+      // Requête à exécuter
+      let query = {
+        // On conserve l'ordre des colonnes
+        text: "SELECT column_name FROM information_schema.columns WHERE table_name = $1 ORDER BY ordinal_position",
+        // Les valeurs à remplacer dans la requête
+        values: [tableName],
+      };
+
+      // On attent l'exécution de la requête
+      data = await client.query(query);
+    } catch (error) {
+      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
+      throw error;
+    } finally {
+      // On libère le client, que la requête ait réussi ou non.
+      client.release();
+    }
+
+    // On stocke les noms des colonnes dans un tableau
+    let result = [];
+    for (let row of data.rows) result.push(row.column_name);
+    return result;
+  };
+
+  /**
    * Insert un cadeau dans la BD.
    * @param {string} nom - Le nom du cadeau.
    * @param {integer} prix - Le prix du cadeau (en points).
@@ -43,15 +79,14 @@ function Cadeau(tableName) {
     // Connexion à la BD
     client = await pool.connect();
 
-    // On transforme le tableau en une string séparée par des virgules
-    let column =
-      "(NOM, PRIX, TYPE, TAILLE, COULEUR, DESCRIPTION, STOCK, IMAGE)";
+    // On récupère les colonnes
+    let col = "(nom, prix, type, taille, couleur, description, stock, image)";
     let values = "($1, $2, $3, $4, $5, $6, $7, $8)";
 
     try {
       // Requête à exécuter
       let query = {
-        text: `INSERT INTO ${tableName} ${column} VALUES ${values}`,
+        text: `INSERT INTO ${tableName} ${col} VALUES ${values}`,
         // Les valeurs à remplacer dans la requête
         values: [nom, prix, type, taille, couleur, description, stock, image],
       };
@@ -79,7 +114,7 @@ function Cadeau(tableName) {
     try {
       // On récupère le cadeau
       const cadeau = await client.query(
-        `SELECT stock FROM ${tableName} WHERE CADEAU_ID = $1`,
+        `SELECT stock FROM ${tableName} WHERE cadeau_id = $1`,
         [id]
       );
       const stock = cadeau.rows[0].stock;
@@ -87,7 +122,7 @@ function Cadeau(tableName) {
       // S'il y a plus d'un cadeau en stock, on décrémente le stock
       if (stock > 1) {
         let query = {
-          text: `UPDATE ${tableName} SET stock = stock-1 WHERE CADEAU_ID = $1`,
+          text: `UPDATE ${tableName} SET stock = stock-1 WHERE cadeau_id = $1`,
           // Les valeurs à remplacer dans la requête
           values: [id],
         };
@@ -116,7 +151,7 @@ function Cadeau(tableName) {
     try {
       // Requête à exécuter
       let query = {
-        text: `DELETE FROM ${tableName} WHERE CADEAU_ID = $1`,
+        text: `DELETE FROM ${tableName} WHERE cadeu_id = $1`,
         // Les valeurs à remplacer dans la requête
         values: [id],
       };
@@ -222,7 +257,7 @@ function Cadeau(tableName) {
    * @param {integer} n - Le montant maximal.
    * @async
    */
-  this.getClient = async function (n) {
+  this.getNormalForClient = async function (n) {
     // Connexion à la BD
     client = await pool.connect();
     // Les données récupérées dans la BD
@@ -232,6 +267,41 @@ function Cadeau(tableName) {
       // Requête à exécuter
       let query = {
         text: `SELECT * FROM ${tableName} WHERE prix <= $1 AND type = 'normal'`,
+        // Les valeurs à remplacer dans la requête
+        values: [n],
+      };
+
+      // On attent l'exécution de la requête
+      data = await client.query(query);
+    } catch (error) {
+      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
+      throw error;
+    } finally {
+      // On libère le client, que la requête ait réussi ou non.
+      client.release();
+    }
+
+    // On stocke les données dans un tableau
+    let result = [];
+    for (let row of data.rows) result.push(row);
+    return result;
+  };
+
+  /**
+   * @returns Renvoie la liste des cadeaux inférieurs à un montant n.
+   * @param {integer} n - Le montant maximal.
+   * @async
+   */
+  this.getSpecialForClient = async function (n) {
+    // Connexion à la BD
+    client = await pool.connect();
+    // Les données récupérées dans la BD
+    let data;
+
+    try {
+      // Requête à exécuter
+      let query = {
+        text: `SELECT * FROM ${tableName} WHERE prix <= $1 AND type = 'special'`,
         // Les valeurs à remplacer dans la requête
         values: [n],
       };
@@ -301,7 +371,7 @@ function Cadeau(tableName) {
     try {
       // Requête à exécuter
       let query = {
-        text: `SELECT * FROM ${tableName} WHERE CADEAU_ID = $1`,
+        text: `SELECT * FROM ${tableName} WHERE cadeau_id = $1`,
         // Les valeurs à remplacer dans la requête
         values: [id],
       };

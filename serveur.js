@@ -301,8 +301,12 @@ server.get("/client/compte", async (req, res) => {
 
     if (dataType === "accueil") {
       // On récupère la liste des cadeaux du client
-      let cadeaux = await gestion_cadeaux.getClient(client_connected.points_h);
-      let speciaux = await gestion_cadeaux.getSpecial();
+      let cadeaux = await gestion_cadeaux.getNormalForClient(
+        client_connected.points_h
+      );
+      let speciaux = await gestion_cadeaux.getSpecialForClient(
+        client_connected.points_h
+      );
       // On renvoie les données correspondantes
       reponse["data"] = cadeaux;
       reponse["speciaux"] = speciaux;
@@ -352,7 +356,9 @@ server.post("/client/compte/cadeau", async (req, res) => {
     client_add(cadeau);
 
     // On récupère les cadeaux que le client peut désormais acheter
-    let cadeaux = await gestion_cadeaux.getClient(client_connected.points_h);
+    let cadeaux = await gestion_cadeaux.getNormalForClient(
+      client_connected.points_h
+    );
 
     /* Si on a pas levé d'erreur, on renvoie un message de succès, accompagné
      * des valeurs qui doivent être modifiées à l'affichage. */
@@ -482,7 +488,7 @@ server.get("/gerante/compte", async (req, res) => {
       reponse["data"] = clients;
     } else if (dataType === "cadeaux") {
       // On récupère la liste des cadeaux
-      let cadeaux = await gestion_cadeaux.getNormal();
+      let cadeaux = await gestion_cadeaux.getAll();
       // On renvoie le type de la donnée demandée et les données correspondantes
       reponse["data"] = cadeaux;
     }
