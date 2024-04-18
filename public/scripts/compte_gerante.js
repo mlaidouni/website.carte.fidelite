@@ -265,7 +265,7 @@ $(document).ready(function () {
     form.append(
       $("<button>", {
         text: "Valider",
-        class: "btn btn-success cadeaux-add-valider",
+        class: "btn btn-success mr-2 cadeaux-add-valider",
         type: "submit",
       })
     );
@@ -397,7 +397,7 @@ $(document).ready(function () {
     form.append(
       $("<button>", {
         text: "Valider",
-        class: "btn btn-success clients-add-valider",
+        class: "btn btn-success mr-2 clients-add-valider",
         type: "submit",
       })
     );
