@@ -148,13 +148,13 @@ $(document).ready(function () {
         card.find("input").each(function () {
           let span = createSpan($(this).attr("class"), $(this).val());
           $(this).replaceWith(span);
+          // On update le bouton
+          switchButton(button, "Modifier", "btn-success", "btn-primary");
         });
       },
       `du ${type}`
     );
 
-    // On update le bouton
-    switchButton(button, "Modifier", "btn-success", "btn-primary");
   }
 
   // Modification d'un cadeau (bouton de classe "cadeau-update")
@@ -230,6 +230,8 @@ $(document).ready(function () {
         form.append(
           $("<input>", {
             type: "number",
+            min: "0",
+            max: "2147483647",
             class: "form-control " + champ,
             name: champ,
             placeholder: champ,
@@ -363,6 +365,8 @@ $(document).ready(function () {
         form.append(
           $("<input>", {
             type: "number",
+            min: "0",
+            max: "2147483647",
             class: "form-control " + champ,
             name: champ,
             placeholder: champ,
@@ -375,6 +379,17 @@ $(document).ready(function () {
           $("<input>", {
             type: "date",
             class: "form-control " + champ,
+            name: champ,
+            placeholder: champ,
+            required: true,
+          })
+        );
+      } else if (champ === "telephone") {
+        form.append(
+          $("<input>", {
+            type: "text",
+            class: "form-control " + champ,
+            maxlength: "10",
             name: champ,
             placeholder: champ,
             required: true,
