@@ -625,7 +625,9 @@ server.post(
         data[3],
         data[4],
         data[5],
-        data[6]
+        data[6],
+        data[7],
+        data[8]
       );
 
       // Si on a pas levé d'erreur, on renvoie un message de succès
@@ -680,6 +682,6 @@ server.post("/gerante/compte/clients", async (req, res) => {
 const port = 8080;
 server.listen(port, () => {
   console.log(
-    `${colors.fg["green"]}Application lancée. Veuillez vous connecter à l'adresse ${colors.bright}${colors.underscore}http://localhost:${port}/${colors.reset}${colors.fg["green"]} pour commencer !${colors.reset}`
+    `Application lancée. Connectez-vous à l'adresse http://localhost:${port}/`
   );
 });

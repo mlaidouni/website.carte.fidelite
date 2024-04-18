@@ -80,12 +80,13 @@ function Personne(tableName) {
     // Récupérer les colonnes de la table
     let columns = await this.getColumns();
     // On transforme le tableau en une string séparée par des virgules
-    let column = columns.join(", ");
+    let col = columns.join(", ");
+    let values = "($1, $2, 'U', $3, $4, $5, $6, $7, $8)";
 
     try {
       // Requête à exécuter
       let query = {
-        text: `INSERT INTO ${tableName} (${column}) VALUES ($1, $2, 'U', $3, $4, $5, $6, $7, $8)`,
+        text: `INSERT INTO ${tableName} (${col}) VALUES ${values}`,
         // Les valeurs à remplacer dans la requête
         values: [userid, password, nom, prenom, email, num, date, points],
       };
