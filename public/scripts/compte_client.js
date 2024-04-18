@@ -169,6 +169,26 @@ $(document).ready(function () {
     $(".nav-points-counter").html(`<del>${points}</del> ${points_h}`);
   }
 
+  /**
+   * Met à jour la liste des cadeaux achetables.
+   * @param {*} list - Le conteneur de la liste.
+   * @param {*} data - Les données à afficher.
+   */
+  function updateCadeaux(className, cadeaux) {
+    // On vide la ligne contenant la liste des cadeaux
+    $(className).empty();
+
+    // Puis on la rempli avec les cadeaux achetables
+    for (let i = 0; i < cadeaux.length; i++) {
+      let cadeau = cadeaux[i];
+      // On crée une card pour chaque cadeau
+      let card = createCard(cadeau, "Ajouter au panier", "add-to-panier");
+
+      // Une fois entièrement créée, on ajoute la card
+      $(className).append(card);
+    }
+  }
+
   // Ajout d'un cadeau au panier (bouton de class add-to-panier)
   $(document).on("click", ".add-to-panier", function () {
     // La card représentant l'élément
@@ -181,7 +201,7 @@ $(document).ready(function () {
     postAJAX(
       "/client/compte/cadeau?data=accueil",
       { id: id },
-      (data) => {
+      function (data) {
         // TODO: Gérer le nombre de cadeaux d'un même type pour pouvoir faire les TODO suivants
         // TODO: Supprimer la card de l'affichage si la quantité est à 0
         // TODO: Add la possibilité de sélectionner la quantité à ajouter au panier
@@ -189,19 +209,9 @@ $(document).ready(function () {
         // On met à jour les compteurs de points et de cadeaux
         updateCounters(data.panier_counter, data.points, data.points_h);
 
-        // On vide la ligne contenant la liste des cadeaux
-        $(".list-cadeaux").empty();
-
-        // Puis on la rempli avec les cadeaux achetables
-        let cadeaux = data.cadeaux;
-        for (let i = 0; i < cadeaux.length; i++) {
-          let cadeau = cadeaux[i];
-          // On crée une card pour chaque cadeau
-          let card = createCard(cadeau, "Ajouter au panier", "add-to-panier");
-
-          // Une fois entièrement créée, on ajoute la card
-          $(".list-cadeaux").append(card);
-        }
+        // On met à jour l'affichage des cadeaux encore achetables
+        updateCadeaux(".cadeaux-normaux", data.normaux);
+        updateCadeaux(".cadeaux-speciaux", data.speciaux);
       },
       "l'ajout du cadeau au panier."
     );
