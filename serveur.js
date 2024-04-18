@@ -132,7 +132,8 @@ let client_init = function (client, points) {
 
 let client_update = function (points) {
   client_connected.points = points;
-  client_connected.points_h = client_connected.points - client_connected.panier_value;
+  client_connected.points_h =
+    client_connected.points - client_connected.panier_value;
 };
 
 // Ajout d'un cadeau au panier
@@ -434,6 +435,49 @@ server.delete("/client/compte/panier", (req, res) => {
     });
   }
 });
+
+// Gestion de la suppression d'un cadeau dans le panier
+server.put("/client/compte/panier", async (req, res) => {
+  try {
+    // Récupérer l'identifiant du cadeau à supprimer
+    let cadeau_id = Number(req.body.id);
+
+    // On cherche le cadeau dans le panier
+    let index = client_connected.panier.findIndex(
+      (cadeau) => cadeau.cadeau_id === cadeau_id
+    );
+
+    // Si le cadeau est dans le panier, on le supprime
+    if (index !== -1) {
+      // On récupère le cadeau à supprimer
+      let cadeau = client_connected.panier[index];
+      // On retire le cadeau du panier
+      client_connected.panier.splice(index, 1);
+
+      // On met à jour les valeurs du client
+      client_connected.panier_counter = client_connected.panier.length;
+      client_connected.panier_value -= cadeau.prix;
+      client_connected.points_h += cadeau.prix;
+
+      // On renvoie un message de succès
+      res.status(200).json({
+        success: true,
+        message: "Cadeau supprimé du panier avec succès!",
+        points: client_connected.points,
+        points_h: client_connected.points_h,
+        panier_counter: client_connected.panier_counter,
+      });
+    } else throw new Error("Cadeau non trouvé dans le panier.");
+  } catch (error) {
+    printError("serveur: Erreur lors de la suppression du cadeau du panier:");
+    printError(`-> ${error}`);
+    res.status(500).json({
+      success: false,
+      message: "Une erreur est survenue lors de la suppression du cadeau.",
+    });
+  }
+});
+
 /* ******************** Routes pour la gerante ******************** */
 
 // Gestion de la connexion de la gerante
