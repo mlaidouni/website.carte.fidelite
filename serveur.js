@@ -152,6 +152,7 @@ let client_add = function (cadeau) {
   if (cadeau.stock - count >= 0) {
 
     client_connected.current_stock[cadeau.cadeau_id] = cadeau.stock - count;
+    if (client_connected.current_stock[cadeau.cadeau_id] === 0) client_connected.current_stock[cadeau.cadeau_id] = -1;
     console.log(client_connected.current_stock[cadeau.cadeau_id]);
     // On met à jour les valeurs du clients connectés
     client_connected.panier_counter = client_connected.panier.length;
@@ -160,7 +161,7 @@ let client_add = function (cadeau) {
   }
   else {
     client_connected.panier.pop();
-    client_connected.current_stock[cadeau.cadeau_id] = 0;
+    client_connected.current_stock[cadeau.cadeau_id] = -1;
   }
 };
 
@@ -479,7 +480,12 @@ server.put("/client/compte/panier", async (req, res) => {
       client_connected.panier_counter = client_connected.panier.length;
       client_connected.panier_value -= cadeau.prix;
       client_connected.points_h += cadeau.prix;
-
+      if (client_connected.current_stock[cadeau_id] < 0) {
+        client_connected.current_stock[cadeau_id] = 1;
+      }
+      else {
+        client_connected.current_stock[cadeau_id] += 1;
+      }
       // On renvoie un message de succès
       res.status(200).json({
         success: true,

@@ -184,7 +184,7 @@ $(document).ready(function () {
         card = createCard(cadeau, "Ajouter au panier", "add-to-panier", stock[cadeau.cadeau_id]);
         console.log("ezeese");
       }
-      else if (stock[cadeau.cadeau_id] === 0) {
+      else if (stock[cadeau.cadeau_id] <= 0) {
         console.log("Ce cadeau n'a pas assez de stock");
       }
       else {
