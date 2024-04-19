@@ -146,6 +146,7 @@
 
     <!-- Contenu principal -->
     <% if (datatype==="accueil") { %> <% if (anniversaire) { %>
+    <%if(!stock[cadeau.cadeau_id] || stock[cadeau.cadeau_id]>0){%>
     <h2 class="page-title">Liste des cadeaux spéciaux</h2>
     <div class="container mt-5">
       <div
@@ -193,13 +194,14 @@
         <% } %>
       </div>
     </div>
-    <% } %>
+    <% } %> <%}%>
     <h2 class="page-title">Liste des cadeaux disponibles</h2>
     <div class="container mt-5">
       <div
         class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 cadeaux-normaux"
       >
         <% for (let i=0; i < data.length; i++) { let cadeau = data[i] %>
+        <%if(!stock[cadeau.cadeau_id] || stock[cadeau.cadeau_id]>0){%>
         <div class="col mb-4">
           <div id="<%= cadeau.cadeau_id %>" class="card">
             <img
@@ -212,10 +214,8 @@
               <p class="card-text"><%= cadeau.prix %> €</p>
               <%if(stock[cadeau.cadeau_id]){%>
               <p class="card-text">Stock : <%= stock[cadeau.cadeau_id] %></p>
-              <p>zeezalizhzlihzhliazhlio</p>
               <%}else{%>
               <p class="card-text">Stock : <%= cadeau.stock %></p>
-              <p>PRouuuuuut</p>
               <%}%>
               <details>
                 <summary>Plus d'informations</summary>
@@ -240,7 +240,7 @@
             </div>
           </div>
         </div>
-        <% } %>
+        <% } %> <%}%>
       </div>
     </div>
     <% } else if (datatype === "panier") { %>
@@ -269,8 +269,6 @@
             <div class="card-body">
               <h5 class="card-title"><%= cadeau.nom %></h5>
               <p class="card-text"><%= cadeau.prix %> €</p>
-              <!-- IDEA: Dans le panier, remplacer par quantité prise -->
-              <p class="card-text stock">Stock : <%= cadeau.stock %></p>
               <details>
                 <summary>Plus d'informations</summary>
                 <!-- On affiche que les informations existantes -->

@@ -180,12 +180,15 @@ $(document).ready(function () {
       let cadeau = cadeaux[i];
       let card;
       // On crée une card pour chaque cadeau
-      if(stock[cadeau.cadeau_id]){
-        card = createCard(cadeau, "Ajouter au panier", "add-to-panier",stock[cadeau.cadeau_id]);
+      if (stock[cadeau.cadeau_id] && stock[cadeau.cadeau_id] > 0) {
+        card = createCard(cadeau, "Ajouter au panier", "add-to-panier", stock[cadeau.cadeau_id]);
         console.log("ezeese");
       }
-      else{
-        card = createCard(cadeau, "Ajouter au panier", "add-to-panier",cadeau.stock);
+      else if (stock[cadeau.cadeau_id] === 0) {
+        console.log("Ce cadeau n'a pas assez de stock");
+      }
+      else {
+        card = createCard(cadeau, "Ajouter au panier", "add-to-panier", cadeau.stock);
       }
 
       // Une fois entièrement créée, on ajoute la card

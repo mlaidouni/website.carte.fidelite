@@ -143,20 +143,25 @@ let client_update = function (points) {
 let client_add = function (cadeau) {
   // On ajoute le cadeau au panier
   client_connected.panier.push(cadeau);
-  console.log(client_connected.panier);
   let count = 0;
   for (let i = 0; i < client_connected.panier.length; i++) {
     if (client_connected.panier[i].cadeau_id === cadeau.cadeau_id) {
       count++;
-      console.log(count);
     }
   }
-  client_connected.current_stock[cadeau.cadeau_id] = cadeau.stock - count;
-  console.log(client_connected.current_stock[cadeau.cadeau_id]);
-  // On met à jour les valeurs du clients connectés
-  client_connected.panier_counter = client_connected.panier.length;
-  client_connected.panier_value += cadeau.prix;
-  client_connected.points_h -= cadeau.prix;
+  if (cadeau.stock - count >= 0) {
+
+    client_connected.current_stock[cadeau.cadeau_id] = cadeau.stock - count;
+    console.log(client_connected.current_stock[cadeau.cadeau_id]);
+    // On met à jour les valeurs du clients connectés
+    client_connected.panier_counter = client_connected.panier.length;
+    client_connected.panier_value += cadeau.prix;
+    client_connected.points_h -= cadeau.prix;
+  }
+  else {
+    client_connected.panier.pop();
+    client_connected.current_stock[cadeau.cadeau_id] = 0;
+  }
 };
 
 let client_valider_panier = function () {
