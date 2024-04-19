@@ -162,7 +162,11 @@
             <div class="card-body">
               <h5 class="card-title"><%= cadeau.nom %></h5>
               <p class="card-text"><%= cadeau.prix %> €</p>
+              <%if(stock[cadeau.cadeau_id]){%>
+              <p class="card-text">Stock : <%= stock[cadeau.cadeau_id] %></p>
+              <%}else{%>
               <p class="card-text">Stock : <%= cadeau.stock %></p>
+              <%}%>
               <details>
                 <summary>Plus d'informations</summary>
                 <!-- On affiche que les informations existantes -->
@@ -206,7 +210,13 @@
             <div class="card-body">
               <h5 class="card-title"><%= cadeau.nom %></h5>
               <p class="card-text"><%= cadeau.prix %> €</p>
+              <%if(stock[cadeau.cadeau_id]){%>
+              <p class="card-text">Stock : <%= stock[cadeau.cadeau_id] %></p>
+              <p>zeezalizhzlihzhliazhlio</p>
+              <%}else{%>
               <p class="card-text">Stock : <%= cadeau.stock %></p>
+              <p>PRouuuuuut</p>
+              <%}%>
               <details>
                 <summary>Plus d'informations</summary>
                 <!-- On affiche que les informations existantes -->
@@ -260,7 +270,7 @@
               <h5 class="card-title"><%= cadeau.nom %></h5>
               <p class="card-text"><%= cadeau.prix %> €</p>
               <!-- IDEA: Dans le panier, remplacer par quantité prise -->
-              <p class="card-text">Stock : <%= cadeau.stock %></p>
+              <p class="card-text stock">Stock : <%= cadeau.stock %></p>
               <details>
                 <summary>Plus d'informations</summary>
                 <!-- On affiche que les informations existantes -->
@@ -278,8 +288,9 @@
                 id="<%= cadeau.cadeau_id %>"
                 class="btn btn-danger del-from-panier"
                 type="button"
-                >Supprimer</button
               >
+                Supprimer
+              </button>
             </div>
           </div>
         </div>

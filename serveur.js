@@ -106,6 +106,8 @@ const client_connected = {
   panier_value: 0,
   // Nombre de cadeaux dans le panier
   panier_counter: 0,
+  //Stock dynamique pour chaque cadeau
+  current_stock: {},
 };
 
 // Reset les valeurs du client.
@@ -116,6 +118,7 @@ let client_reset = function () {
   client_connected.points_h = undefined;
   // On vide son panier
   client_connected.panier = [];
+  client_connected.current_stock = {};
   client_connected.panier_counter = 0;
   client_connected.panier_value = 0;
 };
@@ -140,7 +143,16 @@ let client_update = function (points) {
 let client_add = function (cadeau) {
   // On ajoute le cadeau au panier
   client_connected.panier.push(cadeau);
-
+  console.log(client_connected.panier);
+  let count = 0;
+  for (let i = 0; i < client_connected.panier.length; i++) {
+    if (client_connected.panier[i].cadeau_id === cadeau.cadeau_id) {
+      count++;
+      console.log(count);
+    }
+  }
+  client_connected.current_stock[cadeau.cadeau_id] = cadeau.stock - count;
+  console.log(client_connected.current_stock[cadeau.cadeau_id]);
   // On met à jour les valeurs du clients connectés
   client_connected.panier_counter = client_connected.panier.length;
   client_connected.panier_value += cadeau.prix;
@@ -150,12 +162,14 @@ let client_add = function (cadeau) {
 let client_valider_panier = function () {
   client_connected.points = client_connected.points_h;
   client_connected.panier = [];
+  client_connected.current_stock = {};
   client_connected.panier_counter = 0;
   client_connected.panier_value = 0;
 };
 
 let client_empty_panier = function () {
   client_connected.points_h = client_connected.points;
+  client_connected.current_stock = {};
   client_connected.panier = [];
   client_connected.panier_counter = 0;
   client_connected.panier_value = 0;
@@ -303,6 +317,7 @@ server.get("/client/compte", async (req, res) => {
       panier_value: client_connected.panier_value,
       datatype: dataType,
       anniversaire: isAnniversaire,
+      stock: client_connected.current_stock,
     };
 
     if (dataType === "accueil") {
@@ -360,7 +375,7 @@ server.post("/client/compte/cadeau", async (req, res) => {
     let cadeau = await gestion_cadeaux.getCadeau(cadeau_id);
     // On ajoute le cadeau dans le panier
     client_add(cadeau);
-
+    console.log(client_connected.current_stock);
     // On récupère les cadeaux que le client peut désormais acheter
     let cadeaux_normaux = await gestion_cadeaux.getNormalForClient(
       client_connected.points_h
@@ -370,7 +385,7 @@ server.post("/client/compte/cadeau", async (req, res) => {
     );
 
     /* Si on a pas levé d'erreur, on renvoie un message de succès, accompagné
-     * des valeurs qui doivent être modifiées à l'affichage. */
+   * des valeurs qui doivent être modifiées à l'affichage. */
     res.status(200).json({
       success: true,
       message: "Cadeau ajouté au panier avec succès!",
@@ -379,6 +394,7 @@ server.post("/client/compte/cadeau", async (req, res) => {
       panier_counter: client_connected.panier_counter,
       normaux: cadeaux_normaux,
       speciaux: cadeaux_speciaux,
+      stock: client_connected.current_stock,
     });
   } catch (error) {
     printError("serveur: Erreur lors de l'ajout du cadeau au panier:");
