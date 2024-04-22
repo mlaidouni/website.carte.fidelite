@@ -146,13 +146,13 @@
 
     <!-- Contenu principal -->
     <% if (datatype==="accueil") { %> <% if (anniversaire) { %>
-    <%if(!stock[cadeau.cadeau_id] || stock[cadeau.cadeau_id]>0){%>
     <h2 class="page-title">Liste des cadeaux spéciaux</h2>
     <div class="container mt-5">
       <div
         class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 cadeaux-speciaux"
       >
         <% for (let i=0; i < speciaux.length; i++) { let cadeau = speciaux[i] %>
+        <%if(!stock[cadeau.cadeau_id] || stock[cadeau.cadeau_id]>0){%>
         <div class="col mb-4">
           <div id="<%= cadeau.cadeau_id %>" class="card">
             <img
@@ -191,10 +191,10 @@
             </div>
           </div>
         </div>
-        <% } %>
+        <% } %><%}%>
       </div>
     </div>
-    <% } %> <%}%>
+    <% } %>
     <h2 class="page-title">Liste des cadeaux disponibles</h2>
     <div class="container mt-5">
       <div

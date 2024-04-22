@@ -199,7 +199,7 @@ INSERT INTO PERSONNES (
     'Jana',
     'jana@grimpette.fr',
     '0600000000',
-    '2003-10-23',
+    '2003-04-19',
     105
 ),
 (
