@@ -151,7 +151,7 @@ function Cadeau(tableName) {
     try {
       // Requête à exécuter
       let query = {
-        text: `DELETE FROM ${tableName} WHERE cadeu_id = $1`,
+        text: `DELETE FROM ${tableName} WHERE cadeau_id = $1`,
         // Les valeurs à remplacer dans la requête
         values: [id],
       };
