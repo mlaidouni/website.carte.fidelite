@@ -17,21 +17,18 @@ $(document).ready(function () {
       <p class="card-text">Stock : ${cadeau.stock}</p>
       <details>
         <summary>Plus d'informations</summary>
-        ${
-          cadeau.taille
-            ? `<p class="card-text">Taille : ${cadeau.taille}</p>`
-            : ""
-        }
-        ${
-          cadeau.couleur
-            ? `<hr /><p class="card-text">Couleur : ${cadeau.couleur}</p>`
-            : ""
-        }
-        ${
-          cadeau.description
-            ? `<hr /><p class="card-text">${cadeau.description}</p>`
-            : ""
-        }
+        ${cadeau.taille
+        ? `<p class="card-text">Taille : ${cadeau.taille}</p>`
+        : ""
+      }
+        ${cadeau.couleur
+        ? `<hr /><p class="card-text">Couleur : ${cadeau.couleur}</p>`
+        : ""
+      }
+        ${cadeau.description
+        ? `<hr /><p class="card-text">${cadeau.description}</p>`
+        : ""
+      }
       </details>
       <button
         id="${cadeau.cadeau_id}"
@@ -147,7 +144,7 @@ $(document).ready(function () {
       null,
       (data) => {
         // Si la déconnexion a réussi, on redirigie la page
-        window.location.href = "/client/connexion";
+        window.location.href = "/";
       },
       "la déconnexion du client."
     );
