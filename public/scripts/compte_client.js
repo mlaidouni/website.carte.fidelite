@@ -2,7 +2,7 @@ $(document).ready(function () {
   /* ******************** Fonction utilitaire *********** */
 
   // Crée une card représentant un cadeau
-  function createCard(cadeau, btntext, btntype) {
+  function createCard(cadeau, btntext, btntype, stock) {
     let card = `
 <div class="col mb-4">
   <div id="${cadeau.cadeau_id}" class="card">
@@ -14,24 +14,21 @@ $(document).ready(function () {
     <div class="card-body">
       <h5 class="card-title">${cadeau.nom}</h5>
       <p class="card-text">${cadeau.prix} €</p>
-      <p class="card-text">Stock : ${cadeau.stock}</p>
+      <p class="card-text">Stock : ${stock}</p>
       <details>
         <summary>Plus d'informations</summary>
-        ${
-          cadeau.taille
-            ? `<p class="card-text">Taille : ${cadeau.taille}</p>`
-            : ""
-        }
-        ${
-          cadeau.couleur
-            ? `<hr /><p class="card-text">Couleur : ${cadeau.couleur}</p>`
-            : ""
-        }
-        ${
-          cadeau.description
-            ? `<hr /><p class="card-text">${cadeau.description}</p>`
-            : ""
-        }
+        ${cadeau.taille
+        ? `<p class="card-text">Taille : ${cadeau.taille}</p>`
+        : ""
+      }
+        ${cadeau.couleur
+        ? `<hr /><p class="card-text">Couleur : ${cadeau.couleur}</p>`
+        : ""
+      }
+        ${cadeau.description
+        ? `<hr /><p class="card-text">${cadeau.description}</p>`
+        : ""
+      }
       </details>
       <button
         id="${cadeau.cadeau_id}"
@@ -174,15 +171,25 @@ $(document).ready(function () {
    * @param {*} list - Le conteneur de la liste.
    * @param {*} data - Les données à afficher.
    */
-  function updateCadeaux(className, cadeaux) {
+  function updateCadeaux(className, cadeaux, stock) {
     // On vide la ligne contenant la liste des cadeaux
     $(className).empty();
 
     // Puis on la rempli avec les cadeaux achetables
     for (let i = 0; i < cadeaux.length; i++) {
       let cadeau = cadeaux[i];
+      let card;
       // On crée une card pour chaque cadeau
-      let card = createCard(cadeau, "Ajouter au panier", "add-to-panier");
+      if (stock[cadeau.cadeau_id] && stock[cadeau.cadeau_id] > 0) {
+        card = createCard(cadeau, "Ajouter au panier", "add-to-panier", stock[cadeau.cadeau_id]);
+        console.log("ezeese");
+      }
+      else if (stock[cadeau.cadeau_id] <= 0) {
+        console.log("Ce cadeau n'a pas assez de stock");
+      }
+      else {
+        card = createCard(cadeau, "Ajouter au panier", "add-to-panier", cadeau.stock);
+      }
 
       // Une fois entièrement créée, on ajoute la card
       $(className).append(card);
@@ -210,8 +217,9 @@ $(document).ready(function () {
         updateCounters(data.panier_counter, data.points, data.points_h);
 
         // On met à jour l'affichage des cadeaux encore achetables
-        updateCadeaux(".cadeaux-normaux", data.normaux);
-        updateCadeaux(".cadeaux-speciaux", data.speciaux);
+        updateCadeaux(".cadeaux-normaux", data.normaux, data.stock);
+        updateCadeaux(".cadeaux-speciaux", data.speciaux, data.stock);
+        console.log(data.stock);
       },
       "l'ajout du cadeau au panier."
     );
