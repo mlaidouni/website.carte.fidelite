@@ -108,12 +108,22 @@ $(document).ready(function () {
     /* Pour chaque champ, on remplace le span par un input de type text, avec
      * les mêmes classes et valeurs */
     card.find("span").each(function () {
+      if ($(this).attr("class") === "type") {
+        let select = $("<select>", {
+          class: $(this).attr("class"),
+          name: $(this).attr("class"),
+          required: true
+        }).append(
+          $("<option>", { value: "normal", text: "Normal" }),
+          $("<option>", { value: "special", text: "Spécial" })
+        );
+        $(this).replaceWith(select);
+      }
       let input = $("<input>", {
         type: $(this).attr("type"),
         class: $(this).attr("class"),
         value: $(this).text(),
       });
-      console.log(this.text);
       $(this).replaceWith(input);
     });
 
@@ -138,7 +148,10 @@ $(document).ready(function () {
       // On récupère l'attribut (la classe) et la valeur correspondant
       newValues[$(this).attr("class")] = $(this).val();
     });
-
+    card.find("select").each(function () {
+      // On récupère l'attribut (la classe) et la valeur correspondant
+      newValues[$(this).attr("class")] = $(this).val();
+    });
     // Requête AJAX pour mettre à jour l'élément
     putAJAX(
       `/gerante/compte/${urlType}?id=${id}`,
@@ -146,6 +159,12 @@ $(document).ready(function () {
       (data) => {
         // Si l'update dans la BD a réussi, on transforme les input en span
         card.find("input").each(function () {
+          let span = createSpan($(this).attr("class"), $(this).val());
+          $(this).replaceWith(span);
+          // On update le bouton
+          switchButton(button, "Modifier", "btn-success", "btn-primary");
+        });
+        card.find("select").each(function () {
           let span = createSpan($(this).attr("class"), $(this).val());
           $(this).replaceWith(span);
           // On update le bouton
@@ -236,6 +255,17 @@ $(document).ready(function () {
             placeholder: champ,
             required: true,
           })
+        );
+      } else if (champ === "type") {
+        form.append(
+          $("<select>", {
+            class: "form-control " + champ,
+            name: champ,
+            required: true
+          }).append(
+            $("<option>", { value: "normal", text: "Normal" }),
+            $("<option>", { value: "special", text: "Spécial" })
+          )
         );
       } else if (champ === "image") {
         form.append(

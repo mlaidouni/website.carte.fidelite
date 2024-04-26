@@ -7,6 +7,15 @@
   /* margin-right: 10px; */
 }
 
+/* Gestion des selects */
+.card select {
+  /* Définit la largeur à 100% du conteneur */
+  width: 100%;
+  /* Margin */
+  margin-bottom: 10px;
+  /* margin-right: 10px; */
+}
+
 .card btn:not(:last-child) {
   /* On met une marge pour que les boutons ne soient pas collés sauf le last */
   margin-right: 10px;
