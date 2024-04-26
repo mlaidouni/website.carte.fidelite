@@ -244,8 +244,6 @@ $(document).ready(function () {
             required: true,
           })
         );
-      } else if (champ == "type") {
-
       } else if (champ === "prix" || champ === "stock") {
         form.append(
           $("<input>", {
