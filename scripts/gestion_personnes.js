@@ -223,6 +223,8 @@ function Personne(tableName) {
     return result;
   };
 
+  
+
   /**
    * Modifie l'un des attributs d'un client dans la BD
    * @param {string} userid - L'id du client.

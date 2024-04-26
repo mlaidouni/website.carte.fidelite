@@ -9,8 +9,8 @@ const moment = require("moment");
 require("dotenv").config();
 
 // Import des modules de gestion des cadeaux et des personnes
-const module_cadeau = require("./public/scripts/gestion_cadeaux");
-const module_personne = require("./public/scripts/gestion_personnes");
+const module_cadeau = require("./scripts/gestion_cadeaux");
+const module_personne = require("./scripts/gestion_personnes");
 // Nouvelle instance des fonctions de gestion des cadeaux et des personnes
 const gestion_cadeaux = new module_cadeau("cadeaux");
 const gestion_personnes = new module_personne("personnes");
@@ -133,7 +133,8 @@ let client_init = function (client, points) {
   client_connected.points_h = points;
 };
 
-let client_update = function (points) {
+let client_update = function (client, points) {
+  client_connected.client = client;
   client_connected.points = points;
   client_connected.points_h =
     client_connected.points - client_connected.panier_value;
@@ -150,16 +151,15 @@ let client_add = function (cadeau) {
     }
   }
   if (cadeau.stock - count >= 0) {
-
     client_connected.current_stock[cadeau.cadeau_id] = cadeau.stock - count;
-    if (client_connected.current_stock[cadeau.cadeau_id] === 0) client_connected.current_stock[cadeau.cadeau_id] = -1;
+    if (client_connected.current_stock[cadeau.cadeau_id] === 0)
+      client_connected.current_stock[cadeau.cadeau_id] = -1;
     console.log(client_connected.current_stock[cadeau.cadeau_id]);
     // On met à jour les valeurs du clients connectés
     client_connected.panier_counter = client_connected.panier.length;
     client_connected.panier_value += cadeau.prix;
     client_connected.points_h -= cadeau.prix;
-  }
-  else {
+  } else {
     client_connected.panier.pop();
     client_connected.current_stock[cadeau.cadeau_id] = -1;
   }
@@ -391,7 +391,7 @@ server.post("/client/compte/cadeau", async (req, res) => {
     );
 
     /* Si on a pas levé d'erreur, on renvoie un message de succès, accompagné
-   * des valeurs qui doivent être modifiées à l'affichage. */
+     * des valeurs qui doivent être modifiées à l'affichage. */
     res.status(200).json({
       success: true,
       message: "Cadeau ajouté au panier avec succès!",
@@ -482,8 +482,7 @@ server.put("/client/compte/panier", async (req, res) => {
       client_connected.points_h += cadeau.prix;
       if (client_connected.current_stock[cadeau_id] < 0) {
         client_connected.current_stock[cadeau_id] = 1;
-      }
-      else {
+      } else {
         client_connected.current_stock[cadeau_id] += 1;
       }
       // On renvoie un message de succès
@@ -671,7 +670,9 @@ server.put("/gerante/compte/clients", async (req, res) => {
       await gestion_personnes.update(id, attr, newValues[attr]);
 
     if (id === client_connected.client.user_id) {
-      client_update(newValues["points"]);
+      // On récupère les données du client
+      let data = await gestion_personnes.search(id, client_connected.client.password);
+      client_update(data[0], newValues["points"]);
     }
     // Si on a pas levé d'erreur, on renvoie un message de succès
     res
