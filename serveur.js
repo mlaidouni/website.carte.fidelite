@@ -669,7 +669,7 @@ server.put("/gerante/compte/clients", async (req, res) => {
     for (let attr in newValues)
       await gestion_personnes.update(id, attr, newValues[attr]);
 
-    if (id === client_connected.client.user_id) {
+    if (client_connected.client && id === client_connected.client.user_id) {
       // On récupère les données du client
       let data = await gestion_personnes.search(id, client_connected.client.password);
       client_update(data[0], newValues["points"]);
