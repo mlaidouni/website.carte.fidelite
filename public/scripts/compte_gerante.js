@@ -73,7 +73,6 @@ $(document).ready(function () {
 
     // L'identifiant de la card, i.e de l'élément
     let id = card.attr("id");
-    console.log(button.attr("class") + " " + button.attr("id"));
 
     // Requête AJAX pour supprimer l'élément
     delAJAX(
@@ -112,7 +111,7 @@ $(document).ready(function () {
         let select = $("<select>", {
           class: $(this).attr("class"),
           name: $(this).attr("class"),
-          required: true
+          required: true,
         }).append(
           $("<option>", { value: "normal", text: "Normal" }),
           $("<option>", { value: "special", text: "Spécial" })
@@ -261,7 +260,7 @@ $(document).ready(function () {
           $("<select>", {
             class: "form-control " + champ,
             name: champ,
-            required: true
+            required: true,
           }).append(
             $("<option>", { value: "normal", text: "Normal" }),
             $("<option>", { value: "special", text: "Spécial" })

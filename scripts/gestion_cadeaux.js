@@ -203,9 +203,7 @@ function Cadeau(tableName) {
 
     // On stocke les données dans un tableau
     let result = [];
-    for (let row of data.rows) {
-      console.log(row);
-      result.push(row);}
+    for (let row of data.rows) result.push(row);
     return result;
   };
 

@@ -17,18 +17,21 @@ $(document).ready(function () {
       <p class="card-text">Stock : ${stock}</p>
       <details>
         <summary>Plus d'informations</summary>
-        ${cadeau.taille
-        ? `<p class="card-text">Taille : ${cadeau.taille}</p>`
-        : ""
-      }
-        ${cadeau.couleur
-        ? `<hr /><p class="card-text">Couleur : ${cadeau.couleur}</p>`
-        : ""
-      }
-        ${cadeau.description
-        ? `<hr /><p class="card-text">${cadeau.description}</p>`
-        : ""
-      }
+        ${
+          cadeau.taille
+            ? `<p class="card-text">Taille : ${cadeau.taille}</p>`
+            : ""
+        }
+        ${
+          cadeau.couleur
+            ? `<hr /><p class="card-text">Couleur : ${cadeau.couleur}</p>`
+            : ""
+        }
+        ${
+          cadeau.description
+            ? `<hr /><p class="card-text">${cadeau.description}</p>`
+            : ""
+        }
       </details>
       <button
         id="${cadeau.cadeau_id}"
@@ -180,15 +183,22 @@ $(document).ready(function () {
       let cadeau = cadeaux[i];
       let card;
       // On crée une card pour chaque cadeau
-      if (stock[cadeau.cadeau_id] && stock[cadeau.cadeau_id] > 0) {
-        card = createCard(cadeau, "Ajouter au panier", "add-to-panier", stock[cadeau.cadeau_id]);
-        console.log("ezeese");
-      }
-      else if (stock[cadeau.cadeau_id] <= 0) {
-        console.log("Ce cadeau n'a pas assez de stock");
-      }
+      if (stock[cadeau.cadeau_id] && stock[cadeau.cadeau_id] > 0)
+        card = createCard(
+          cadeau,
+          "Ajouter au panier",
+          "add-to-panier",
+          stock[cadeau.cadeau_id]
+        );
+      else if (stock[cadeau.cadeau_id] <= 0)
+        console.log("Ce cadeau n'a pas assez de stock.");
       else {
-        card = createCard(cadeau, "Ajouter au panier", "add-to-panier", cadeau.stock);
+        card = createCard(
+          cadeau,
+          "Ajouter au panier",
+          "add-to-panier",
+          cadeau.stock
+        );
       }
 
       // Une fois entièrement créée, on ajoute la card
@@ -219,7 +229,6 @@ $(document).ready(function () {
         // On met à jour l'affichage des cadeaux encore achetables
         updateCadeaux(".cadeaux-normaux", data.normaux, data.stock);
         updateCadeaux(".cadeaux-speciaux", data.speciaux, data.stock);
-        console.log(data.stock);
       },
       "l'ajout du cadeau au panier."
     );

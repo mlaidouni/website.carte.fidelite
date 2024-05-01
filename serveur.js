@@ -154,7 +154,7 @@ let client_add = function (cadeau) {
     client_connected.current_stock[cadeau.cadeau_id] = cadeau.stock - count;
     if (client_connected.current_stock[cadeau.cadeau_id] === 0)
       client_connected.current_stock[cadeau.cadeau_id] = -1;
-    console.log(client_connected.current_stock[cadeau.cadeau_id]);
+
     // On met à jour les valeurs du clients connectés
     client_connected.panier_counter = client_connected.panier.length;
     client_connected.panier_value += cadeau.prix;
@@ -381,7 +381,7 @@ server.post("/client/compte/cadeau", async (req, res) => {
     let cadeau = await gestion_cadeaux.getCadeau(cadeau_id);
     // On ajoute le cadeau dans le panier
     client_add(cadeau);
-    console.log(client_connected.current_stock);
+
     // On récupère les cadeaux que le client peut désormais acheter
     let cadeaux_normaux = await gestion_cadeaux.getNormalForClient(
       client_connected.points_h
@@ -671,7 +671,10 @@ server.put("/gerante/compte/clients", async (req, res) => {
 
     if (client_connected.client && id === client_connected.client.user_id) {
       // On récupère les données du client
-      let data = await gestion_personnes.search(id, client_connected.client.password);
+      let data = await gestion_personnes.search(
+        id,
+        client_connected.client.password
+      );
       client_update(data[0], newValues["points"]);
     }
     // Si on a pas levé d'erreur, on renvoie un message de succès
