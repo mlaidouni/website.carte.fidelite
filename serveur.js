@@ -91,95 +91,43 @@ const printWarning = (message) => {
   printlog(`${colors.blink}${message}`, "yellow");
 };
 
-/* ********** Gestion du client connecté ********** */
+/* ********** Gestion des clients connectés ********** */
 
-const client_connected = {
-  // Le client actuellement connecté
-  client: undefined,
-  // Points actuels
-  points: undefined,
-  // Points hypothétiques, i.e si le panier est validé
-  points_h: undefined,
-  // Le panier du client actuellement connecté
-  panier: [],
-  // Valeur du panier
-  panier_value: 0,
-  // Nombre de cadeaux dans le panier
-  panier_counter: 0,
-  //Stock dynamique pour chaque cadeau
-  current_stock: {},
-};
+// Import des modules express-session et client
+const session = require("express-session");
+const Client = require("./scripts/client");
 
-// Reset les valeurs du client.
-let client_reset = function () {
-  // On reset le client connecté
-  client_connected.client = undefined;
-  client_connected.points = undefined;
-  client_connected.points_h = undefined;
-  // On vide son panier
-  client_connected.panier = [];
-  client_connected.current_stock = {};
-  client_connected.panier_counter = 0;
-  client_connected.panier_value = 0;
-};
+// La liste des clients connectés
+const clients = {};
 
-// Initialisation d'un client
-let client_init = function (client, points) {
-  // On reset les éventuelles données du précédent client
-  client_reset();
+server.use(
+  session({
+    // Une chaîne de caractères utilisée pour signer le cookie de session
+    secret: "ceci-est-un-secret",
+    // On se sauvegarde pas les session non modifiée
+    resave: false,
+    // On ne stocke pas les sessions vides
+    saveUninitialized: false,
+    // Les cookies sont envoyés via HTTP
+    cookie: { secure: false },
+  })
+);
 
-  client_connected.client = client;
-  client_connected.points = points;
-  client_connected.points_h = points;
-};
+/**
+ * Récupérer le client connecté de la session.
+ * @param {*} req - La requête.
+ * @param {*} res - La réponse.
+ * @returns {string} - L'ID du client connecté, ou null sinon.
+ */
+function getClientConnected(req, res) {
+  let clientId = req.session.clientId;
 
-let client_update = function (client, points) {
-  client_connected.client = client;
-  client_connected.points = points;
-  client_connected.points_h =
-    client_connected.points - client_connected.panier_value;
-};
+  // Si aucun client n'est connecté, on redirige vers la page de connexion
+  if (!clientId) res.redirect("/client/connexion");
 
-// Ajout d'un cadeau au panier
-let client_add = function (cadeau) {
-  // On ajoute le cadeau au panier
-  client_connected.panier.push(cadeau);
-  let count = 0;
-  for (let i = 0; i < client_connected.panier.length; i++) {
-    if (client_connected.panier[i].cadeau_id === cadeau.cadeau_id) {
-      count++;
-    }
-  }
-  if (cadeau.stock - count >= 0) {
-    client_connected.current_stock[cadeau.cadeau_id] = cadeau.stock - count;
-    if (client_connected.current_stock[cadeau.cadeau_id] === 0)
-      client_connected.current_stock[cadeau.cadeau_id] = -1;
+  return clientId;
+}
 
-    // On met à jour les valeurs du clients connectés
-    client_connected.panier_counter = client_connected.panier.length;
-    client_connected.panier_value += cadeau.prix;
-    client_connected.points_h -= cadeau.prix;
-  } else {
-    client_connected.panier.pop();
-    client_connected.current_stock[cadeau.cadeau_id] = -1;
-  }
-};
-
-let client_valider_panier = function () {
-  client_connected.points = client_connected.points_h;
-  client_connected.panier = [];
-  client_connected.current_stock = {};
-  client_connected.panier_counter = 0;
-  client_connected.panier_value = 0;
-};
-
-let client_empty_panier = function () {
-  client_connected.points_h = client_connected.points;
-  client_connected.current_stock = {};
-  client_connected.panier = [];
-  client_connected.panier_counter = 0;
-  client_connected.panier_value = 0;
-};
 /* ******************** Gestion des routes ******************** */
 
 // Notification sur le terminal pour toutes les requêtes
@@ -255,7 +203,10 @@ server.post("/client/connexion", async (req, res) => {
          *  qu'un seul, car l'id est la clé primaire, donc unique. */
 
         // On initialise le client connecté actuellement
-        client_init(data[0], data[0].points);
+        clients[id] = new Client(data[0], data[0].points);
+
+        // On stocke l'ID du client dans la session
+        req.session.clientId = id;
 
         // On redirige vers la page du compte
         res.redirect("/client/compte");
@@ -268,14 +219,20 @@ server.post("/client/connexion", async (req, res) => {
   }
 });
 
-// On renvoie true si c'est l'anniversaire du client_connected
+// On renvoie true si c'est l'anniversaire du client connecté
 server.get("/client/isAnniversaire", async (req, res) => {
   try {
-    // Si aucun client n'est connecté, on renvoie false
-    if (client_connected.client === undefined) {
+    // On récupère l'ID du client à partir de la session
+    let clientId = getClientConnected(req, res);
+
+    // Si aucun client n'est connecté
+    if (!clientId) {
       res.status(200).json({ isAnniversaire: false });
       return;
     }
+
+    // On récupère le client connecté
+    let client_connected = clients[clientId];
 
     // On récupère la date actuelle et la date de naissance du client
     const now = moment();
@@ -300,11 +257,14 @@ server.get("/client/compte", async (req, res) => {
     // On récupère le type de données demandées. (accueil ou panier)
     const dataType = req.query.data === undefined ? "accueil" : req.query.data;
 
-    // Si aucun client n'est connecté, on redirige vers la page de connexion
-    if (client_connected.client === undefined) {
-      res.redirect("/client/connexion");
-      return;
-    }
+    // On récupère l'ID du client à partir de la session
+    let clientId = getClientConnected(req, res);
+
+    // Si aucun client n'est connecté
+    if (!clientId)         res.redirect("/client/connexion");
+
+    // On récupère le client connecté
+    let client_connected = clients[clientId];
 
     // On récupère la date actuelle et la date de naissance du client
     const now = moment();
@@ -345,7 +305,7 @@ server.get("/client/compte", async (req, res) => {
     // Rendu de la page avec les bonnes données
     res.render(compte_client, reponse);
   } catch (error) {
-    printError("serveur: Erreur lors de la connexion de la gerante:");
+    printError("serveur: Erreur lors de la connexion du client:");
     printError(`-> ${error}`);
     res.status(500).send(`${error}`);
   }
@@ -354,8 +314,17 @@ server.get("/client/compte", async (req, res) => {
 // Gestion de la deconnexion du client
 server.post("/client/deconnexion", (req, res) => {
   try {
-    // On reset le client
-    client_reset();
+    // On récupère l'ID du client à partir de la session
+    let clientId = getClientConnected(req, res);
+
+    // Si un client est connecté
+    if (clientId) {
+      // On supprime l'ID du client de la session
+      delete req.session.clientId;
+
+      // On supprime le client de la liste des clients connectés
+      delete clients[clientId];
+    }
 
     // Si on a pas levé d'erreur, on renvoie un statut de succès
     res.status(200);
@@ -377,10 +346,19 @@ server.post("/client/compte/cadeau", async (req, res) => {
     // Récupérer l'identifiant du cadeau à ajouté
     let cadeau_id = req.body.id;
 
+    // On récupère l'ID du client à partir de la session
+    let clientId = getClientConnected(req, res);
+
+    // Si aucun client n'est connecté
+    if (!clientId)         res.redirect("/client/connexion");
+
+    // On récupère le client connecté
+    let client_connected = clients[clientId];
+
     // On cherche le cadeau dans la BD
     let cadeau = await gestion_cadeaux.getCadeau(cadeau_id);
     // On ajoute le cadeau dans le panier
-    client_add(cadeau);
+    client_connected.add(cadeau);
 
     // On récupère les cadeaux que le client peut désormais acheter
     let cadeaux_normaux = await gestion_cadeaux.getNormalForClient(
@@ -412,20 +390,30 @@ server.post("/client/compte/cadeau", async (req, res) => {
   }
 });
 
-//En cas de validation du panier
+// En cas de validation du panier
 server.post("/client/compte/panier", async (req, res) => {
   try {
-    //On décrémente le stock de chaque cadeau dans le panier
-    for (let i = 0; i < client_connected.panier.length; i++) {
+    // On récupère l'ID du client à partir de la session
+    let clientId = getClientConnected(req, res);
+
+    // Si aucun client n'est connecté
+    if (!clientId)         res.redirect("/client/connexion");
+
+    // On récupère le client connecté
+    let client_connected = clients[clientId];
+
+    // On décrémente le stock de chaque cadeau dans le panier
+    for (let i = 0; i < client_connected.panier.length; i++)
       await gestion_cadeaux.destock(client_connected.panier[i].cadeau_id);
-    }
-    //On met a jour les points du clients
+
+    // On met a jour les points du clients
     await gestion_personnes.update(
       client_connected.client.user_id,
       "points",
       client_connected.points_h
     );
-    client_valider_panier();
+
+    client_connected.valider_panier();
     res.status(200).json({
       success: true,
       message: "Panier validé!",
@@ -440,20 +428,29 @@ server.post("/client/compte/panier", async (req, res) => {
   }
 });
 
-//On vide le panier
+// On vide le panier
 server.delete("/client/compte/panier", (req, res) => {
   try {
-    client_empty_panier();
+    // On récupère l'ID du client à partir de la session
+    let clientId = getClientConnected(req, res);
+
+    // Si aucun client n'est connecté
+    if (!clientId)         res.redirect("/client/connexion");
+
+    // On récupère le client connecté
+    let client_connected = clients[clientId];
+
+    client_connected.empty_panier();
     res.status(200).json({
       success: true,
       message: "Panier vidé!",
     });
   } catch (error) {
-    printError("serveur: Erreur lors de la validation du panier:");
+    printError("serveur: Erreur lors du vidage du panier:");
     printError(`-> ${error}`);
     res.status(500).json({
       success: false,
-      message: "Une erreur est survenue lors de la validation du panier.",
+      message: "Une erreur est survenue lors du vidage du panier.",
     });
   }
 });
@@ -461,6 +458,15 @@ server.delete("/client/compte/panier", (req, res) => {
 // Gestion de la suppression d'un cadeau dans le panier
 server.put("/client/compte/panier", async (req, res) => {
   try {
+    // On récupère l'ID du client à partir de la session
+    let clientId = getClientConnected(req, res);
+
+    // Si aucun client n'est connecté
+    if (!clientId)         res.redirect("/client/connexion");
+
+    // On récupère le client connecté
+    let client_connected = clients[clientId];
+
     // Récupérer l'identifiant du cadeau à supprimer
     let cadeau_id = Number(req.body.id);
 
