@@ -15,7 +15,6 @@ DROP TABLE IF EXISTS PERSONNES;
 -- Création de la table cadeaux
 CREATE TABLE CADEAUX (
     CADEAU_ID SERIAL PRIMARY KEY, -- Identifiant du cadeau
-    PRODUIT_ID FOREIGN KEY REFERENCES PRODUITS(PRODUIT_ID), -- Identifiant du produit
     NOM VARCHAR(255) NOT NULL, -- Nom du cadeau
     PRIX INTEGER NOT NULL, -- Prix du cadeau en points
     TYPE VARCHAR(7) NOT NULL DEFAULT 'normal', -- Type du cadeau (normal ou special)
@@ -24,12 +23,6 @@ CREATE TABLE CADEAUX (
     DESCRIPTION TEXT, -- Description du cadeau (not required)
     STOCK INTEGER NOT NULL, --Nombre d'élément en stock
     IMAGE VARCHAR(255) -- URL de l'image du cadeau (not required)
-);
-
--- Création de la table produits
-CREATE TABLE PRODUITS (
-    PRODUIT_ID SERIAL PRIMARY KEY, -- Identifiant du produit
-    NOM VARCHAR(255) NOT NULL UNIQUE, -- Nom du produit
 );
 
 -- Création de la table personnes
@@ -45,50 +38,9 @@ CREATE TABLE PERSONNES (
     POINTS INTEGER NOT NULL -- Nombre de points de la personne
 );
 
--- Remplissage de la table produits
-INSERT INTO PRODUITS (
-    NOM
-) VALUES (
-    'doudou'
-),
-(
-    'sac à dos'
-),
-(
-    'mug'
-),
-(
-    'clé USB'
-),
-(
-    'parapluie'
-),
-(
-    'gourde'
-),
-(
-    'stylo'
-),
-(
-    'carnet de notes'
-),
-(
-    'porte-clés'
-),
-(
-    'tapis de souris'
-),
-(
-    'lampe de poche'
-),
-(
-    'maillot'
-);
-
 -- Remplissage de la table cadeaux
 INSERT INTO CADEAUX (
     NOM,
-    PRODUIT_ID,
     PRIX,
     TYPE,
     TAILLE,
@@ -98,7 +50,6 @@ INSERT INTO CADEAUX (
     IMAGE
 ) VALUES (
     'Moumou le mouton',
-    1,
     100,
     'special',
     '20 cm',
@@ -109,7 +60,6 @@ INSERT INTO CADEAUX (
 ),
 (
     'Sac à dos',
-    2,
     15,
     'normal',
     NULL,
@@ -120,40 +70,16 @@ INSERT INTO CADEAUX (
 ),
 (
     'Mug',
-    3,
     6,
     'normal',
     NULL,
-    'Blanc',
-    'Mug en céramique avec motif personnalisé',
-    12,
-    'mug-blanc.png'
-),
-(
-    'Mug',
-    3,
-    6,
-    'normal',
     NULL,
-    'Rouge',
-    'Mug en céramique avec motif personnalisé',
-    12,
-    'mug-blanc.png'
-),
-(
-    'Mug',
-    3,
-    6,
-    'normal',
-    NULL,
-    'Vert',
     'Mug en céramique avec motif personnalisé',
     12,
     'mug-blanc.png'
 ),
 (
     'Clé USB',
-    4,
     7,
     'normal',
     NULL,
@@ -164,17 +90,6 @@ INSERT INTO CADEAUX (
 ),
 (
     'Parapluie',
-    5,
-    12,
-    'normal',
-    NULL,
-    'Rouge',
-    'Parapluie pliable avec motif floral',
-    6,
-    'parapluie.png'
-),(
-    'Parapluie',
-    5,
     12,
     'normal',
     NULL,
@@ -284,7 +199,7 @@ INSERT INTO PERSONNES (
     'Jana',
     'jana@grimpette.fr',
     '0600000000',
-    '2003-04-19',
+    '2003-10-23',
     105
 ),
 (
