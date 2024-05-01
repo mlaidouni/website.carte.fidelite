@@ -97,8 +97,20 @@ const printWarning = (message) => {
 const session = require("express-session");
 const Client = require("./scripts/client");
 
-// La liste des clients connectés
-const clients = {};
+function create_client(client, points) {
+  let client_connected = {};
+
+  // Initialisation des valeurs du client.
+  client_connected.client = client;
+  client_connected.points = points;
+  client_connected.points_h = points;
+  client_connected.panier = [];
+  client_connected.panier_value = 0;
+  client_connected.panier_counter = 0;
+  client_connected.current_stock = {};
+
+  return client_connected;
+}
 
 server.use(
   session({
@@ -120,12 +132,12 @@ server.use(
  * @returns {string} - L'ID du client connecté, ou null sinon.
  */
 function getClientConnected(req, res) {
-  let clientId = req.session.clientId;
+  let client = req.session.client;
 
   // Si aucun client n'est connecté, on redirige vers la page de connexion
-  if (!clientId) res.redirect("/client/connexion");
+  if (!client) res.redirect("/client/connexion");
 
-  return clientId;
+  return client;
 }
 
 /* ******************** Gestion des routes ******************** */
@@ -203,10 +215,10 @@ server.post("/client/connexion", async (req, res) => {
          *  qu'un seul, car l'id est la clé primaire, donc unique. */
 
         // On initialise le client connecté actuellement
-        clients[id] = new Client(data[0], data[0].points);
+        let client = create_client(data[0], data[0].points);
 
-        // On stocke l'ID du client dans la session
-        req.session.clientId = id;
+        // On stocke le client dans la session
+        req.session.client = client;
 
         // On redirige vers la page du compte
         res.redirect("/client/compte");
@@ -222,17 +234,11 @@ server.post("/client/connexion", async (req, res) => {
 // On renvoie true si c'est l'anniversaire du client connecté
 server.get("/client/isAnniversaire", async (req, res) => {
   try {
-    // On récupère l'ID du client à partir de la session
-    let clientId = getClientConnected(req, res);
+    // On récupère le client à partir de la session
+    let client_connected = getClientConnected(req, res);
 
     // Si aucun client n'est connecté
-    if (!clientId) {
-      res.status(200).json({ isAnniversaire: false });
-      return;
-    }
-
-    // On récupère le client connecté
-    let client_connected = clients[clientId];
+    if (!client_connected) res.redirect("/client/connexion");
 
     // On récupère la date actuelle et la date de naissance du client
     const now = moment();
@@ -257,14 +263,11 @@ server.get("/client/compte", async (req, res) => {
     // On récupère le type de données demandées. (accueil ou panier)
     const dataType = req.query.data === undefined ? "accueil" : req.query.data;
 
-    // On récupère l'ID du client à partir de la session
-    let clientId = getClientConnected(req, res);
+    // On récupère le client à partir de la session
+    let client_connected = getClientConnected(req, res);
 
     // Si aucun client n'est connecté
-    if (!clientId)         res.redirect("/client/connexion");
-
-    // On récupère le client connecté
-    let client_connected = clients[clientId];
+    if (!client_connected) res.redirect("/client/connexion");
 
     // On récupère la date actuelle et la date de naissance du client
     const now = moment();
@@ -314,17 +317,13 @@ server.get("/client/compte", async (req, res) => {
 // Gestion de la deconnexion du client
 server.post("/client/deconnexion", (req, res) => {
   try {
-    // On récupère l'ID du client à partir de la session
-    let clientId = getClientConnected(req, res);
+    // On récupère le client à partir de la session
+    let client_connected = getClientConnected(req, res);
 
     // Si un client est connecté
-    if (clientId) {
+    if (client_connected)
       // On supprime l'ID du client de la session
-      delete req.session.clientId;
-
-      // On supprime le client de la liste des clients connectés
-      delete clients[clientId];
-    }
+      delete req.session.client;
 
     // Si on a pas levé d'erreur, on renvoie un statut de succès
     res.status(200);
@@ -346,19 +345,18 @@ server.post("/client/compte/cadeau", async (req, res) => {
     // Récupérer l'identifiant du cadeau à ajouté
     let cadeau_id = req.body.id;
 
-    // On récupère l'ID du client à partir de la session
-    let clientId = getClientConnected(req, res);
+    // On récupère le client à partir de la session
+    let client_connected = getClientConnected(req, res);
 
     // Si aucun client n'est connecté
-    if (!clientId)         res.redirect("/client/connexion");
-
-    // On récupère le client connecté
-    let client_connected = clients[clientId];
+    if (!client_connected) res.redirect("/client/connexion");
 
     // On cherche le cadeau dans la BD
     let cadeau = await gestion_cadeaux.getCadeau(cadeau_id);
-    // On ajoute le cadeau dans le panier
-    client_connected.add(cadeau);
+    // On crée une nouvelle instance de client pour utiliser ses méthodes
+    let client = new Client(client_connected);
+    // On ajoute le cadeau au panier
+    client.add(cadeau);
 
     // On récupère les cadeaux que le client peut désormais acheter
     let cadeaux_normaux = await gestion_cadeaux.getNormalForClient(
@@ -393,14 +391,11 @@ server.post("/client/compte/cadeau", async (req, res) => {
 // En cas de validation du panier
 server.post("/client/compte/panier", async (req, res) => {
   try {
-    // On récupère l'ID du client à partir de la session
-    let clientId = getClientConnected(req, res);
+    // On récupère le client à partir de la session
+    let client_connected = getClientConnected(req, res);
 
     // Si aucun client n'est connecté
-    if (!clientId)         res.redirect("/client/connexion");
-
-    // On récupère le client connecté
-    let client_connected = clients[clientId];
+    if (!client_connected) res.redirect("/client/connexion");
 
     // On décrémente le stock de chaque cadeau dans le panier
     for (let i = 0; i < client_connected.panier.length; i++)
@@ -413,7 +408,11 @@ server.post("/client/compte/panier", async (req, res) => {
       client_connected.points_h
     );
 
-    client_connected.valider_panier();
+    // On crée une nouvelle instance de client pour utiliser ses méthodes
+    let client = new Client(client_connected);
+    // On valide le panier
+    client.valider_panier();
+
     res.status(200).json({
       success: true,
       message: "Panier validé!",
@@ -431,16 +430,17 @@ server.post("/client/compte/panier", async (req, res) => {
 // On vide le panier
 server.delete("/client/compte/panier", (req, res) => {
   try {
-    // On récupère l'ID du client à partir de la session
-    let clientId = getClientConnected(req, res);
+    // On récupère le client à partir de la session
+    let client_connected = getClientConnected(req, res);
 
     // Si aucun client n'est connecté
-    if (!clientId)         res.redirect("/client/connexion");
+    if (!client_connected) res.redirect("/client/connexion");
 
-    // On récupère le client connecté
-    let client_connected = clients[clientId];
+    // On crée une nouvelle instance de client pour utiliser ses méthodes
+    let client = new Client(client_connected);
+    // On vide le panier
+    client.empty_panier();
 
-    client_connected.empty_panier();
     res.status(200).json({
       success: true,
       message: "Panier vidé!",
@@ -458,14 +458,11 @@ server.delete("/client/compte/panier", (req, res) => {
 // Gestion de la suppression d'un cadeau dans le panier
 server.put("/client/compte/panier", async (req, res) => {
   try {
-    // On récupère l'ID du client à partir de la session
-    let clientId = getClientConnected(req, res);
+    // On récupère le client à partir de la session
+    let client_connected = getClientConnected(req, res);
 
     // Si aucun client n'est connecté
-    if (!clientId)         res.redirect("/client/connexion");
-
-    // On récupère le client connecté
-    let client_connected = clients[clientId];
+    if (!client_connected) res.redirect("/client/connexion");
 
     // Récupérer l'identifiant du cadeau à supprimer
     let cadeau_id = Number(req.body.id);
@@ -486,11 +483,11 @@ server.put("/client/compte/panier", async (req, res) => {
       client_connected.panier_counter = client_connected.panier.length;
       client_connected.panier_value -= cadeau.prix;
       client_connected.points_h += cadeau.prix;
-      if (client_connected.current_stock[cadeau_id] < 0) {
+
+      if (client_connected.current_stock[cadeau_id] < 0)
         client_connected.current_stock[cadeau_id] = 1;
-      } else {
-        client_connected.current_stock[cadeau_id] += 1;
-      }
+      else client_connected.current_stock[cadeau_id] += 1;
+
       // On renvoie un message de succès
       res.status(200).json({
         success: true,
