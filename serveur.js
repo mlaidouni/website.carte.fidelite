@@ -679,14 +679,15 @@ server.put("/gerante/compte/clients", async (req, res) => {
     for (let attr in newValues)
       await gestion_personnes.update(id, attr, newValues[attr]);
 
-    if (client_connected.client && id === client_connected.client.user_id) {
-      // On récupère les données du client
-      let data = await gestion_personnes.search(
-        id,
-        client_connected.client.password
-      );
-      client_update(data[0], newValues["points"]);
-    }
+    // FIXME: On ne peut pas mettre à jour les points si y'a pas de client connecté
+    // if (client_connected.client && id === client_connected.client.user_id) {
+    //   // On récupère les données du client
+    //   let data = await gestion_personnes.search(
+    //     id,
+    //     client_connected.client.password
+    //   );
+    //   client_update(data[0], newValues["points"]);
+    // }
     // Si on a pas levé d'erreur, on renvoie un message de succès
     res
       .status(200)

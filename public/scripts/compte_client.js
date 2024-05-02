@@ -2,47 +2,61 @@ $(document).ready(function () {
   /* ******************** Fonction utilitaire *********** */
 
   // Crée une card représentant un cadeau
-  function createCard(cadeau, btntext, btntype, stock) {
+  function createCard(cadeau, cadeaux, btntext, btntype, stock) {
+    // On crée les options pour les tailles et les couleurs
+    // On commence par le cadeau actuel
+    let tailleOptions = `<option value="${cadeau.cadeau_id}">${
+      cadeau.taille ? cadeau.taille : "Inconnu"
+    }</option>`;
+    let couleurOptions = `<option value="${cadeau.cadeau_id}">${
+      cadeau.couleur ? cadeau.couleur : "Inconnu"
+    }</option>`;
+
+    // On ajoute les options des autres cadeaux
+    for (let i = 0; i < cadeaux.length; i++) {
+      let c = cadeaux[i];
+      if (c === cadeau) continue;
+      let tailleOption = `<option value="${c.cadeau_id}">${
+        c.taille ? c.taille : "Inconnu"
+      }</option>`;
+      let couleurOption = `<option value="${c.cadeau_id}">${
+        c.couleur ? c.couleur : "Inconnu"
+      }</option>`;
+
+      tailleOptions += tailleOption;
+      couleurOptions += couleurOption;
+    }
+
     let card = `
-<div class="col mb-4">
-  <div id="${cadeau.cadeau_id}" class="card">
-    <img
-      class="card-img-top"
-      src="/images/${cadeau.image}"
-      alt="/images/${cadeau.image}"
-    />
-    <div class="card-body">
-      <h5 class="card-title">${cadeau.nom}</h5>
-      <p class="card-text">${cadeau.prix} €</p>
-      <p class="card-text">Stock : ${stock}</p>
-      <details>
-        <summary>Plus d'informations</summary>
-        ${
-          cadeau.taille
-            ? `<p class="card-text">Taille : ${cadeau.taille}</p>`
-            : ""
-        }
-        ${
-          cadeau.couleur
-            ? `<hr /><p class="card-text">Couleur : ${cadeau.couleur}</p>`
-            : ""
-        }
-        ${
-          cadeau.description
-            ? `<hr /><p class="card-text">${cadeau.description}</p>`
-            : ""
-        }
-      </details>
-      <button
-        id="${cadeau.cadeau_id}"
-        class="btn btn-success ${btntype}"
-        type="button"
-        >${btntext}</button
-      >
+  <div class="col mb-4">
+    <div id="${cadeau.cadeau_id}" class="card">
+      <img class="card-img-top" src="/images/${cadeau.image}" alt="/images/${
+      cadeau.image
+    }" />
+      <div class="card-body">
+        <h5 class="card-title">${cadeau.nom}</h5>
+        <p class="card-text">${cadeau.prix} €</p>
+        <p class="card-text">Stock : ${stock}</p>
+        <details>
+          <summary>Plus d'informations</summary>
+          <span class="card-text">Taille :</span>
+          <select class="taille-select">${tailleOptions}</select>
+          <hr />
+          <span class="card-text">Couleur :</span>
+          <select class="couleur-select">${couleurOptions}</select>
+          ${
+            cadeau.description
+              ? `<hr /><p class="card-text">${cadeau.description}</p>`
+              : ""
+          }
+        </details>
+        <button id="${
+          cadeau.cadeau_id
+        }" class="btn btn-success ${btntype}" type="button">${btntext}</button>
+      </div>
     </div>
   </div>
-</div>
-`;
+  `;
     return card;
   }
 
@@ -174,15 +188,19 @@ $(document).ready(function () {
    * @param {*} list - Le conteneur de la liste.
    * @param {*} data - Les données à afficher.
    */
-  function updateCadeaux(className, cadeaux, stock) {
+  function updateCadeaux(className, data, stock) {
     // On vide la ligne contenant la liste des cadeaux
     $(className).empty();
 
     // Puis on la rempli avec les cadeaux achetables
-    for (let i = 0; i < cadeaux.length; i++) {
-      let cadeau = cadeaux[i];
+    for (let produit in data) {
+      let cadeaux = data[produit];
+      let cadeau = cadeaux[0];
       let card;
       // On crée une card pour chaque cadeau
+      console.log(stock[cadeau.cadeau_id], cadeau.stock);
+      if (stock[cadeau.cadeau_id] && stock[cadeau.cadeau_id] > 0)
+        console.log("stock", stock[cadeau.cadeau_id]);
       if (stock[cadeau.cadeau_id] && stock[cadeau.cadeau_id] > 0)
         card = createCard(
           cadeau,
@@ -190,8 +208,8 @@ $(document).ready(function () {
           "add-to-panier",
           stock[cadeau.cadeau_id]
         );
-      else if (stock[cadeau.cadeau_id] <= 0)
-        console.log("Ce cadeau n'a pas assez de stock.");
+      // Si le cadeau n'a plus de stock, on ne fait rien
+      else if (stock[cadeau.cadeau_id] <= 0) continue;
       else {
         card = createCard(
           cadeau,
