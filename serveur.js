@@ -346,6 +346,59 @@ server.post("/client/deconnexion", (req, res) => {
   }
 });
 
+// Récupération des cadeaux à afficher
+server.put("/client/compte/cadeau", async (req, res) => {
+  try {
+    // On récupère l'identifiant du cadeau à afficher
+    let cadeau_id = req.body.id;
+
+    // On récupère le client à partir de la session
+    let client_connected = getClientConnected(req, res);
+
+    // Si aucun client n'est connecté
+    if (!client_connected) res.redirect("/client/connexion");
+
+    // On récupère le cadeau à afficher
+    let cadeau = await gestion_cadeaux.getCadeau(cadeau_id);
+
+    // On récupère la liste des autres cadeaux du même type.
+    let data;
+    if (cadeau.type === "normal")
+      // On récupère les cadeaux que le client peut désormais acheter
+      data = await gestion_cadeaux.getNormalForClient(
+        client_connected.points_h
+      );
+    else if (cadeau.type === "special")
+      data = await gestion_cadeaux.getSpecialForClient(
+        client_connected.points_h
+      );
+
+    // La liste des autres cadeaux de même produit_id.
+    let cadeaux = data[cadeau.produit_id];
+
+    // On retire le cadeau à afficher de la liste des autres cadeaux
+    let index = cadeaux.findIndex((c) => c.cadeau_id === cadeau_id);
+    if (index !== -1) cadeaux.splice(index, 1);
+
+    /* Si on a pas levé d'erreur, on renvoie un message de succès, accompagné
+     * des valeurs qui doivent être modifiées à l'affichage. */
+    res.status(200).json({
+      success: true,
+      message: "Cadeau récupéré avec succès!",
+      cadeau: cadeau,
+      cadeaux: cadeaux,
+      stock: client_connected.current_stock,
+    });
+  } catch (error) {
+    printError("serveur: Erreur lors de la récupération du cadeau:");
+    printError(`-> ${error}`);
+    res.status(500).json({
+      success: false,
+      message: "Une erreur est survenue lors de la récupération du cadeau.",
+    });
+  }
+});
+
 // Ajout d'un cadeau au panier
 server.post("/client/compte/cadeau", async (req, res) => {
   try {

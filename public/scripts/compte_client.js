@@ -252,6 +252,38 @@ $(document).ready(function () {
     );
   });
 
+  // Changement du cadeau à afficher (select taille-select ou couleur-select)
+  $(document).on("change", ".taille-select, .couleur-select", function () {
+    // La card représentant l'élément
+    let card = $(this).closest(".card");
+
+    // L'identifiant de la card, i.e du cadeau
+    let id = card.attr("id");
+
+    // L'identifiant du cadeau à afficher
+    let selected_id = $(this).val();
+
+    // On envoie une requête en GET pour récupérer les informations du cadeau
+    putAJAX(
+      `/client/compte/cadeau`,
+      { id: selected_id },
+      function (data) {
+        // On crée une nouvelle card avec les informations du cadeau
+        let newCard = createCard(
+          data.cadeau,
+          data.cadeaux,
+          "Ajouter au panier",
+          "add-to-panier",
+          data.stock
+        );
+
+        // On remplace la card actuelle par la nouvelle
+        card.replaceWith(newCard);
+      },
+      "la récupération des informations du cadeau."
+    );
+  });
+
   /* ******************** Gestion des boutons - Panier *********** */
 
   // Validation du panier (bouton de class valide-panier)
