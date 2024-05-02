@@ -57,6 +57,7 @@ function Cadeau(tableName) {
   /**
    * Insert un cadeau dans la BD.
    * @param {string} nom - Le nom du cadeau.
+   * @param {integer} produit - L'id de produit du cadeau.
    * @param {integer} prix - Le prix du cadeau (en points).
    * @param {string} type - Le type de cadeau (normal ou special).
    * @param {string} taille - La taille du cadeau.
@@ -68,6 +69,7 @@ function Cadeau(tableName) {
    */
   this.insert = async function (
     nom,
+    produit,
     prix,
     type,
     taille,
@@ -80,15 +82,26 @@ function Cadeau(tableName) {
     client = await pool.connect();
 
     // On récupère les colonnes
-    let col = "(nom, prix, type, taille, couleur, description, stock, image)";
-    let values = "($1, $2, $3, $4, $5, $6, $7, $8)";
+    let col =
+      "(nom, produit, prix, type, taille, couleur, description, stock, image)";
+    let values = "($1, $2, $3, $4, $5, $6, $7, $8, $9)";
 
     try {
       // Requête à exécuter
       let query = {
         text: `INSERT INTO ${tableName} ${col} VALUES ${values}`,
         // Les valeurs à remplacer dans la requête
-        values: [nom, prix, type, taille, couleur, description, stock, image],
+        values: [
+          nom,
+          produit,
+          prix,
+          type,
+          taille,
+          couleur,
+          description,
+          stock,
+          image,
+        ],
       };
 
       // On attent l'exécution de la requête
@@ -224,40 +237,11 @@ function Cadeau(tableName) {
   };
 
   /**
-   * @returns Renvoie la liste des cadeaux spéciaux.
-   * @async
-   */
-  this.getSpecial = async function () {
-    // Connexion à la BD
-    const client = await pool.connect();
-    // Les données récupérées dans la BD
-    let data;
-
-    try {
-      // On attent l'exécution de la requête
-      data = await client.query(
-        `SELECT * FROM ${tableName} WHERE type = 'special'`
-      );
-    } catch (error) {
-      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
-      throw error;
-    } finally {
-      // On libère le client, que la requête ait réussi ou non.
-      client.release();
-    }
-
-    // On stocke les données dans un tableau
-    let result = [];
-    for (let row of data.rows) result.push(row);
-    return result;
-  };
-
-  /**
-   * @returns Renvoie la liste des cadeaux inférieurs à un montant n.
+   * @returns Renvoie la liste des cadeaux normaux inférieurs à un montant n.
    * @param {integer} n - Le montant maximal.
    * @async
    */
-  this.getNormalForClient = async function (n) {
+  this.getNormalInf = async function (n) {
     // Connexion à la BD
     client = await pool.connect();
     // Les données récupérées dans la BD
@@ -288,11 +272,59 @@ function Cadeau(tableName) {
   };
 
   /**
-   * @returns Renvoie la liste des cadeaux inférieurs à un montant n.
+   * @returns Renvoie la liste des cadeaux normaux, filtrés par produit.
    * @param {integer} n - Le montant maximal.
    * @async
    */
-  this.getSpecialForClient = async function (n) {
+  this.getNormalForClient = async function (n) {
+    // On récupère les cadeaux normaux inférieurs à n
+    let normal = await this.getNormalInf(n);
+
+    // Pour chaque id produit, on récupère la liste des cadeaux
+    let result = {};
+    for (let cadeau of normal) {
+      if (!result[cadeau.produit_id]) result[cadeau.produit_id] = [];
+      result[cadeau.produit_id].push(cadeau);
+    }
+
+    return result;
+  };
+
+  /**
+   * @returns Renvoie la liste des cadeaux spéciaux.
+   * @async
+   */
+  this.getSpecial = async function () {
+    // Connexion à la BD
+    const client = await pool.connect();
+    // Les données récupérées dans la BD
+    let data;
+
+    try {
+      // On attent l'exécution de la requête
+      data = await client.query(
+        `SELECT * FROM ${tableName} WHERE type = 'special'`
+      );
+    } catch (error) {
+      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
+      throw error;
+    } finally {
+      // On libère le client, que la requête ait réussi ou non.
+      client.release();
+    }
+
+    // On stocke les données dans un tableau
+    let result = [];
+    for (let row of data.rows) result.push(row);
+    return result;
+  };
+
+  /**
+   * @returns Renvoie la liste des cadeaux spéciaux inférieurs à un montant n.
+   * @param {integer} n - Le montant maximal.
+   * @async
+   */
+  this.getSpecialInf = async function (n) {
     // Connexion à la BD
     client = await pool.connect();
     // Les données récupérées dans la BD
@@ -319,6 +351,25 @@ function Cadeau(tableName) {
     // On stocke les données dans un tableau
     let result = [];
     for (let row of data.rows) result.push(row);
+    return result;
+  };
+
+  /**
+   * @returns Renvoie la liste des cadeaux spéciaux, filtrés par produit.
+   * @param {integer} n - Le montant maximal.
+   * @async
+   */
+  this.getSpecialForClient = async function (n) {
+    // On récupère les cadeaux normaux inférieurs à n
+    let special = await this.getSpecialInf(n);
+
+    // Pour chaque id produit, on récupère la liste des cadeaux
+    let result = {};
+    for (let cadeau of special) {
+      if (!result[cadeau.produit_id]) result[cadeau.produit_id] = [];
+      result[cadeau.produit_id].push(cadeau);
+    }
+
     return result;
   };
 

@@ -8,6 +8,8 @@
 -- \c WEBSITECARTEFIDELITE;
 
 -- Suppression des tables si elles existent
+DROP TABLE IF EXISTS PRODUITS CASCADE;
+
 DROP TABLE IF EXISTS CADEAUX;
 
 DROP TABLE IF EXISTS PERSONNES;
@@ -120,6 +122,17 @@ INSERT INTO CADEAUX (
     'sac-a-dos.png'
 ),
 (
+    'Sac à dos',
+    2,
+    17,
+    'normal',
+    NULL,
+    'Rose',
+    'Sac à dos DORA',
+    3,
+    'dora.jpg'
+),
+(
     'Mug',
     3,
     6,
@@ -173,7 +186,8 @@ INSERT INTO CADEAUX (
     'Parapluie pliable avec motif floral',
     6,
     'parapluie.png'
-),(
+),
+(
     'Parapluie',
     5,
     12,
@@ -255,7 +269,29 @@ INSERT INTO CADEAUX (
     12,
     105,
     'special',
+    'S',
+    'Noir',
+    'Maillot Third du Real Madrid 2023/2024',
+    10,
+    'real.png'
+),
+(
+    'Maillot Real Madrid',
+    12,
+    105,
+    'special',
     'M',
+    'Noir',
+    'Maillot Third du Real Madrid 2023/2024',
+    10,
+    'real.png'
+),
+(
+    'Maillot Real Madrid',
+    12,
+    105,
+    'special',
+    'L',
     'Noir',
     'Maillot Third du Real Madrid 2023/2024',
     10,

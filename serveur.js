@@ -294,9 +294,16 @@ server.get("/client/compte", async (req, res) => {
       let cadeaux = await gestion_cadeaux.getNormalForClient(
         client_connected.points_h
       );
+      // // CACA On affiche le contenu de cadeaux
+      // for (let key in cadeaux) {
+      //   printlog(`Cadeaux pour ${key}:`, "green");
+      //   for (let value of cadeaux[key]) printlog(`-> ${value.nom}`, "cyan");
+      // }
+
       let speciaux = await gestion_cadeaux.getSpecialForClient(
         client_connected.points_h
       );
+
       // On renvoie les données correspondantes
       reponse["data"] = cadeaux;
       reponse["speciaux"] = speciaux;
