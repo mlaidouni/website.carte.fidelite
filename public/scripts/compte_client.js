@@ -204,6 +204,7 @@ $(document).ready(function () {
       if (stock[cadeau.cadeau_id] && stock[cadeau.cadeau_id] > 0)
         card = createCard(
           cadeau,
+          cadeaux,
           "Ajouter au panier",
           "add-to-panier",
           stock[cadeau.cadeau_id]
@@ -213,6 +214,7 @@ $(document).ready(function () {
       else {
         card = createCard(
           cadeau,
+          cadeaux,
           "Ajouter au panier",
           "add-to-panier",
           cadeau.stock
@@ -257,6 +259,9 @@ $(document).ready(function () {
     // La card représentant l'élément
     let card = $(this).closest(".card");
 
+    // On récupère la div parente de card
+    let parent = card.parent();
+
     // L'identifiant de la card, i.e du cadeau
     let id = card.attr("id");
 
@@ -278,7 +283,7 @@ $(document).ready(function () {
         );
 
         // On remplace la card actuelle par la nouvelle
-        card.replaceWith(newCard);
+        parent.replaceWith(newCard);
       },
       "la récupération des informations du cadeau."
     );

@@ -207,7 +207,7 @@ INSERT INTO CADEAUX (
     'Vert',
     'Gourde en acier inoxydable 500 ml',
     5,
-    'kungfupanda.png'
+    'bachir.jpg'
 ),
 (
     'Stylo',
