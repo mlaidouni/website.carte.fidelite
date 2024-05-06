@@ -15,16 +15,23 @@ $(document).ready(function () {
     // On ajoute les options des autres cadeaux
     for (let i = 0; i < cadeaux.length; i++) {
       let c = cadeaux[i];
-      if (c === cadeau) continue;
-      let tailleOption = `<option value="${c.cadeau_id}">${
-        c.taille ? c.taille : "Inconnu"
-      }</option>`;
-      let couleurOption = `<option value="${c.cadeau_id}">${
-        c.couleur ? c.couleur : "Inconnu"
-      }</option>`;
+      if (c.cadeau_id === cadeau.cadeau_id) continue;
 
-      tailleOptions += tailleOption;
-      couleurOptions += couleurOption;
+      if (c.taille !== null) {
+        // On crée l'option correspondante
+        let tailleOption = `<option value="${c.cadeau_id}">${
+          c.taille ? c.taille : "Inconnu"
+        }</option>`;
+        // On ajoute l'option
+        tailleOptions += tailleOption;
+      }
+      if (c.couleurOption !== null) {
+        let couleurOption = `<option value="${c.cadeau_id}">${
+          c.couleur ? c.couleur : "Inconnu"
+        }</option>`;
+        // On ajoute l'option
+        couleurOptions += couleurOption;
+      }
     }
 
     let card = `
