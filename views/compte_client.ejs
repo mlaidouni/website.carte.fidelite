@@ -72,7 +72,6 @@
           <p class="dropdown-item text-white"><%= client.email %></p>
           <p class="dropdown-item text-white"><%= client.telephone %></p>
           <div class="dropdown-divider"></div>
-          <!-- TODO: Activier le bouton déconnexion -->
           <button
             class="dropdown-item text-danger client-deconnexion"
             type="button"
@@ -146,7 +145,8 @@
 
     <!-- Contenu principal -->
     <% if (datatype==="accueil") { %>
-    <!-- Si c'est l'anniversaire du client et qu'il y a au moins un cadeau spécial disponible -->
+    <!-- Si c'est l'anniversaire du client et qu'il y a au moins un cadeau 
+      spécial disponible -->
     <% if (anniversaire && Object.keys(speciaux).length) { %>
     <h2 class="page-title">Liste des cadeaux spéciaux</h2>
     <div class="container mt-5">
@@ -165,7 +165,7 @@
             />
             <div class="card-body">
               <h5 class="card-title"><%= cadeau.nom %></h5>
-              <p class="card-text"><%= cadeau.prix %> €</p>
+              <p class="card-text"><%= cadeau.prix %> points</p>
               <%if(stock[cadeau.cadeau_id]){%>
               <p class="card-text">Stock : <%= stock[cadeau.cadeau_id] %></p>
               <%}else{%>
@@ -230,7 +230,7 @@
             />
             <div class="card-body">
               <h5 class="card-title"><%= cadeau.nom %></h5>
-              <p class="card-text"><%= cadeau.prix %> €</p>
+              <p class="card-text"><%= cadeau.prix %> points</p>
               <%if(stock[cadeau.cadeau_id]){%>
               <p class="card-text">Stock : <%= stock[cadeau.cadeau_id] %></p>
               <%}else{%>
@@ -302,7 +302,7 @@
             />
             <div class="card-body">
               <h5 class="card-title"><%= cadeau.nom %></h5>
-              <p class="card-text"><%= cadeau.prix %> €</p>
+              <p class="card-text"><%= cadeau.prix %> points</p>
               <details>
                 <summary>Plus d'informations</summary>
                 <!-- On affiche que les informations existantes -->
