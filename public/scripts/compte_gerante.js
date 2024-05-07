@@ -216,7 +216,6 @@ $(document).ready(function () {
       enctype: "multipart/form-data",
     });
 
-    // NOTE: Utiliser gestion_personnes.getColumns() pour obtenir les colonnes?
     // On récupère les champs de la table nécessaire pour le formulaire
     let champs = [
       "nom",
@@ -231,7 +230,6 @@ $(document).ready(function () {
 
     // Pour chaque champ, on ajoute un input au formulaire
     champs.forEach(function (champ) {
-      // TODO: Changer l'input pour le champs 'type'
       // Les champs nom, prix et image sont obligatoires
       if (champ === "nom") {
         form.append(
@@ -348,11 +346,15 @@ $(document).ready(function () {
       class: "card-body d-flex justify-content-center align-items-center",
     });
 
+    // Création du bouton "Ajouter cadeau"
+    let btnAddCadeau = $("<button>", {
+      class: "btn btn-success cadeaux-add",
+      type: "button",
+      text: "Ajouter cadeau",
+    });
+
     // On ajoute le bouton "Ajouter cadeau"
-    // FIXME: ça dépasse 80 colonnes
-    cardBody.append(
-      '<button id="add_cadeau" class="btn btn-success cadeaux-add" type="button">Ajouter cadeau</button>'
-    );
+    cardBody.append(btnAddCadeau);
 
     // On remplace le contenu actuel de la card par cardBody
     card.html(cardBody);
@@ -374,7 +376,6 @@ $(document).ready(function () {
       action: "/gerante/compte/clients",
     });
 
-    // NOTE: Utiliser gestion_personnes.getColumns() pour obtenir les colonnes ?
     // On récupère les champs de la table nécessaire pour le formulaire
     let champs = [
       "userID",
@@ -499,11 +500,15 @@ $(document).ready(function () {
       class: "card-body d-flex justify-content-center align-items-center",
     });
 
-    // On ajoute le bouton "Ajouter Client"
-    // FIXME: ça dépasse 80 colonnes
-    cardBody.append(
-      '<button id="add_cadeau" class="btn btn-success clients-add" type="button">Ajouter Client</button>'
-    );
+    // Création du bouton "Ajouter client"
+    let btnAddClient = $("<button>", {
+      class: "btn btn-success clients-add",
+      type: "button",
+      text: "Ajouter client",
+    });
+
+    // On ajoute le bouton "Ajouter client"
+    cardBody.append(btnAddCadeau);
 
     // On remplace le contenu actuel de la card par cardBody
     card.html(cardBody);

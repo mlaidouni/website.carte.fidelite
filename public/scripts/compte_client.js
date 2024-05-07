@@ -42,7 +42,7 @@ $(document).ready(function () {
     }" />
       <div class="card-body">
         <h5 class="card-title">${cadeau.nom}</h5>
-        <p class="card-text">${cadeau.prix} €</p>
+        <p class="card-text">${cadeau.prix} points</p>
         <p class="card-text">Stock : ${stock}</p>
         <details>
           <summary>Plus d'informations</summary>
@@ -246,9 +246,7 @@ $(document).ready(function () {
       "/client/compte/cadeau?data=accueil",
       { id: id },
       function (data) {
-        // TODO: Gérer le nombre de cadeaux d'un même type pour pouvoir faire les TODO suivants
-        // TODO: Supprimer la card de l'affichage si la quantité est à 0
-        // TODO: Add la possibilité de sélectionner la quantité à ajouter au panier
+        // TODO: Add la possibilité de select la quantité à ajouter au panier
 
         // On met à jour les compteurs de points et de cadeaux
         updateCounters(data.panier_counter, data.points, data.points_h);
