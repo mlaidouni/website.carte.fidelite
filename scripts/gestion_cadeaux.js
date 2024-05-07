@@ -203,28 +203,7 @@ function Cadeau(tableName) {
 
     // On stocke les données dans un tableau
     let result = [];
-    for (let row of data.rows) {
-      console.log(row);
-      result.push(row);}
-    return result;
-  };
-
-  /**
-   * Filtre la liste pour ne garder qu'un cadeau par produit_id.
-   * @param {Array} cadeaux - La liste des cadeaux à filtrer.
-   * @returns La liste des cadeaux filtrée.
-   */
-  this.filterByProduit = function (cadeaux) {
-    // On filtre les cadeaux pour ne garder qu'un seul cadeau par produit_id
-    let result = [];
-    let produit_ids = [];
-    for (let cadeau of cadeaux) {
-      if (!produit_ids.includes(cadeau.produit)) {
-        result.push(cadeau);
-        produit_ids.push(cadeau.produit);
-      }
-    }
-
+    for (let row of data.rows) result.push(row);
     return result;
   };
 
@@ -258,6 +237,60 @@ function Cadeau(tableName) {
   };
 
   /**
+   * @returns Renvoie la liste des cadeaux normaux inférieurs à un montant n.
+   * @param {integer} n - Le montant maximal.
+   * @async
+   */
+  this.getNormalInf = async function (n) {
+    // Connexion à la BD
+    client = await pool.connect();
+    // Les données récupérées dans la BD
+    let data;
+
+    try {
+      // Requête à exécuter
+      let query = {
+        text: `SELECT * FROM ${tableName} WHERE prix <= $1 AND type = 'normal'`,
+        // Les valeurs à remplacer dans la requête
+        values: [n],
+      };
+
+      // On attent l'exécution de la requête
+      data = await client.query(query);
+    } catch (error) {
+      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
+      throw error;
+    } finally {
+      // On libère le client, que la requête ait réussi ou non.
+      client.release();
+    }
+
+    // On stocke les données dans un tableau
+    let result = [];
+    for (let row of data.rows) result.push(row);
+    return result;
+  };
+
+  /**
+   * @returns Renvoie la liste des cadeaux normaux, filtrés par produit.
+   * @param {integer} n - Le montant maximal.
+   * @async
+   */
+  this.getNormalForClient = async function (n) {
+    // On récupère les cadeaux normaux inférieurs à n
+    let normal = await this.getNormalInf(n);
+
+    // Pour chaque id produit, on récupère la liste des cadeaux
+    let result = {};
+    for (let cadeau of normal) {
+      if (!result[cadeau.produit_id]) result[cadeau.produit_id] = [];
+      result[cadeau.produit_id].push(cadeau);
+    }
+
+    return result;
+  };
+
+  /**
    * @returns Renvoie la liste des cadeaux spéciaux.
    * @async
    */
@@ -287,57 +320,55 @@ function Cadeau(tableName) {
   };
 
   /**
-   * @returns Renvoie la liste des cadeaux normaux inférieurs à un montant n.
-   * @param {integer} n - Le montant maximal.
-   * @async
-   */
-  this.getNormalInf = async function (n) {
-    // On utilise la fonction getNormal pour récupérer les cadeaux normaux
-    let cadeaux = await this.getNormal();
-
-    // On filtre les cadeaux dont le prix est inférieur à n
-    return cadeaux.filter((cadeau) => cadeau.prix <= n);
-  };
-
-  /**
-   * @returns Renvoie la liste des cadeaux normaux pour un client.
-   * @param {integer} n - Le montant maximal.
-   * @returns
-   */
-  this.getNormalForClient = async function (n) {
-    // On récupère la liste des cadeaux normaux achetable avec n points
-    let cadeaux = await this.getNormalInf(n);
-
-    // On filtre les cadeaux pour ne garder qu'un seul cadeau par produit_id
-    let result = this.filterByProduit(cadeaux);
-
-    return result;
-  };
-
-  /**
    * @returns Renvoie la liste des cadeaux spéciaux inférieurs à un montant n.
    * @param {integer} n - Le montant maximal.
    * @async
    */
   this.getSpecialInf = async function (n) {
-    // On utilise la fonction getSpecial pour récupérer les cadeaux spéciaux
-    let cadeaux = await this.getSpecial();
+    // Connexion à la BD
+    client = await pool.connect();
+    // Les données récupérées dans la BD
+    let data;
 
-    // On filtre les cadeaux dont le prix est inférieur à n
-    return cadeaux.filter((cadeau) => cadeau.prix <= n);
+    try {
+      // Requête à exécuter
+      let query = {
+        text: `SELECT * FROM ${tableName} WHERE prix <= $1 AND type = 'special'`,
+        // Les valeurs à remplacer dans la requête
+        values: [n],
+      };
+
+      // On attent l'exécution de la requête
+      data = await client.query(query);
+    } catch (error) {
+      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
+      throw error;
+    } finally {
+      // On libère le client, que la requête ait réussi ou non.
+      client.release();
+    }
+
+    // On stocke les données dans un tableau
+    let result = [];
+    for (let row of data.rows) result.push(row);
+    return result;
   };
 
   /**
-   * @returns Renvoie la liste des cadeaux spéciaux pour un client.
+   * @returns Renvoie la liste des cadeaux spéciaux, filtrés par produit.
    * @param {integer} n - Le montant maximal.
-   * @returns
+   * @async
    */
   this.getSpecialForClient = async function (n) {
-    // On récupère la liste des cadeaux spéciaux achetable avec n points
-    let cadeaux = await this.getSpecialInf(n);
+    // On récupère les cadeaux normaux inférieurs à n
+    let special = await this.getSpecialInf(n);
 
-    // On filtre les cadeaux pour ne garder qu'un seul cadeau par produit_id
-    let result = this.filterByProduit(cadeaux);
+    // Pour chaque id produit, on récupère la liste des cadeaux
+    let result = {};
+    for (let cadeau of special) {
+      if (!result[cadeau.produit_id]) result[cadeau.produit_id] = [];
+      result[cadeau.produit_id].push(cadeau);
+    }
 
     return result;
   };

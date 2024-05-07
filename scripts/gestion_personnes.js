@@ -189,6 +189,39 @@ function Personne(tableName) {
   };
 
   /**
+   * Récupère un client par son id.
+   * @param {string} id - L'id du client.
+   * @returns Renvoie la liste des personnes correspondant aux paramètres.
+   */
+  this.getClientById = async function (id) {
+    // Connexion à la BD
+    const client = await pool.connect();
+    // Les données récupérées dans la BD
+    let data;
+
+    try {
+      // Requête à exécuter
+      let query = {
+        text: `SELECT * FROM ${tableName} WHERE user_id = $1`,
+        values: [id],
+      };
+      // On attent l'exécution de la requête
+      data = await client.query(query);
+    } catch (error) {
+      // On relance l'erreur pour qu'elle puisse être gérée par le serveur
+      throw error;
+    } finally {
+      // On libère le client, que la requête ait réussi ou non.
+      client.release();
+    }
+
+    // On stocke les données dans un tableau
+    let result = [];
+    for (let row of data.rows) result.push(row);
+    return result;
+  };
+
+  /**
    * @param {string} userid
    * @param {string} password
    * @returns Renvoie la liste des personnes correspondant aux paramètres.
@@ -222,8 +255,6 @@ function Personne(tableName) {
     for (let row of data.rows) result.push(row);
     return result;
   };
-
-  
 
   /**
    * Modifie l'un des attributs d'un client dans la BD

@@ -8,13 +8,22 @@
 -- \c WEBSITECARTEFIDELITE;
 
 -- Suppression des tables si elles existent
+DROP TABLE IF EXISTS PRODUITS CASCADE;
+
 DROP TABLE IF EXISTS CADEAUX;
 
 DROP TABLE IF EXISTS PERSONNES;
 
+-- Création de la table produits
+CREATE TABLE PRODUITS (
+    PRODUIT_ID SERIAL PRIMARY KEY, -- Identifiant du produit
+    NOM VARCHAR(255) NOT NULL UNIQUE -- Nom du produit
+);
+
 -- Création de la table cadeaux
 CREATE TABLE CADEAUX (
     CADEAU_ID SERIAL PRIMARY KEY, -- Identifiant du cadeau
+    PRODUIT_ID INTEGER, -- Identifiant du produit
     NOM VARCHAR(255) NOT NULL, -- Nom du cadeau
     PRIX INTEGER NOT NULL, -- Prix du cadeau en points
     TYPE VARCHAR(7) NOT NULL DEFAULT 'normal', -- Type du cadeau (normal ou special)
@@ -22,7 +31,8 @@ CREATE TABLE CADEAUX (
     COULEUR VARCHAR(255), -- Couleur du cadeau (not required)
     DESCRIPTION TEXT, -- Description du cadeau (not required)
     STOCK INTEGER NOT NULL, --Nombre d'élément en stock
-    IMAGE VARCHAR(255) -- URL de l'image du cadeau (not required)
+    IMAGE VARCHAR(255), -- URL de l'image du cadeau (not required)
+    FOREIGN KEY (PRODUIT_ID) REFERENCES PRODUITS(PRODUIT_ID)
 );
 
 -- Création de la table personnes
@@ -69,6 +79,28 @@ INSERT INTO CADEAUX (
     'sac-a-dos.png'
 ),
 (
+    'Sac à dos',
+    2,
+    17,
+    'normal',
+    NULL,
+    'Rose',
+    'Sac à dos DORA',
+    3,
+    'dora.jpg'
+),
+(
+    'Sac à dos',
+    2,
+    17,
+    'normal',
+    NULL,
+    'Rose',
+    'Sac à dos DORA',
+    3,
+    'dora.jpg'
+),
+(
     'Mug',
     6,
     'normal',
@@ -90,6 +122,18 @@ INSERT INTO CADEAUX (
 ),
 (
     'Parapluie',
+    5,
+    12,
+    'normal',
+    NULL,
+    'Rouge',
+    'Parapluie pliable avec motif floral',
+    6,
+    'parapluie.png'
+),
+(
+    'Parapluie',
+    5,
     12,
     'normal',
     NULL,
@@ -100,16 +144,18 @@ INSERT INTO CADEAUX (
 ),
 (
     'Gourde',
+    6,
     10,
     'normal',
     NULL,
     'Vert',
     'Gourde en acier inoxydable 500 ml',
     5,
-    'kungfupanda.png'
+    'gourde.jpg'
 ),
 (
     'Stylo',
+    7,
     2,
     'normal',
     NULL,
@@ -120,6 +166,7 @@ INSERT INTO CADEAUX (
 ),
 (
     'Carnet de notes',
+    8,
     11,
     'normal',
     NULL,
@@ -130,6 +177,7 @@ INSERT INTO CADEAUX (
 ),
 (
     'Porte-clés',
+    9,
     3,
     'normal',
     NULL,
@@ -140,6 +188,7 @@ INSERT INTO CADEAUX (
 ),
 (
     'Tapis de souris',
+    10,
     18,
     'normal',
     NULL,
@@ -150,6 +199,7 @@ INSERT INTO CADEAUX (
 ),
 (
     'Lampe de poche',
+    11,
     16,
     'normal',
     NULL,
@@ -160,9 +210,32 @@ INSERT INTO CADEAUX (
 ),
 (
     'Maillot Real Madrid',
+    12,
+    105,
+    'special',
+    'S',
+    'Noir',
+    'Maillot Third du Real Madrid 2023/2024',
+    10,
+    'real.png'
+),
+(
+    'Maillot Real Madrid',
+    12,
     105,
     'special',
     'M',
+    'Noir',
+    'Maillot Third du Real Madrid 2023/2024',
+    10,
+    'real.png'
+),
+(
+    'Maillot Real Madrid',
+    12,
+    105,
+    'special',
+    'L',
     'Noir',
     'Maillot Third du Real Madrid 2023/2024',
     10,
