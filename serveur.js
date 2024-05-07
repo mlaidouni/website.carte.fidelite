@@ -294,11 +294,6 @@ server.get("/client/compte", async (req, res) => {
       let cadeaux = await gestion_cadeaux.getNormalForClient(
         client_connected.points_h
       );
-      // // CACA On affiche le contenu de cadeaux
-      // for (let key in cadeaux) {
-      //   printlog(`Cadeaux pour ${key}:`, "green");
-      //   for (let value of cadeaux[key]) printlog(`-> ${value.nom}`, "cyan");
-      // }
 
       let speciaux = await gestion_cadeaux.getSpecialForClient(
         client_connected.points_h
@@ -732,15 +727,24 @@ server.put("/gerante/compte/clients", async (req, res) => {
     for (let attr in newValues)
       await gestion_personnes.update(id, attr, newValues[attr]);
 
-    // FIXME: On ne peut pas mettre à jour les points si y'a pas de client connecté
-    // if (client_connected.client && id === client_connected.client.user_id) {
-    //   // On récupère les données du client
-    //   let data = await gestion_personnes.search(
-    //     id,
-    //     client_connected.client.password
-    //   );
-    //   client_update(data[0], newValues["points"]);
-    // }
+    // On récupère le client potentiellement connecté à partir de la session
+    let client_connected = getClientConnected(req, res);
+
+    // Si un client est connecté
+    if (client_connected) {
+      // On crée une nouvelle instance de client pour utiliser ses méthodes
+      let client = new Client(client_connected);
+
+      // On récupère les données (à jour) du client
+      let data = await gestion_personnes.search(
+        id,
+        client_connected.client.password
+      );
+
+      // On met à jour les points du client
+      client.update(data[0], newValues["points"]);
+    }
+
     // Si on a pas levé d'erreur, on renvoie un message de succès
     res
       .status(200)
