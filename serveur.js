@@ -135,7 +135,7 @@ function getClientConnected(req, res) {
   let client = req.session.client;
 
   // Si aucun client n'est connecté, on redirige vers la page de connexion
-  if (!client) res.redirect("/client/connexion");
+  if (!client) null;
 
   return client;
 }
@@ -834,7 +834,7 @@ server.post("/gerante/compte/clients", async (req, res) => {
 /* ******************** Lancement du serveur ******************** */
 
 // Lancer le serveur
-const port = 8080;
+const port = process.env.SRV_PORT;
 server.listen(port, () => {
   console.log(
     `Application lancée. Connectez-vous à l'adresse http://localhost:${port}/`

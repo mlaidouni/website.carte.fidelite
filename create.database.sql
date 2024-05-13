@@ -48,8 +48,48 @@ CREATE TABLE PERSONNES (
     POINTS INTEGER NOT NULL -- Nombre de points de la personne
 );
 
+INSERT INTO PRODUITS (
+    NOM
+) VALUES (
+    'Moumou le mouton'
+),
+(
+    'Sac à dos'
+),
+(
+    'Mug'
+),
+(
+    'Clé USB'
+),
+(
+    'Parapluie'
+),
+(
+    'Gourde'
+),
+(
+    'Stylo'
+),
+(
+    'Carnet de notes'
+),
+(
+    'Porte-clés'
+),
+(
+    'Tapis de souris'
+),
+(
+    'Lampe de poche'
+),
+(
+    'Maillot Real Madrid'
+);
+
 -- Remplissage de la table cadeaux
 INSERT INTO CADEAUX (
+    PRODUIT_ID,
     NOM,
     PRIX,
     TYPE,
@@ -59,6 +99,7 @@ INSERT INTO CADEAUX (
     STOCK,
     IMAGE
 ) VALUES (
+    1,
     'Moumou le mouton',
     100,
     'special',
@@ -69,6 +110,7 @@ INSERT INTO CADEAUX (
     'moumou.png'
 ),
 (
+    2,
     'Sac à dos',
     15,
     'normal',
@@ -79,8 +121,8 @@ INSERT INTO CADEAUX (
     'sac-a-dos.png'
 ),
 (
-    'Sac à dos',
     2,
+    'Sac à dos',
     17,
     'normal',
     NULL,
@@ -90,17 +132,18 @@ INSERT INTO CADEAUX (
     'dora.jpg'
 ),
 (
-    'Sac à dos',
     2,
+    'Sac à dos',
     17,
     'normal',
     NULL,
-    'Rose',
+    'Rouge',
     'Sac à dos DORA',
     3,
     'dora.jpg'
 ),
 (
+    3,
     'Mug',
     6,
     'normal',
@@ -111,6 +154,7 @@ INSERT INTO CADEAUX (
     'mug-blanc.png'
 ),
 (
+    4,
     'Clé USB',
     7,
     'normal',
@@ -121,8 +165,8 @@ INSERT INTO CADEAUX (
     'usb.png'
 ),
 (
-    'Parapluie',
     5,
+    'Parapluie',
     12,
     'normal',
     NULL,
@@ -132,8 +176,8 @@ INSERT INTO CADEAUX (
     'parapluie.png'
 ),
 (
-    'Parapluie',
     5,
+    'Parapluie',
     12,
     'normal',
     NULL,
@@ -143,8 +187,8 @@ INSERT INTO CADEAUX (
     'parapluie.png'
 ),
 (
+    6,
     'Gourde',
-    6,
     10,
     'normal',
     NULL,
@@ -154,8 +198,8 @@ INSERT INTO CADEAUX (
     'gourde.jpg'
 ),
 (
-    'Stylo',
     7,
+    'Stylo',
     2,
     'normal',
     NULL,
@@ -165,8 +209,8 @@ INSERT INTO CADEAUX (
     'stylo.png'
 ),
 (
-    'Carnet de notes',
     8,
+    'Carnet de notes',
     11,
     'normal',
     NULL,
@@ -176,8 +220,8 @@ INSERT INTO CADEAUX (
     'carnet-de-notes.png'
 ),
 (
-    'Porte-clés',
     9,
+    'Porte-clés',
     3,
     'normal',
     NULL,
@@ -187,8 +231,8 @@ INSERT INTO CADEAUX (
     'kungfupanda.png'
 ),
 (
-    'Tapis de souris',
     10,
+    'Tapis de souris',
     18,
     'normal',
     NULL,
@@ -198,8 +242,8 @@ INSERT INTO CADEAUX (
     'kungfupanda.png'
 ),
 (
-    'Lampe de poche',
     11,
+    'Lampe de poche',
     16,
     'normal',
     NULL,
@@ -209,8 +253,8 @@ INSERT INTO CADEAUX (
     'shrek_swamp.png'
 ),
 (
-    'Maillot Real Madrid',
     12,
+    'Maillot Real Madrid',
     105,
     'special',
     'S',
@@ -220,8 +264,8 @@ INSERT INTO CADEAUX (
     'real.png'
 ),
 (
-    'Maillot Real Madrid',
     12,
+    'Maillot Real Madrid',
     105,
     'special',
     'M',
@@ -231,8 +275,8 @@ INSERT INTO CADEAUX (
     'real.png'
 ),
 (
-    'Maillot Real Madrid',
     12,
+    'Maillot Real Madrid',
     105,
     'special',
     'L',
